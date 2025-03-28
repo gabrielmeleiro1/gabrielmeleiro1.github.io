@@ -56,25 +56,18 @@
         }
         .project-info h3 {
             margin-top: 0;
+            margin-bottom: 15px;
             color: #2c3e50;
+        }
+        .project-info h3 a {
+            color: #2c3e50;
+            text-decoration: none;
+        }
+        .project-info h3 a:hover {
+            color: #0366d6;
         }
         .project-info p {
             color: #555;
-            margin-bottom: 15px;
-        }
-        .tags {
-            display: flex;
-            flex-wrap: wrap;
-            margin-bottom: 15px;
-        }
-        .tag {
-            background: #f1f8ff;
-            color: #0366d6;
-            padding: 3px 8px;
-            border-radius: 3px;
-            font-size: 0.8rem;
-            margin-right: 5px;
-            margin-bottom: 5px;
         }
         a {
             color: #0366d6;
@@ -94,7 +87,7 @@
 <body>
     <header>
         <h1>Gabriel Meleiro</h1>
-        <div class="subtitle">Software Engineer & Financial Systems Developer</div>
+        <div class="subtitle">Data Science & Finance</div>
     </header>
     
     <main>
@@ -102,16 +95,12 @@
         
         <div class="project-grid">
             <div class="project-card">
-                <img src="ezgif.com-crop.gif" alt="Pegasus Trading System Console">
+                <a href="projects/pegasus.html">
+                    <img src="ezgif.com-crop.gif" alt="Pegasus Trading System Console">
+                </a>
                 <div class="project-info">
-                    <h3>Pegasus Trading System</h3>
+                    <h3><a href="projects/pegasus.html">Pegasus</a></h3>
                     <p>High-performance limit order book system with multi-threading support for financial trading applications.</p>
-                    <div class="tags">
-                        <span class="tag">C++</span>
-                        <span class="tag">Multi-threading</span>
-                        <span class="tag">Trading</span>
-                    </div>
-                    <a href="projects/pegasus.html">Read Blog Post →</a>
                 </div>
             </div>
             
