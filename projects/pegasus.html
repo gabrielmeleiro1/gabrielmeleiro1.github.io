@@ -31,6 +31,10 @@
         .content {
             margin-top: 20px;
         }
+        p {
+            margin-bottom: 1.2em;
+            text-align: justify;
+        }
         code {
             background-color: #f5f5f5;
             padding: 2px 5px;
@@ -42,6 +46,8 @@
             padding: 15px;
             border-radius: 5px;
             overflow-x: auto;
+            font-size: 14px;
+            line-height: 1.4;
         }
         a {
             color: #0366d6;
@@ -77,102 +83,156 @@
     
     <div class="content">
         <p>
-            <a href="https://github.com/gabrielmeleiro1/Pegasus" target="_blank">Pegasus</a> is a high-performance limit order book system designed for financial trading applications with extensive multi-threading support. This blog post details the implementation of the system and its various approaches to multi-threading.
+            <a href="https://github.com/gabrielmeleiro1/Pegasus" target="_blank">Pegasus</a> is a high-performance limit order book system designed for financial trading applications with extensive multi-threading support. This article details my implementation approach and the reasoning behind key architectural decisions.
         </p>
 
-        <h2>Core Features</h2>
-        <ul>
-            <li>Price-time priority matching algorithm</li>
-            <li>Support for multiple order types (limit, market, IOC)</li>
-            <li>Multi-threading support for processing orders across different symbols</li>
-            <li>Atomic operations for thread safety</li>
-            <li>Optimized for low-latency trading operations</li>
-        </ul>
-
-        <h2>System Architecture</h2>
+        <h2>The Core of the Order Book System</h2>
+        
         <p>
-            The Pegasus system implements a sophisticated limit order book with an emphasis on performance. The core components include:
+            At the heart of Pegasus lies a sophisticated limit order book implementation using price-time priority matching, which is the industry standard algorithm used by most exchanges. Under this system, orders are first prioritized by price (higher buy prices and lower sell prices take precedence), and when prices are identical, the orders are prioritized by arrival time, with earlier orders executed first.
         </p>
-        <ul>
-            <li>Order Book: Maintains buy and sell orders sorted by price and time priority</li>
-            <li>Order Manager: Handles the processing of new orders and cancellations</li>
-            <li>Matching Engine: Pairs buy and sell orders according to price-time priority</li>
-            <li>Multi-threading Framework: Enables parallel processing of orders</li>
-        </ul>
-
-        <h2>Multi-threading Implementations</h2>
         
-        <div class="implementation">
-            <h3>Thread-per-Symbol (OrderBookManager)</h3>
-            <p>
-                This implementation dedicates a separate thread to each trading symbol, allowing for complete parallel processing across different symbols:
-            </p>
-            <ul>
-                <li>Each symbol has its own thread and order book instance</li>
-                <li>Orders are routed to their respective symbol threads</li>
-                <li>No contention between different symbols</li>
-                <li>Scales well with increasing number of symbols</li>
-            </ul>
-        </div>
-        
-        <div class="implementation">
-            <h3>Thread Pool Approach</h3>
-            <p>
-                The thread pool implementation provides a more resource-efficient approach:
-            </p>
-            <ul>
-                <li>Maintains a fixed pool of worker threads</li>
-                <li>Orders are queued and processed by available threads</li>
-                <li>Better resource utilization compared to thread-per-symbol</li>
-                <li>Configurable thread count based on system capabilities</li>
-            </ul>
-        </div>
-        
-        <div class="implementation">
-            <h3>Basic Multi-threading</h3>
-            <p>
-                A simpler threading model that focuses on direct thread management:
-            </p>
-            <ul>
-                <li>Creates threads on-demand for order processing</li>
-                <li>Simpler implementation but less optimal for high-throughput scenarios</li>
-                <li>Useful for systems with limited concurrent symbols</li>
-            </ul>
-        </div>
-        
-        <div class="implementation">
-            <h3>Atomic Operations</h3>
-            <p>
-                To ensure thread safety without excessive locking:
-            </p>
-            <ul>
-                <li>Uses atomic operations for critical shared data</li>
-                <li>Reduces lock contention while maintaining data integrity</li>
-                <li>Implemented for order IDs, sequence numbers, and other shared counters</li>
-            </ul>
-        </div>
-
-        <h2>Performance Considerations</h2>
         <p>
-            The Pegasus system addresses several key performance aspects:
+            I implemented this by creating a data structure that efficiently supports three core operations: adding orders, canceling orders, and executing trades. The challenge was to implement these operations with optimal time complexity while enabling quick answers to common queries like "what are the best bid and offer?" and "how much volume exists between prices A and B?"
         </p>
-        <ul>
-            <li>Memory Management: Careful allocation and reuse of order objects to minimize garbage collection</li>
-            <li>Lock Contention: Minimized through the use of atomic operations and symbol isolation</li>
-            <li>Cache Locality: Data structures designed to maximize CPU cache efficiency</li>
-            <li>Scalability: Different threading models to adapt to various hardware configurations</li>
-        </ul>
-
-        <h2>ETH/USD Order Book Simulation</h2>
+        
         <p>
-            The system includes a simulation of an ETH/USD cryptocurrency order book:
+            The implementation uses a binary tree of Limit objects sorted by price, where each Limit is itself a doubly linked list of Order objects. This structure separates buy and sell orders into different trees, allowing the "inside of the book" (the most competitive prices) to be accessed in constant time. Each order is also referenced in a hash map keyed by ID for O(1) lookup, and each Limit is similarly indexed by price.
         </p>
-        <ul>
-            <li>Realistic price movements and order flow patterns</li>
-            <li>Configurable order rate and market volatility</li>
-            <li>Performance metrics collection for system evaluation</li>
-        </ul>
+        
+        <p>
+            This structure achieves impressive performance characteristics: O(log M) for the first order at a limit and O(1) for subsequent orders at the same limit, O(1) for cancellations, and O(1) for executions. M represents the number of price limits, which is typically much smaller than the total number of orders in the system.
+        </p>
+        
+        <pre>
+Order  
+  int idNumber;  
+  bool buyOrSell;  
+  int shares;  
+  int limit;  
+  int entryTime;  
+  int eventTime;  
+  Order *nextOrder;  
+  Order *prevOrder;  
+  Limit *parentLimit;
 
+Limit  // representing a single limit price  
+  int limitPrice;  
+  int size;  
+  int totalVolume;  
+  Limit *parent;  
+  Limit *leftChild;  
+  Limit *rightChild;  
+  Order *headOrder;  
+  Order *tailOrder;
+
+Book  
+  Limit *buyTree;  
+  Limit *sellTree;  
+  Limit *lowestSell;  
+  Limit *highestBuy;
+        </pre>
+
+        <h2>Multi-threading Architecture: The Heart of Pegasus</h2>
+        
+        <p>
+            What truly distinguishes Pegasus is its approach to parallel processing through multiple threading strategies. In modern markets, the ability to process orders across different symbols simultaneously is crucial for performance. I implemented three distinct multi-threading approaches, each with its own characteristics and use cases.
+        </p>
+        
+        <h3>Thread-per-Symbol Approach</h3>
+        
+        <p>
+            The first approach, implemented through the OrderBookManager class, assigns a dedicated thread to each trading symbol. This creates true parallelism, as each symbol operates independently without contention from others. When an order arrives, it's routed to the appropriate symbol's thread for processing.
+        </p>
+        
+        <p>
+            This approach shines in environments with many active symbols and high order volumes across those symbols. The isolation between symbols eliminates lock contention and allows each order book to operate at maximum efficiency. The trade-off is resource usage - with many symbols, this approach can consume significant thread resources, but for high-frequency trading systems focusing on a manageable set of symbols, this provides optimal performance.
+        </p>
+        
+        <h3>Thread Pool Implementation</h3>
+        
+        <p>
+            The thread pool approach takes a more resource-efficient stance. Rather than dedicating a thread to each symbol, it maintains a fixed pool of worker threads that process orders from any symbol. Orders are placed in a shared queue and distributed among available threads.
+        </p>
+        
+        <p>
+            This implementation is particularly valuable for systems that need to handle a large number of symbols with varying activity levels. The thread count can be tuned to match the hardware capabilities and expected workload, making more efficient use of system resources. The thread pool dynamically balances work across the available threads, ensuring that processing power is directed where needed.
+        </p>
+        
+        <p>
+            The implementation uses a sophisticated work-stealing approach where idle threads can take work from busy queues, further improving resource utilization and reducing order processing latency. This adaptability makes the thread pool approach suitable for a wide range of deployment scenarios.
+        </p>
+        
+        <h3>Basic Multi-threading</h3>
+        
+        <p>
+            The third approach takes a more direct path to thread management. It creates threads on demand for processing orders, using a simpler implementation model. While less sophisticated than the other approaches, this implementation provides a good balance of performance and complexity for systems with moderate workloads or limited concurrent symbol activity.
+        </p>
+        
+        <p>
+            This approach was included not only as a fallback option but also as a baseline for performance comparison. In testing, it provided insights into the overhead introduced by the more complex threading models and helped identify optimization opportunities.
+        </p>
+        
+        <h2>Thread Safety Through Atomic Operations</h2>
+        
+        <p>
+            Ensuring thread safety in a high-performance trading system requires careful consideration to avoid excessive locking, which can introduce latency. Pegasus uses atomic operations for critical shared data instead of traditional locks where possible.
+        </p>
+        
+        <p>
+            For example, order ID generation, sequence numbers, and other shared counters use atomic operations to ensure thread safety without the overhead of locks. This approach significantly reduces contention and improves overall system throughput, particularly under high load conditions.
+        </p>
+        
+        <p>
+            In cases where more complex synchronization is required, fine-grained locking strategies are employed to minimize the critical section size and duration. This balance between safety and performance is crucial for a trading system where both correctness and speed are non-negotiable requirements.
+        </p>
+        
+        <h2>Performance Optimization Techniques</h2>
+        
+        <p>
+            Beyond the core architecture, Pegasus incorporates several key optimizations to maximize performance:
+        </p>
+        
+        <p>
+            <strong>Memory Management:</strong> The system carefully manages memory allocation and object reuse to minimize garbage collection overhead. Order objects are pooled and reused when possible, reducing memory allocation pressure during high-volume periods.
+        </p>
+        
+        <p>
+            <strong>Cache Locality:</strong> Data structures are designed with CPU cache efficiency in mind. Related data is kept together in memory, and access patterns are optimized to maximize cache hits. This significantly improves performance on modern CPU architectures where memory access latency can be a major bottleneck.
+        </p>
+        
+        <p>
+            <strong>Lock Contention Reduction:</strong> Beyond atomic operations, the system is designed to minimize shared state between threads. Each component maintains its own state where possible, reducing the need for synchronization. When synchronization is necessary, lock-free data structures are used where applicable.
+        </p>
+        
+        <p>
+            <strong>Efficient Data Structures:</strong> Every data structure in the system was chosen or designed with performance characteristics in mind. The binary tree implementation for price limits, for example, includes balancing mechanisms to ensure logarithmic performance even as orders are continuously added and removed from different parts of the price range.
+        </p>
+        
+        <h2>ETH/USD Simulation Environment</h2>
+        
+        <p>
+            To validate the system under realistic conditions, Pegasus includes a simulation environment for an ETH/USD cryptocurrency order book. This simulation generates realistic order flows based on statistical models of market behavior, allowing for performance testing and optimization under conditions that closely mirror real-world trading.
+        </p>
+        
+        <p>
+            The simulation can be configured to adjust order rates, market volatility, and other parameters to test the system under various scenarios. It also captures detailed performance metrics, allowing for precise analysis of system behavior under different conditions and configurations.
+        </p>
+        
+        <p>
+            This testing environment proved invaluable during development, revealing bottlenecks and optimization opportunities that wouldn't have been apparent with synthetic benchmarks alone. It also serves as a demonstration of the system's capabilities and a platform for ongoing refinement.
+        </p>
+        
+        <h2>Conclusion and Future Directions</h2>
+        
+        <p>
+            Pegasus represents a sophisticated approach to building high-performance trading systems with a focus on parallelism and efficiency. The multi-threaded design allows it to scale with modern multi-core architectures, while the carefully optimized data structures ensure optimal performance for critical operations.
+        </p>
+        
+        <p>
+            Future development will focus on extending the system with additional order types, improved monitoring and telemetry, and integration with market data feeds. The modular design facilitates these extensions without compromising the core performance characteristics that make Pegasus valuable for high-frequency trading applications.
+        </p>
+        
         <div class="footer">
             <p>
                 For more information, check out the <a href="https://github.com/gabrielmeleiro1/Pegasus" target="_blank">Pegasus GitHub repository</a>.
