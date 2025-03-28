@@ -97,40 +97,80 @@
         </p>
         
         <p>
-            The implementation uses a binary tree of Limit objects sorted by price, where each Limit is itself a doubly linked list of Order objects. This structure separates buy and sell orders into different trees, allowing the "inside of the book" (the most competitive prices) to be accessed in constant time. Each order is also referenced in a hash map keyed by ID for O(1) lookup, and each Limit is similarly indexed by price.
+            The implementation uses ordered maps for organizing price levels, with each price level (Limit) containing a linked list of Order objects. The system separates buy and sell orders into different collections, sorted appropriately to allow constant-time access to the best prices. Each order is also referenced in an unordered map keyed by ID for O(1) lookup.
         </p>
         
         <p>
-            This structure achieves impressive performance characteristics: O(log M) for the first order at a limit and O(1) for subsequent orders at the same limit, O(1) for cancellations, and O(1) for executions. M represents the number of price limits, which is typically much smaller than the total number of orders in the system.
+            This structure achieves impressive performance characteristics: O(log N) for adding the first order at a limit and O(1) for subsequent orders at the same limit, O(1) for cancellations, and O(1) for accessing the best bids and offers. N represents the number of price levels, which is typically much smaller than the total number of orders in the system.
         </p>
         
         <pre>
-Order  
-  int idNumber;  
-  bool buyOrSell;  
-  int shares;  
-  int limit;  
-  int entryTime;  
-  int eventTime;  
-  Order *nextOrder;  
-  Order *prevOrder;  
-  Limit *parentLimit;
+// Key class structures in simplified form:
 
-Limit  // representing a single limit price  
-  int limitPrice;  
-  int size;  
-  int totalVolume;  
-  Limit *parent;  
-  Limit *leftChild;  
-  Limit *rightChild;  
-  Order *headOrder;  
-  Order *tailOrder;
+class Order {
+public:
+    using OrderID = std::uint64_t;
+    
+    Order(OrderID id, Side side, OrderType type, 
+          const std::string& symbol, double price, 
+          double quantity, double stopPrice = 0.0);
+          
+    // Getters, setters, and thread-safe operations
+    OrderID getID() const;
+    Side getSide() const;
+    double getPrice() const;
+    double getQuantity() const;
+    // ...with atomic operations for thread safety
+    
+private:
+    OrderID m_id;
+    Side m_side;
+    OrderType m_type;
+    std::string m_symbol;
+    double m_price;
+    double m_quantity;
+    std::atomic<double> m_filledQtyAtomic;
+    std::atomic<bool> m_isActiveAtomic;
+    // Other fields...
+};
 
-Book  
-  Limit *buyTree;  
-  Limit *sellTree;  
-  Limit *lowestSell;  
-  Limit *highestBuy;
+class Limit {
+public:
+    using OrderPtr = std::shared_ptr<Order>;
+    
+    explicit Limit(double price);
+    
+    void addOrder(OrderPtr order);
+    void removeOrder(OrderPtr order);
+    double getPrice() const;
+    double getTotalVolume() const;
+    
+private:
+    double m_price;
+    std::atomic<double> m_totalVolumeAtomic;
+    mutable std::mutex m_ordersMutex;
+    std::list<OrderPtr> m_orders;  // FIFO queue of orders
+};
+
+class OrderBook {
+public:
+    using OrderPtr = std::shared_ptr<Order>;
+    using LimitPtr = Limit*;
+    
+    explicit OrderBook(const std::string& symbol);
+    
+    bool addOrder(OrderPtr order, ...);
+    bool cancelOrder(Order::OrderID orderId);
+    bool matchOrder(OrderPtr order, ...);
+    double getBestBid() const;
+    double getBestAsk() const;
+    
+private:
+    std::string m_symbol;
+    std::map<double, LimitPtr, std::greater<double>> m_bids; // High to low
+    std::map<double, LimitPtr> m_asks;                       // Low to high
+    std::unordered_map<Order::OrderID, OrderPtr> m_orders;   // Fast lookup
+};
         </pre>
 
         <h2>Multi-threading Architecture: The Heart of Pegasus</h2>
@@ -160,7 +200,7 @@ Book
         </p>
         
         <p>
-            The implementation uses a sophisticated work-stealing approach where idle threads can take work from busy queues, further improving resource utilization and reducing order processing latency. This adaptability makes the thread pool approach suitable for a wide range of deployment scenarios.
+            The implementation uses condition variables and mutexes to synchronize worker threads, with careful attention to avoiding deadlocks and minimizing contention. This approach provides a good balance between parallelism and resource efficiency, making it suitable for a wide range of deployment scenarios.
         </p>
         
         <h3>Basic Multi-threading</h3>
@@ -180,11 +220,11 @@ Book
         </p>
         
         <p>
-            For example, order ID generation, sequence numbers, and other shared counters use atomic operations to ensure thread safety without the overhead of locks. This approach significantly reduces contention and improves overall system throughput, particularly under high load conditions.
+            For example, order ID generation, filled quantities, and other shared counters use std::atomic for thread safety without the overhead of mutex locks. This approach significantly reduces contention and improves overall system throughput, particularly under high load conditions.
         </p>
         
         <p>
-            In cases where more complex synchronization is required, fine-grained locking strategies are employed to minimize the critical section size and duration. This balance between safety and performance is crucial for a trading system where both correctness and speed are non-negotiable requirements.
+            In cases where more complex synchronization is required, fine-grained locking with std::mutex is employed to minimize the critical section size and duration. This balance between safety and performance is crucial for a trading system where both correctness and speed are non-negotiable requirements.
         </p>
         
         <h2>Performance Optimization Techniques</h2>
@@ -194,7 +234,7 @@ Book
         </p>
         
         <p>
-            <strong>Memory Management:</strong> The system carefully manages memory allocation and object reuse to minimize garbage collection overhead. Order objects are pooled and reused when possible, reducing memory allocation pressure during high-volume periods.
+            <strong>Memory Management:</strong> The system uses smart pointers (std::shared_ptr) to manage memory, ensuring safety while minimizing overhead. Critical data structures are carefully designed to reduce allocation pressure during high-volume periods.
         </p>
         
         <p>
@@ -202,11 +242,11 @@ Book
         </p>
         
         <p>
-            <strong>Lock Contention Reduction:</strong> Beyond atomic operations, the system is designed to minimize shared state between threads. Each component maintains its own state where possible, reducing the need for synchronization. When synchronization is necessary, lock-free data structures are used where applicable.
+            <strong>Lock Contention Reduction:</strong> Beyond atomic operations, the system is designed to minimize shared state between threads. Each component maintains its own state where possible, reducing the need for synchronization. When synchronization is necessary, fine-grained locking is used to minimize contention.
         </p>
         
         <p>
-            <strong>Efficient Data Structures:</strong> Every data structure in the system was chosen or designed with performance characteristics in mind. The binary tree implementation for price limits, for example, includes balancing mechanisms to ensure logarithmic performance even as orders are continuously added and removed from different parts of the price range.
+            <strong>Efficient Data Structures:</strong> Each data structure in the system was chosen with specific performance characteristics in mind. The use of ordered maps for price levels and unordered maps for ID lookups balances the need for fast insertion, deletion, and retrieval operations, maintaining logarithmic or constant-time complexity for critical operations.
         </p>
         
         <h2>ETH/USD Simulation Environment</h2>
