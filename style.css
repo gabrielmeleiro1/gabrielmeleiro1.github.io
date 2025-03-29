@@ -119,12 +119,13 @@ header .subtitle {
 
 /* Add pseudo-elements for terminal prompt style */
 header h1::before {
-    /* content: "$ "; */ /* Uncomment if you want a bash-like prompt */
-    /* color: var(--aqua-bright); */
+    content: "$ "; /* Bash-like prompt */
+    color: var(--aqua-bright);
 }
+
 header .subtitle::before {
-   /* content: "// "; */ /* Uncomment for comment style */
-   /* color: var(--fg-muted); */
+    content: "// "; /* Comment-style subtitle */
+    color: var(--fg-muted);
 }
 
 
