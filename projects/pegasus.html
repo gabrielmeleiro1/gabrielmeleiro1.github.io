@@ -4,124 +4,145 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Gabriel Meleiro - Pegasus</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../style.css">
     <style>
+        /* Overrides or specific styles for the project page */
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            margin: 0;
-            padding: 0;
-            line-height: 1.6;
-            color: #333;
+           /* Ensure body background applies if not inherited */
+           background-color: var(--bg0);
+        }
+        .project-container { /* Wrap content for padding/max-width */
             max-width: 1000px;
             margin: 0 auto;
             padding: 20px;
+            background-color: var(--card-bg); /* Optional: container bg */
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            margin-top: 30px; /* Space from top */
         }
-        .header {
+        .back-link a {
+             display: inline-block;
+             margin-bottom: 20px;
+             color: var(--aqua-dim);
+             font-weight: 500;
+        }
+        .back-link a:hover {
+            color: var(--link-hover);
+        }
+        .project-header { /* Renamed from .header to avoid conflicts */
             display: flex;
             align-items: center;
-            gap: 20px;
+            gap: 30px; /* Increased gap */
             margin-bottom: 30px;
+            flex-wrap: wrap; /* Allow wrapping on smaller screens */
         }
-        .header img {
+        .project-header img {
             max-width: 300px;
-            border-radius: 5px;
+            border-radius: 4px;
+            border: 1px solid var(--border-color);
+            flex-shrink: 0; /* Prevent image from shrinking too much */
         }
-        h1, h2, h3 {
-            color: #2c3e50;
+         .project-header h1 {
+            color: var(--green-bright); /* Match main page H1 style */
+            font-size: 2rem; /* Adjust size as needed */
+         }
+
+        .content h2, .content h3 {
+             margin-top: 1.5em;
+             border-bottom: 1px solid var(--border-color);
+             padding-bottom: 8px;
         }
-        .content {
-            margin-top: 20px;
-        }
+         .content h2 { color: var(--yellow-bright); }
+         .content h3 { color: var(--blue-bright); }
+
         p {
-            margin-bottom: 1.2em;
-            text-align: justify;
+            text-align: left; /* Override justify if preferred */
+            color: var(--fg1);
         }
         code {
-            background-color: #f5f5f5;
-            padding: 2px 5px;
+            background-color: var(--bg1);
+            color: var(--orange-bright); /* Highlight code */
+            padding: 3px 6px;
             border-radius: 3px;
-            font-family: monospace;
+            font-family: inherit; /* Use Fira Code */
+            font-size: 0.9em;
         }
         pre {
-            background-color: #f5f5f5;
+            background-color: var(--bg0-hard);
+            border: 1px solid var(--border-color);
             padding: 15px;
-            border-radius: 5px;
+            border-radius: 4px;
             overflow-x: auto;
-            font-size: 14px;
-            line-height: 1.4;
+            font-size: 14px; /* Keep code slightly smaller */
+            line-height: 1.5;
+            color: var(--fg1);
         }
-        a {
-            color: #0366d6;
-            text-decoration: none;
-        }
-        a:hover {
-            text-decoration: underline;
-        }
-        .implementation {
-            margin-bottom: 30px;
-        }
-        .footer {
+        .project-footer { /* Renamed from .footer */
             margin-top: 50px;
             padding-top: 20px;
-            border-top: 1px solid #eee;
+            border-top: 1px solid var(--border-color);
             font-size: 0.9em;
-            color: #666;
+            color: var(--fg-muted);
         }
-        .back-link {
-            margin-bottom: 20px;
+        .project-footer a {
+             color: var(--aqua-dim);
+        }
+        .project-footer a:hover {
+            color: var(--link-hover);
         }
     </style>
 </head>
 <body>
-    <div class="back-link">
-        <a href="../index.html">← Back to Projects</a>
-    </div>
-    
-    <div class="header">
-        <img src="../ezgif.com-crop.gif" alt="Pegasus Trading System Console" />
-        <h1>Pegasus</h1>
-    </div>
-    
-    <div class="content">
-        <p>
-            <a href="https://github.com/gabrielmeleiro1/Pegasus" target="_blank">Pegasus</a> is a high-performance limit order book system designed for financial trading applications with extensive multi-threading support. This article details my implementation approach and the reasoning behind key architectural decisions.
-        </p>
+    <div class="project-container"> <div class="back-link">
+            <a href="../index.html">&lt; Back to Portfolio</a> </div>
 
-        <h2>The Core of the Order Book System</h2>
-        
-        <p>
-            At the heart of Pegasus lies a sophisticated limit order book implementation using price-time priority matching, which is the industry standard algorithm used by most exchanges. Under this system, orders are first prioritized by price (higher buy prices and lower sell prices take precedence), and when prices are identical, the orders are prioritized by arrival time, with earlier orders executed first.
-        </p>
-        
-        <p>
-            I implemented this by creating a data structure that efficiently supports three core operations: adding orders, canceling orders, and executing trades. The challenge was to implement these operations with optimal time complexity while enabling quick answers to common queries like "what are the best bid and offer?" and "how much volume exists between prices A and B?"
-        </p>
-        
-        <p>
-            The implementation uses ordered maps for organizing price levels, with each price level (Limit) containing a linked list of Order objects. The system separates buy and sell orders into different collections, sorted appropriately to allow constant-time access to the best prices. Each order is also referenced in an unordered map keyed by ID for O(1) lookup.
-        </p>
-        
-        <p>
-            This structure achieves impressive performance characteristics: O(log N) for adding the first order at a limit and O(1) for subsequent orders at the same limit, O(1) for cancellations, and O(1) for accessing the best bids and offers. N represents the number of price levels, which is typically much smaller than the total number of orders in the system.
-        </p>
-        
-        <pre>
-// Key class structures in simplified form:
+        <div class="project-header"> <img src="../ezgif.com-crop.gif" alt="Pegasus Trading System Console" />
+            <h1>Pegasus</h1>
+        </div>
+
+        <div class="content">
+            <p>
+                <a href="https://github.com/gabrielmeleiro1/Pegasus" target="_blank" rel="noopener noreferrer">Pegasus</a> is a high-performance limit order book system designed for financial trading applications with extensive multi-threading support. This article details my implementation approach and the reasoning behind key architectural decisions.
+            </p>
+
+            <h2>The Core of the Order Book System</h2>
+
+            <p>
+                At the heart of Pegasus lies a sophisticated limit order book implementation using price-time priority matching, which is the industry standard algorithm used by most exchanges. Under this system, orders are first prioritized by price (higher buy prices and lower sell prices take precedence), and when prices are identical, the orders are prioritized by arrival time, with earlier orders executed first.
+            </p>
+
+            <p>
+                I implemented this by creating a data structure that efficiently supports three core operations: adding orders, canceling orders, and executing trades. The challenge was to implement these operations with optimal time complexity while enabling quick answers to common queries like "what are the best bid and offer?" and "how much volume exists between prices A and B?"
+            </p>
+
+            <p>
+                The implementation uses ordered maps for organizing price levels, with each price level (<code>Limit</code>) containing a linked list of <code>Order</code> objects. The system separates buy and sell orders into different collections, sorted appropriately to allow constant-time access to the best prices. Each order is also referenced in an unordered map keyed by ID for O(1) lookup.
+            </p>
+
+            <p>
+                This structure achieves impressive performance characteristics: O(log N) for adding the first order at a limit and O(1) for subsequent orders at the same limit, O(1) for cancellations, and O(1) for accessing the best bids and offers. N represents the number of price levels, which is typically much smaller than the total number of orders in the system.
+            </p>
+
+            <pre><code>// Key class structures in simplified form:
 
 class Order {
 public:
     using OrderID = std::uint64_t;
-    
-    Order(OrderID id, Side side, OrderType type, 
-          const std::string& symbol, double price, 
+
+    Order(OrderID id, Side side, OrderType type,
+          const std::string& symbol, double price,
           double quantity, double stopPrice = 0.0);
-          
+
     // Getters, setters, and thread-safe operations
     OrderID getID() const;
     Side getSide() const;
     double getPrice() const;
     double getQuantity() const;
     // ...with atomic operations for thread safety
-    
+
 private:
     OrderID m_id;
     Side m_side;
@@ -129,156 +150,153 @@ private:
     std::string m_symbol;
     double m_price;
     double m_quantity;
-    std::atomic<double> m_filledQtyAtomic;
-    std::atomic<bool> m_isActiveAtomic;
+    std::atomic&lt;double&gt; m_filledQtyAtomic; // Use &lt; for <
+    std::atomic&lt;bool&gt; m_isActiveAtomic;   // Use &lt; for <
     // Other fields...
 };
 
 class Limit {
 public:
-    using OrderPtr = std::shared_ptr<Order>;
-    
+    using OrderPtr = std::shared_ptr&lt;Order&gt;; // Use &lt; for <
+
     explicit Limit(double price);
-    
+
     void addOrder(OrderPtr order);
     void removeOrder(OrderPtr order);
     double getPrice() const;
     double getTotalVolume() const;
-    
+
 private:
     double m_price;
-    std::atomic<double> m_totalVolumeAtomic;
+    std::atomic&lt;double&gt; m_totalVolumeAtomic; // Use &lt; for <
     mutable std::mutex m_ordersMutex;
-    std::list<OrderPtr> m_orders;  // FIFO queue of orders
+    std::list&lt;OrderPtr&gt; m_orders;  // FIFO queue of orders // Use &lt; for <
 };
 
 class OrderBook {
 public:
-    using OrderPtr = std::shared_ptr<Order>;
+    using OrderPtr = std::shared_ptr&lt;Order&gt;; // Use &lt; for <
     using LimitPtr = Limit*;
-    
+
     explicit OrderBook(const std::string& symbol);
-    
+
     bool addOrder(OrderPtr order, ...);
     bool cancelOrder(Order::OrderID orderId);
     bool matchOrder(OrderPtr order, ...);
     double getBestBid() const;
     double getBestAsk() const;
-    
+
 private:
     std::string m_symbol;
-    std::map<double, LimitPtr, std::greater<double>> m_bids; // High to low
-    std::map<double, LimitPtr> m_asks;                       // Low to high
-    std::unordered_map<Order::OrderID, OrderPtr> m_orders;   // Fast lookup
+    std::map&lt;double, LimitPtr, std::greater&lt;double&gt;&gt; m_bids; // High to low // Use &lt; for <
+    std::map&lt;double, LimitPtr&gt; m_asks;                       // Low to high // Use &lt; for <
+    std::unordered_map&lt;Order::OrderID, OrderPtr&gt; m_orders;   // Fast lookup // Use &lt; for <
 };
-        </pre>
+            </code></pre>
 
-        <h2>Multi-threading Architecture: The Heart of Pegasus</h2>
-        
-        <p>
-            What truly distinguishes Pegasus is its approach to parallel processing through multiple threading strategies. In modern markets, the ability to process orders across different symbols simultaneously is crucial for performance. I implemented three distinct multi-threading approaches, each with its own characteristics and use cases.
-        </p>
-        
-        <h3>Thread-per-Symbol Approach</h3>
-        
-        <p>
-            The first approach, implemented through the OrderBookManager class, assigns a dedicated thread to each trading symbol. This creates true parallelism, as each symbol operates independently without contention from others. When an order arrives, it's routed to the appropriate symbol's thread for processing.
-        </p>
-        
-        <p>
-            This approach shines in environments with many active symbols and high order volumes across those symbols. The isolation between symbols eliminates lock contention and allows each order book to operate at maximum efficiency. The trade-off is resource usage - with many symbols, this approach can consume significant thread resources, but for high-frequency trading systems focusing on a manageable set of symbols, this provides optimal performance.
-        </p>
-        
-        <h3>Thread Pool Implementation</h3>
-        
-        <p>
-            The thread pool approach takes a more resource-efficient stance. Rather than dedicating a thread to each symbol, it maintains a fixed pool of worker threads that process orders from any symbol. Orders are placed in a shared queue and distributed among available threads.
-        </p>
-        
-        <p>
-            This implementation is particularly valuable for systems that need to handle a large number of symbols with varying activity levels. The thread count can be tuned to match the hardware capabilities and expected workload, making more efficient use of system resources. The thread pool dynamically balances work across the available threads, ensuring that processing power is directed where needed.
-        </p>
-        
-        <p>
-            The implementation uses condition variables and mutexes to synchronize worker threads, with careful attention to avoiding deadlocks and minimizing contention. This approach provides a good balance between parallelism and resource efficiency, making it suitable for a wide range of deployment scenarios.
-        </p>
-        
-        <h3>Basic Multi-threading</h3>
-        
-        <p>
-            The third approach takes a more direct path to thread management. It creates threads on demand for processing orders, using a simpler implementation model. While less sophisticated than the other approaches, this implementation provides a good balance of performance and complexity for systems with moderate workloads or limited concurrent symbol activity.
-        </p>
-        
-        <p>
-            This approach was included not only as a fallback option but also as a baseline for performance comparison. In testing, it provided insights into the overhead introduced by the more complex threading models and helped identify optimization opportunities.
-        </p>
-        
-        <h2>Thread Safety Through Atomic Operations</h2>
-        
-        <p>
-            Ensuring thread safety in a high-performance trading system requires careful consideration to avoid excessive locking, which can introduce latency. Pegasus uses atomic operations for critical shared data instead of traditional locks where possible.
-        </p>
-        
-        <p>
-            For example, order ID generation, filled quantities, and other shared counters use std::atomic for thread safety without the overhead of mutex locks. This approach significantly reduces contention and improves overall system throughput, particularly under high load conditions.
-        </p>
-        
-        <p>
-            In cases where more complex synchronization is required, fine-grained locking with std::mutex is employed to minimize the critical section size and duration. This balance between safety and performance is crucial for a trading system where both correctness and speed are non-negotiable requirements.
-        </p>
-        
-        <h2>Performance Optimization Techniques</h2>
-        
-        <p>
-            Beyond the core architecture, Pegasus incorporates several key optimizations to maximize performance:
-        </p>
-        
-        <p>
-            <strong>Memory Management:</strong> The system uses smart pointers (std::shared_ptr) to manage memory, ensuring safety while minimizing overhead. Critical data structures are carefully designed to reduce allocation pressure during high-volume periods.
-        </p>
-        
-        <p>
-            <strong>Cache Locality:</strong> Data structures are designed with CPU cache efficiency in mind. Related data is kept together in memory, and access patterns are optimized to maximize cache hits. This significantly improves performance on modern CPU architectures where memory access latency can be a major bottleneck.
-        </p>
-        
-        <p>
-            <strong>Lock Contention Reduction:</strong> Beyond atomic operations, the system is designed to minimize shared state between threads. Each component maintains its own state where possible, reducing the need for synchronization. When synchronization is necessary, fine-grained locking is used to minimize contention.
-        </p>
-        
-        <p>
-            <strong>Efficient Data Structures:</strong> Each data structure in the system was chosen with specific performance characteristics in mind. The use of ordered maps for price levels and unordered maps for ID lookups balances the need for fast insertion, deletion, and retrieval operations, maintaining logarithmic or constant-time complexity for critical operations.
-        </p>
-        
-        <h2>ETH/USD Simulation Environment</h2>
-        
-        <p>
-            To validate the system under realistic conditions, Pegasus includes a simulation environment for an ETH/USD cryptocurrency order book. This simulation generates realistic order flows based on statistical models of market behavior, allowing for performance testing and optimization under conditions that closely mirror real-world trading.
-        </p>
-        
-        <p>
-            The simulation can be configured to adjust order rates, market volatility, and other parameters to test the system under various scenarios. It also captures detailed performance metrics, allowing for precise analysis of system behavior under different conditions and configurations.
-        </p>
-        
-        <p>
-            This testing environment proved invaluable during development, revealing bottlenecks and optimization opportunities that wouldn't have been apparent with synthetic benchmarks alone. It also serves as a demonstration of the system's capabilities and a platform for ongoing refinement.
-        </p>
-        
-        <h2>Conclusion and Future Directions</h2>
-        
-        <p>
-            Pegasus represents a sophisticated approach to building high-performance trading systems with a focus on parallelism and efficiency. The multi-threaded design allows it to scale with modern multi-core architectures, while the carefully optimized data structures ensure optimal performance for critical operations.
-        </p>
-        
-        <p>
-            Future development will focus on extending the system with additional order types, improved monitoring and telemetry, and integration with market data feeds. The modular design facilitates these extensions without compromising the core performance characteristics that make Pegasus valuable for high-frequency trading applications.
-        </p>
-        
-        <div class="footer">
+            <h2>Multi-threading Architecture: The Heart of Pegasus</h2>
+
             <p>
-                For more information, check out the <a href="https://github.com/gabrielmeleiro1/Pegasus" target="_blank">Pegasus GitHub repository</a>.
+                What truly distinguishes Pegasus is its approach to parallel processing through multiple threading strategies. In modern markets, the ability to process orders across different symbols simultaneously is crucial for performance. I implemented three distinct multi-threading approaches, each with its own characteristics and use cases.
             </p>
-            <p>Last updated: March 28, 2025</p>
-        </div>
-    </div>
-</body>
+
+            <h3>Thread-per-Symbol Approach</h3>
+
+            <p>
+                The first approach, implemented through the <code>OrderBookManager</code> class, assigns a dedicated thread to each trading symbol. This creates true parallelism, as each symbol operates independently without contention from others. When an order arrives, it's routed to the appropriate symbol's thread for processing.
+            </p>
+
+            <p>
+                This approach shines in environments with many active symbols and high order volumes across those symbols. The isolation between symbols eliminates lock contention and allows each order book to operate at maximum efficiency. The trade-off is resource usage - with many symbols, this approach can consume significant thread resources, but for high-frequency trading systems focusing on a manageable set of symbols, this provides optimal performance.
+            </p>
+
+            <h3>Thread Pool Implementation</h3>
+
+            <p>
+                The thread pool approach takes a more resource-efficient stance. Rather than dedicating a thread to each symbol, it maintains a fixed pool of worker threads that process orders from any symbol. Orders are placed in a shared queue and distributed among available threads.
+            </p>
+
+            <p>
+                This implementation is particularly valuable for systems that need to handle a large number of symbols with varying activity levels. The thread count can be tuned to match the hardware capabilities and expected workload, making more efficient use of system resources. The thread pool dynamically balances work across the available threads, ensuring that processing power is directed where needed.
+            </p>
+
+            <p>
+                The implementation uses condition variables and mutexes to synchronize worker threads, with careful attention to avoiding deadlocks and minimizing contention. This approach provides a good balance between parallelism and resource efficiency, making it suitable for a wide range of deployment scenarios.
+            </p>
+
+            <h3>Basic Multi-threading</h3>
+
+            <p>
+                The third approach takes a more direct path to thread management. It creates threads on demand for processing orders, using a simpler implementation model. While less sophisticated than the other approaches, this implementation provides a good balance of performance and complexity for systems with moderate workloads or limited concurrent symbol activity.
+            </p>
+
+            <p>
+                This approach was included not only as a fallback option but also as a baseline for performance comparison. In testing, it provided insights into the overhead introduced by the more complex threading models and helped identify optimization opportunities.
+            </p>
+
+            <h2>Thread Safety Through Atomic Operations</h2>
+
+            <p>
+                Ensuring thread safety in a high-performance trading system requires careful consideration to avoid excessive locking, which can introduce latency. Pegasus uses atomic operations for critical shared data instead of traditional locks where possible.
+            </p>
+
+            <p>
+                For example, order ID generation, filled quantities, and other shared counters use <code>std::atomic</code> for thread safety without the overhead of mutex locks. This approach significantly reduces contention and improves overall system throughput, particularly under high load conditions.
+            </p>
+
+            <p>
+                In cases where more complex synchronization is required, fine-grained locking with <code>std::mutex</code> is employed to minimize the critical section size and duration. This balance between safety and performance is crucial for a trading system where both correctness and speed are non-negotiable requirements.
+            </p>
+
+            <h2>Performance Optimization Techniques</h2>
+
+            <p>
+                Beyond the core architecture, Pegasus incorporates several key optimizations to maximize performance:
+            </p>
+
+            <p>
+                <strong>Memory Management:</strong> The system uses smart pointers (<code>std::shared_ptr</code>) to manage memory, ensuring safety while minimizing overhead. Critical data structures are carefully designed to reduce allocation pressure during high-volume periods.
+            </p>
+
+            <p>
+                <strong>Cache Locality:</strong> Data structures are designed with CPU cache efficiency in mind. Related data is kept together in memory, and access patterns are optimized to maximize cache hits. This significantly improves performance on modern CPU architectures where memory access latency can be a major bottleneck.
+            </p>
+
+            <p>
+                <strong>Lock Contention Reduction:</strong> Beyond atomic operations, the system is designed to minimize shared state between threads. Each component maintains its own state where possible, reducing the need for synchronization. When synchronization is necessary, fine-grained locking is used to minimize contention.
+            </p>
+
+            <p>
+                <strong>Efficient Data Structures:</strong> Each data structure in the system was chosen with specific performance characteristics in mind. The use of ordered maps for price levels and unordered maps for ID lookups balances the need for fast insertion, deletion, and retrieval operations, maintaining logarithmic or constant-time complexity for critical operations.
+            </p>
+
+            <h2>ETH/USD Simulation Environment</h2>
+
+            <p>
+                To validate the system under realistic conditions, Pegasus includes a simulation environment for an ETH/USD cryptocurrency order book. This simulation generates realistic order flows based on statistical models of market behavior, allowing for performance testing and optimization under conditions that closely mirror real-world trading.
+            </p>
+
+            <p>
+                The simulation can be configured to adjust order rates, market volatility, and other parameters to test the system under various scenarios. It also captures detailed performance metrics, allowing for precise analysis of system behavior under different conditions and configurations.
+            </p>
+
+            <p>
+                This testing environment proved invaluable during development, revealing bottlenecks and optimization opportunities that wouldn't have been apparent with synthetic benchmarks alone. It also serves as a demonstration of the system's capabilities and a platform for ongoing refinement.
+            </p>
+
+            <h2>Conclusion and Future Directions</h2>
+
+            <p>
+                Pegasus represents a sophisticated approach to building high-performance trading systems with a focus on parallelism and efficiency. The multi-threaded design allows it to scale with modern multi-core architectures, while the carefully optimized data structures ensure optimal performance for critical operations.
+            </p>
+
+            <p>
+                Future development will focus on extending the system with additional order types, improved monitoring and telemetry, and integration with market data feeds. The modular design facilitates these extensions without compromising the core performance characteristics that make Pegasus valuable for high-frequency trading applications.
+            </p>
+
+            <div class="project-footer"> <p>
+                    For more information, check out the <a href="https://github.com/gabrielmeleiro1/Pegasus" target="_blank" rel="noopener noreferrer">Pegasus GitHub repository</a>.
+                </p>
+                <p>Last updated: March 28, 2025</p> </div>
+        </div></div> </body>
 </html>

@@ -1,0 +1,230 @@
+/* --- Gruvbox Dark Theme Variables (Community Medium Contrast) --- */
+:root {
+    --bg0-hard:     #1d2021; /* Darkest Background */
+    --bg0:          #282828; /* Default Background */
+    --bg1:          #3c3836; /* Lighter Background */
+    --bg-visual:    #504945; /* Visual Selection Background */
+    --fg0:          #fbf1c7; /* Brightest Foreground */
+    --fg1:          #ebdbb2; /* Default Foreground */
+    --fg2:          #d5c4a1; /* Darker Foreground */
+    --fg-muted:     #928374; /* Muted Foreground / Comments */
+
+    --red-bright:   #fb4934;
+    --green-bright: #b8bb26;
+    --yellow-bright:#fabd2f;
+    --blue-bright:  #83a598;
+    --purple-bright:#d3869b;
+    --aqua-bright:  #8ec07c;
+    --orange-bright:#fe8019;
+
+    --red-dim:      #cc241d;
+    --green-dim:    #98971a;
+    --yellow-dim:   #d79921;
+    --blue-dim:     #458588;
+    --purple-dim:   #b16286;
+    --aqua-dim:     #689d6a;
+    --orange-dim:   #d65d0e;
+
+    --border-color: var(--bg1);
+    --card-bg:      var(--bg0-hard);
+    --link-color:   var(--aqua-bright);
+    --link-hover:   var(--yellow-bright);
+    --heading-color:var(--fg0);
+    --text-color:   var(--fg1);
+    --subtitle-color: var(--aqua-dim);
+}
+
+/* --- Base & Reset --- */
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+html {
+    font-size: 16px; /* Base font size */
+}
+
+body {
+    font-family: 'Fira Code', Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
+    background-color: var(--bg0);
+    color: var(--text-color);
+    line-height: 1.7; /* Increased line-height for readability */
+    padding: 40px 20px;
+    display: flex;
+    justify-content: center; /* Center the container */
+}
+
+.container {
+    max-width: 900px; /* Slightly wider */
+    width: 100%;
+}
+
+/* --- Typography & Links --- */
+h1, h2, h3 {
+    color: var(--heading-color);
+    margin-bottom: 0.75em;
+    font-weight: 500; /* Slightly less bold for Fira Code */
+}
+
+h1 {
+    font-size: 2.2rem; /* Slightly smaller H1 */
+    margin-bottom: 5px; /* Closer to subtitle */
+    color: var(--green-bright); /* Make name stand out */
+}
+
+h2 {
+    font-size: 1.8rem;
+    margin-top: 40px; /* Space before Projects */
+    border-bottom: 1px solid var(--border-color); /* Terminal-like separator */
+    padding-bottom: 10px;
+    color: var(--yellow-bright);
+}
+
+h3 {
+    font-size: 1.25rem;
+    color: var(--blue-bright);
+}
+
+p {
+    margin-bottom: 1em;
+}
+
+a {
+    color: var(--link-color);
+    text-decoration: none;
+    transition: color 0.2s ease;
+}
+
+a:hover,
+a:focus {
+    color: var(--link-hover);
+    text-decoration: underline; /* Underline on hover for clarity */
+    outline: none;
+}
+
+/* --- Header --- */
+header {
+    margin-bottom: 50px;
+    text-align: left; /* Override default/previous center */
+}
+
+header .subtitle {
+    font-size: 1.1rem;
+    color: var(--subtitle-color);
+    font-weight: 400;
+}
+
+/* Add pseudo-elements for terminal prompt style */
+header h1::before {
+    /* content: "$ "; */ /* Uncomment if you want a bash-like prompt */
+    /* color: var(--aqua-bright); */
+}
+header .subtitle::before {
+   /* content: "// "; */ /* Uncomment for comment style */
+   /* color: var(--fg-muted); */
+}
+
+
+/* --- Project Grid & Cards --- */
+.project-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 30px;
+    margin-top: 30px;
+}
+
+.project-card {
+    background-color: var(--card-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 4px; /* Slightly sharper corners */
+    overflow: hidden;
+    transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+    display: flex; /* Use flexbox for vertical layout */
+    flex-direction: column;
+}
+
+.project-card:hover {
+    transform: translateY(-4px);
+    border-color: var(--aqua-bright);
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+}
+
+.project-card img {
+    width: 100%;
+    height: 180px; /* Slightly taller image */
+    object-fit: cover;
+    border-bottom: 1px solid var(--border-color);
+    display: block; /* Remove extra space below image */
+}
+
+.project-card.placeholder img {
+    /* Style for cards without images, if needed */
+     display: none; /* Hide img if no src */
+}
+.project-card.placeholder {
+    /* Optional: Style placeholder cards differently */
+     background-color: var(--bg1); /* Slightly different bg */
+     justify-content: center; /* Center content vertically if no image */
+}
+
+
+.project-info {
+    padding: 20px;
+    flex-grow: 1; /* Allow info section to grow */
+}
+
+.project-info h3 {
+    margin-top: 0;
+    margin-bottom: 10px;
+}
+
+.project-info h3 a {
+    color: var(--blue-bright); /* Match h3 color */
+}
+.project-info h3 a:hover {
+    color: var(--link-hover);
+}
+
+.project-info p {
+    color: var(--fg2); /* Slightly dimmer text for description */
+    font-size: 0.95rem;
+    margin-bottom: 0; /* Remove bottom margin if it's the last element */
+}
+
+/* --- Footer --- */
+footer {
+    margin-top: 60px;
+    padding-top: 20px;
+    text-align: center;
+    color: var(--fg-muted);
+    font-size: 0.9rem;
+    border-top: 1px solid var(--border-color);
+}
+
+footer a {
+    color: var(--aqua-dim); /* Muted link color in footer */
+}
+
+footer a:hover {
+    color: var(--link-hover);
+}
+
+/* --- Responsive Adjustments --- */
+@media (max-width: 600px) {
+    body {
+        padding: 20px 15px;
+    }
+    h1 {
+        font-size: 1.8rem;
+    }
+    h2 {
+        font-size: 1.5rem;
+    }
+    .project-grid {
+        grid-template-columns: 1fr; /* Stack cards on small screens */
+        gap: 20px;
+    }
+}
