@@ -1,0 +1,61 @@
+/* Custom Styles for The Threshold */
+
+/* Smooth transitions */
+* {
+    transition: background-color 0.3s ease, border-color 0.3s ease;
+}
+
+/* Value card hover effects */
+.value-card:hover:not(:disabled) {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* Choice button animations */
+.choice-button {
+    transition: all 0.2s ease;
+}
+
+.choice-button:hover {
+    transform: translateX(5px);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Fade-in animation for content */
+#game-content {
+    animation: fadeIn 0.5s ease-in;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Prose styling for resilience plan */
+.prose ul {
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+}
+
+.prose li {
+    margin-top: 0.5rem;
+    margin-bottom: 0.5rem;
+}
+
+/* Responsive adjustments */
+@media (max-width: 640px) {
+    .container {
+        padding-left: 1rem;
+        padding-right: 1rem;
+    }
+    
+    #game-content {
+        padding: 1rem;
+    }
+}
