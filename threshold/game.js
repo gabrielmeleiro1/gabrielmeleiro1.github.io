@@ -465,47 +465,214 @@ function triggerUnexpectedEvent() {
     const events = [
         {
             text: "You receive an unexpected call from a friend you haven't spoken to in a while. They're checking in on you.",
-            effects: { stressLevel: -5, resilienceScore: 5, supports: "Unexpected connection" }
+            type: "positive",
+            interactive: false,
+            effects: { stressLevel: -5, resilienceScore: 5, supports: "Unexpected connection" },
+            lesson: "Life brings unexpected support when we need it. These moments remind us we're not alone."
         },
         {
             text: "You stumble upon an inspiring quote that resonates with your current situation.",
-            effects: { resilienceScore: 5, sagacity: "Inspiration found in unexpected places" }
+            type: "positive",
+            interactive: false,
+            effects: { resilienceScore: 5, sagacity: "Inspiration found in unexpected places" },
+            lesson: "Wisdom can come from anywhere. Stay open to learning from unexpected sources."
         },
         {
-            text: "A small setback occurs—maybe you miss a bus or forget something important. How do you respond?",
-            effects: { stressLevel: 5 }
+            text: "A small setback occurs—maybe you miss a bus or forget something important.",
+            type: "challenge",
+            interactive: true,
+            question: "How do you respond?",
+            choices: [
+                {
+                    text: "Panic and blame yourself for being careless.",
+                    effects: { stressLevel: 10, resilienceScore: -3 },
+                    circle: "concern",
+                    description: "Self-blame increases stress and doesn't solve the problem."
+                },
+                {
+                    text: "Take a deep breath, assess what you can control, and find a solution.",
+                    effects: { stressLevel: -3, resilienceScore: 8, strategies: "Calm problem-solving" },
+                    circle: "influence",
+                    description: "You focus on what you can control and take action."
+                },
+                {
+                    text: "Accept it happened, adjust your plans, and move forward.",
+                    effects: { stressLevel: -5, resilienceScore: 6, sagacity: "Acceptance and adaptability" },
+                    circle: "influence",
+                    description: "You practice acceptance and flexibility."
+                }
+            ]
+        },
+        {
+            text: "You notice yourself feeling anxious about something you can't control—maybe the weather, someone else's opinion, or a future event.",
+            type: "learning",
+            interactive: true,
+            question: "What do you do?",
+            choices: [
+                {
+                    text: "Keep worrying. It's important to be prepared for everything.",
+                    effects: { stressLevel: 12, resilienceScore: -5 },
+                    circle: "concern",
+                    description: "Worrying about things outside your control drains energy."
+                },
+                {
+                    text: "Recognize this is in your Circle of Concern, shift focus to what you can influence.",
+                    effects: { stressLevel: -8, resilienceScore: 10, strategies: "Circle of Influence awareness" },
+                    circle: "influence",
+                    description: "You practice identifying and focusing on your Circle of Influence."
+                }
+            ]
+        },
+        {
+            text: "You catch yourself thinking 'I have to be perfect' or 'I should do everything myself.'",
+            type: "learning",
+            interactive: true,
+            question: "How do you respond to this thought?",
+            choices: [
+                {
+                    text: "That's right—I need to maintain high standards.",
+                    effects: { stressLevel: 10, resilienceScore: -5 },
+                    driver: "Be Perfect",
+                    description: "Your 'Be Perfect' driver is active, increasing stress."
+                },
+                {
+                    text: "Remind yourself: 'It's okay to make mistakes' and 'I can ask for help.'",
+                    effects: { stressLevel: -8, resilienceScore: 12, allower: "It is okay to make mistakes" },
+                    description: "You activate an 'Allower' thought, reducing stress and building resilience."
+                }
+            ]
         }
     ];
     
     const event = events[Math.floor(Math.random() * events.length)];
     
     let html = `
-        <div class="bg-yellow-50 border-l-4 border-yellow-500 p-4 mb-4">
-            <p class="font-semibold text-yellow-800 mb-2">Unexpected Event</p>
-            <p class="text-yellow-700">${event.text}</p>
-        </div>
+        <div class="bg-yellow-50 border-l-4 border-yellow-500 p-4 mb-4 rounded-lg">
+            <p class="font-semibold text-yellow-800 mb-2">💡 Unexpected Event</p>
+            <p class="text-yellow-700 mb-2">${event.text}</p>
     `;
     
-    gameContent.innerHTML = html + gameContent.innerHTML;
+    if (event.interactive) {
+        html += `
+            <p class="font-semibold text-yellow-800 mt-3 mb-3">${event.question}</p>
+            <div class="space-y-2 mt-3">
+        `;
+        
+        event.choices.forEach((choice, index) => {
+            html += `
+                <button 
+                    class="unexpected-choice w-full p-3 text-left rounded-lg border-2 border-yellow-300 hover:border-yellow-500 hover:bg-yellow-100 transition-all"
+                    data-choice-index="${index}"
+                >
+                    <div class="font-medium text-yellow-900">${choice.text}</div>
+                </button>
+            `;
+        });
+        
+        html += `</div>`;
+    } else {
+        html += `
+            <p class="text-sm text-yellow-600 italic mt-2">${event.lesson}</p>
+            <button 
+                id="continue-unexpected" 
+                class="mt-4 bg-yellow-600 hover:bg-yellow-700 text-white font-bold py-2 px-6 rounded-lg transition-colors"
+            >
+                Continue
+            </button>
+        `;
+    }
+    
+    html += `</div>`;
+    
+    gameContent.innerHTML = html;
+    
+    // Add event listeners
+    if (event.interactive) {
+        document.querySelectorAll('.unexpected-choice').forEach(button => {
+            button.addEventListener('click', function() {
+                const choiceIndex = parseInt(this.dataset.choiceIndex);
+                handleUnexpectedChoice(event, choiceIndex);
+            });
+        });
+    } else {
+        // Apply effects for non-interactive events
+        if (event.effects.stressLevel) {
+            gameState.stressLevel = Math.max(0, Math.min(100, gameState.stressLevel + event.effects.stressLevel));
+        }
+        if (event.effects.resilienceScore) {
+            gameState.resilienceScore = Math.max(0, Math.min(100, gameState.resilienceScore + event.effects.resilienceScore));
+        }
+        if (event.effects.supports) {
+            gameState.inventory.supports.push(event.effects.supports);
+        }
+        if (event.effects.sagacity) {
+            gameState.inventory.sagacity.push(event.effects.sagacity);
+        }
+        
+        document.getElementById('continue-unexpected')?.addEventListener('click', function() {
+            gameState.scenariosCompleted++;
+            renderNextScenario();
+            updateUI();
+        });
+        
+        updateUI();
+    }
+}
+
+// Handle unexpected event choice
+function handleUnexpectedChoice(event, choiceIndex) {
+    const choice = event.choices[choiceIndex];
     
     // Apply effects
-    if (event.effects.stressLevel) {
-        gameState.stressLevel = Math.max(0, Math.min(100, gameState.stressLevel + event.effects.stressLevel));
+    if (choice.effects.stressLevel) {
+        gameState.stressLevel = Math.max(0, Math.min(100, gameState.stressLevel + choice.effects.stressLevel));
     }
-    if (event.effects.resilienceScore) {
-        gameState.resilienceScore = Math.max(0, Math.min(100, gameState.resilienceScore + event.effects.resilienceScore));
+    if (choice.effects.resilienceScore) {
+        gameState.resilienceScore = Math.max(0, Math.min(100, gameState.resilienceScore + choice.effects.resilienceScore));
     }
-    if (event.effects.supports) {
-        gameState.inventory.supports.push(event.effects.supports);
+    if (choice.effects.strategies) {
+        gameState.inventory.strategies.push(choice.effects.strategies);
     }
-    if (event.effects.sagacity) {
-        gameState.inventory.sagacity.push(event.effects.sagacity);
+    if (choice.effects.sagacity) {
+        gameState.inventory.sagacity.push(choice.effects.sagacity);
     }
+    if (choice.allower) {
+        // Track that an allower was activated
+        if (!gameState.inventory.sagacity.includes(choice.allower)) {
+            gameState.inventory.sagacity.push(choice.allower);
+        }
+    }
+    
+    // Show feedback
+    let feedback = `
+        <div class="bg-blue-50 border-l-4 border-blue-500 p-4 mb-4 rounded-lg">
+            <p class="font-semibold text-blue-800 mb-2">Your Response</p>
+            <p class="text-blue-700">${choice.description}</p>
+    `;
+    
+    if (choice.circle === "influence") {
+        feedback += `<p class="text-sm text-green-600 mt-2">✓ This was within your Circle of Influence</p>`;
+    } else if (choice.circle === "concern") {
+        feedback += `<p class="text-sm text-red-600 mt-2">⚠ This focused on your Circle of Concern</p>`;
+    }
+    
+    if (choice.driver) {
+        feedback += `<p class="text-sm text-orange-600 mt-2">⚠ Your "${choice.driver}" driver is active</p>`;
+    }
+    
+    if (choice.allower) {
+        feedback += `<p class="text-sm text-green-600 mt-2">✓ You activated: "${choice.allower}"</p>`;
+    }
+    
+    feedback += `</div>`;
+    
+    gameContent.innerHTML = feedback;
     
     setTimeout(() => {
         gameState.scenariosCompleted++;
         renderNextScenario();
-    }, 6000);
+        updateUI();
+    }, 3000);
     
     updateUI();
 }
