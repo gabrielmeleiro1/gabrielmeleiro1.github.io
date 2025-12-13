@@ -1,24 +1,97 @@
-/* Custom Styles for The Threshold */
+/* Custom Styles for The Threshold - Gruvbox Hard Theme */
+
+/* Gruvbox Hard Color Palette */
+:root {
+    --gruvbox-bg0-h: #1d2021;
+    --gruvbox-bg0: #282828;
+    --gruvbox-bg1: #3c3836;
+    --gruvbox-bg2: #504945;
+    --gruvbox-fg0: #fbf1c7;
+    --gruvbox-fg1: #ebdbb2;
+    --gruvbox-fg2: #d5c4a1;
+    --gruvbox-fg3: #bdae93;
+    --gruvbox-red: #cc241d;
+    --gruvbox-green: #98971a;
+    --gruvbox-yellow: #d79921;
+    --gruvbox-blue: #458588;
+    --gruvbox-purple: #b16286;
+    --gruvbox-aqua: #689d6a;
+    --gruvbox-orange: #d65d0e;
+}
+
+/* Gruvbox utility classes */
+.gruvbox-card {
+    background-color: var(--gruvbox-bg0);
+    border: 1px solid var(--gruvbox-bg1);
+}
+
+.gruvbox-fg1 {
+    color: var(--gruvbox-fg1);
+}
+
+.gruvbox-fg2 {
+    color: var(--gruvbox-fg2);
+}
+
+.gruvbox-fg3 {
+    color: var(--gruvbox-fg3);
+}
+
+.gruvbox-blue {
+    color: var(--gruvbox-blue);
+}
+
+.gruvbox-green {
+    color: var(--gruvbox-green);
+}
+
+.gruvbox-yellow {
+    color: var(--gruvbox-yellow);
+}
+
+.gruvbox-red {
+    color: var(--gruvbox-red);
+}
+
+.gruvbox-orange {
+    color: var(--gruvbox-orange);
+}
+
+.gruvbox-button {
+    background-color: var(--gruvbox-blue);
+    color: var(--gruvbox-fg0);
+}
+
+.gruvbox-button:hover {
+    background-color: var(--gruvbox-aqua);
+}
 
 /* Smooth transitions */
 * {
-    transition: background-color 0.3s ease, border-color 0.3s ease;
+    transition: background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease;
 }
 
 /* Value card hover effects */
 .value-card:hover:not(:disabled) {
     transform: translateY(-2px);
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+    border-color: var(--gruvbox-blue) !important;
 }
 
 /* Choice button animations */
 .choice-button {
     transition: all 0.2s ease;
+    background-color: var(--gruvbox-bg1);
+    border-color: var(--gruvbox-bg2);
+    color: var(--gruvbox-fg1);
 }
 
 .choice-button:hover {
     transform: translateX(5px);
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+    background-color: var(--gruvbox-bg2);
+    border-color: var(--gruvbox-blue);
+    color: var(--gruvbox-fg0);
 }
 
 /* Fade-in animation for content */
@@ -46,6 +119,42 @@
 .prose li {
     margin-top: 0.5rem;
     margin-bottom: 0.5rem;
+}
+
+/* Body styling */
+body {
+    background-color: var(--gruvbox-bg0-h) !important;
+    min-height: 100vh;
+}
+
+/* Centering and sizing */
+#start-screen {
+    min-height: 80vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Link styling */
+a {
+    color: var(--gruvbox-blue);
+    text-decoration: underline;
+}
+
+a:hover {
+    color: var(--gruvbox-aqua);
+}
+
+/* Input styling */
+textarea, input {
+    color: var(--gruvbox-fg1);
+    background-color: var(--gruvbox-bg0);
+    border-color: var(--gruvbox-bg2);
+}
+
+textarea:focus, input:focus {
+    outline: none;
+    border-color: var(--gruvbox-blue);
 }
 
 /* Responsive adjustments */

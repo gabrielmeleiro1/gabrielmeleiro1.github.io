@@ -41,7 +41,7 @@ const scenarios = [
                 description: "You focus on what you can't control, which drains your energy."
             },
             {
-                text: "Read a <a href='https://johanneshaushofer.com/Johannes_Haushofer_CV_of_Failures.pdf' target='_blank' class='text-blue-600 hover:text-blue-800 underline'>CV of Failures</a> to gain perspective. Many successful people faced rejections too.",
+                text: "Read a <a href='https://johanneshaushofer.com/Johannes_Haushofer_CV_of_Failures.pdf' target='_blank' class='gruvbox-blue hover:gruvbox-aqua underline'>CV of Failures</a> to gain perspective. Many successful people faced rejections too.",
                 effects: { stressLevel: -5, resilienceScore: 10, sagacity: "Failure is part of the journey" },
                 mindset: "Growth",
                 circle: "influence",
@@ -256,12 +256,12 @@ function renderCharacterCreation() {
     const maxSelections = 3;
     
     let html = `
-        <h2 class="text-3xl font-bold mb-4 text-gray-800">Phase 1: The Mirror</h2>
-        <p class="text-lg text-gray-600 mb-6">
+        <h2 class="text-3xl font-bold mb-4 gruvbox-fg1">Phase 1: The Mirror</h2>
+        <p class="text-lg gruvbox-fg2 mb-6">
             Choose your core values. These will guide your decisions throughout your journey.
             Select up to ${maxSelections} values that resonate with you.
         </p>
-        <p class="text-sm text-gray-500 mb-6">
+        <p class="text-sm gruvbox-fg3 mb-6">
             ${selectedCount} of ${maxSelections} selected
         </p>
         <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
@@ -274,16 +274,16 @@ function renderCharacterCreation() {
             <button 
                 class="value-card p-4 rounded-lg border-2 transition-all text-left ${
                     isSelected 
-                        ? 'border-blue-500 bg-blue-50' 
+                        ? 'border-[#458588] bg-[#3c3836] gruvbox-fg1' 
                         : disabled 
-                            ? 'border-gray-200 bg-gray-50 opacity-50 cursor-not-allowed' 
-                            : 'border-gray-300 hover:border-blue-300 hover:bg-gray-50'
+                            ? 'border-[#504945] bg-[#3c3836] opacity-50 cursor-not-allowed gruvbox-fg3' 
+                            : 'border-[#504945] bg-[#282828] hover:border-[#458588] hover:bg-[#3c3836] gruvbox-fg2'
                 }"
                 data-value-id="${value.id}"
                 ${disabled ? 'disabled' : ''}
             >
                 <div class="font-bold text-lg mb-1">${value.name}</div>
-                <div class="text-sm text-gray-600">${value.description}</div>
+                <div class="text-sm gruvbox-fg2">${value.description}</div>
             </button>
         `;
     });
@@ -294,7 +294,7 @@ function renderCharacterCreation() {
         html += `
             <button 
                 id="continue-button" 
-                class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-8 rounded-lg text-lg transition-colors"
+                class="gruvbox-button font-bold py-3 px-8 rounded-lg text-lg transition-colors"
             >
                 Continue to Your Journey
             </button>
@@ -346,19 +346,19 @@ function renderNextScenario() {
     
     const scenario = scenarios[gameState.scenariosCompleted];
     let html = `
-        <h2 class="text-3xl font-bold mb-4 text-gray-800">${scenario.title}</h2>
-        <p class="text-lg text-gray-600 mb-8 leading-relaxed">${scenario.description}</p>
+        <h2 class="text-3xl font-bold mb-4 gruvbox-fg1">${scenario.title}</h2>
+        <p class="text-lg gruvbox-fg2 mb-8 leading-relaxed">${scenario.description}</p>
         <div class="space-y-4">
     `;
     
     scenario.choices.forEach((choice, index) => {
         html += `
             <button 
-                class="choice-button w-full p-4 text-left rounded-lg border-2 border-gray-300 hover:border-blue-500 hover:bg-blue-50 transition-all"
+                class="choice-button w-full p-4 text-left rounded-lg border-2 transition-all"
                 data-choice-index="${index}"
             >
-                <div class="font-semibold mb-2">${choice.text}</div>
-                <div class="text-sm text-gray-500">${choice.description}</div>
+                <div class="font-semibold mb-2 gruvbox-fg1">${choice.text}</div>
+                <div class="text-sm gruvbox-fg3">${choice.description}</div>
             </button>
         `;
     });
@@ -436,23 +436,23 @@ function makeChoice(choiceIndex) {
 // Show Choice Feedback
 function showChoiceFeedback(choice) {
     let feedback = `
-        <div class="bg-blue-50 border-l-4 border-blue-500 p-4 mb-4">
-            <p class="font-semibold text-blue-800 mb-2">Your Choice</p>
-            <p class="text-blue-700">${choice.description}</p>
+        <div class="bg-[#3c3836] border-l-4 border-[#458588] p-4 mb-4 rounded-lg">
+            <p class="font-semibold gruvbox-fg1 mb-2">Your Choice</p>
+            <p class="gruvbox-fg2">${choice.description}</p>
     `;
     
     if (choice.circle === "influence") {
-        feedback += `<p class="text-sm text-blue-600 mt-2">✓ This action was within your Circle of Influence</p>`;
+        feedback += `<p class="text-sm gruvbox-green mt-2">✓ This action was within your Circle of Influence</p>`;
     } else {
-        feedback += `<p class="text-sm text-red-600 mt-2">⚠ This action focused on your Circle of Concern</p>`;
+        feedback += `<p class="text-sm gruvbox-red mt-2">⚠ This action focused on your Circle of Concern</p>`;
     }
     
     if (choice.driver) {
-        feedback += `<p class="text-sm text-orange-600 mt-2">⚠ Your "${choice.driver}" driver is active</p>`;
+        feedback += `<p class="text-sm gruvbox-orange mt-2">⚠ Your "${choice.driver}" driver is active</p>`;
     }
     
     if (choice.allower) {
-        feedback += `<p class="text-sm text-green-600 mt-2">✓ You unlocked: "${choice.allower}"</p>`;
+        feedback += `<p class="text-sm gruvbox-green mt-2">✓ You unlocked: "${choice.allower}"</p>`;
     }
     
     feedback += `</div>`;
@@ -547,24 +547,24 @@ function triggerUnexpectedEvent() {
     const event = events[Math.floor(Math.random() * events.length)];
     
     let html = `
-        <div class="bg-yellow-50 border-l-4 border-yellow-500 p-4 mb-4 rounded-lg">
-            <p class="font-semibold text-yellow-800 mb-2">💡 Unexpected Event</p>
-            <p class="text-yellow-700 mb-2">${event.text}</p>
+        <div class="bg-[#3c3836] border-l-4 border-[#d79921] p-4 mb-4 rounded-lg">
+            <p class="font-semibold gruvbox-yellow mb-2">💡 Unexpected Event</p>
+            <p class="gruvbox-fg2 mb-2">${event.text}</p>
     `;
     
     if (event.interactive) {
         html += `
-            <p class="font-semibold text-yellow-800 mt-3 mb-3">${event.question}</p>
+            <p class="font-semibold gruvbox-yellow mt-3 mb-3">${event.question}</p>
             <div class="space-y-2 mt-3">
         `;
         
         event.choices.forEach((choice, index) => {
             html += `
                 <button 
-                    class="unexpected-choice w-full p-3 text-left rounded-lg border-2 border-yellow-300 hover:border-yellow-500 hover:bg-yellow-100 transition-all"
+                    class="unexpected-choice w-full p-3 text-left rounded-lg border-2 border-[#504945] bg-[#282828] hover:border-[#d79921] hover:bg-[#3c3836] transition-all gruvbox-fg2"
                     data-choice-index="${index}"
                 >
-                    <div class="font-medium text-yellow-900">${choice.text}</div>
+                    <div class="font-medium gruvbox-fg1">${choice.text}</div>
                 </button>
             `;
         });
@@ -572,10 +572,10 @@ function triggerUnexpectedEvent() {
         html += `</div>`;
     } else {
         html += `
-            <p class="text-sm text-yellow-600 italic mt-2">${event.lesson}</p>
+            <p class="text-sm gruvbox-fg3 italic mt-2">${event.lesson}</p>
             <button 
                 id="continue-unexpected" 
-                class="mt-4 bg-yellow-600 hover:bg-yellow-700 text-white font-bold py-2 px-6 rounded-lg transition-colors"
+                class="mt-4 bg-[#d79921] hover:bg-[#d65d0e] gruvbox-fg0 font-bold py-2 px-6 rounded-lg transition-colors"
             >
                 Continue
             </button>
@@ -645,23 +645,23 @@ function handleUnexpectedChoice(event, choiceIndex) {
     
     // Show feedback
     let feedback = `
-        <div class="bg-blue-50 border-l-4 border-blue-500 p-4 mb-4 rounded-lg">
-            <p class="font-semibold text-blue-800 mb-2">Your Response</p>
-            <p class="text-blue-700">${choice.description}</p>
+        <div class="bg-[#3c3836] border-l-4 border-[#458588] p-4 mb-4 rounded-lg">
+            <p class="font-semibold gruvbox-fg1 mb-2">Your Response</p>
+            <p class="gruvbox-fg2">${choice.description}</p>
     `;
     
     if (choice.circle === "influence") {
-        feedback += `<p class="text-sm text-green-600 mt-2">✓ This was within your Circle of Influence</p>`;
+        feedback += `<p class="text-sm gruvbox-green mt-2">✓ This was within your Circle of Influence</p>`;
     } else if (choice.circle === "concern") {
-        feedback += `<p class="text-sm text-red-600 mt-2">⚠ This focused on your Circle of Concern</p>`;
+        feedback += `<p class="text-sm gruvbox-red mt-2">⚠ This focused on your Circle of Concern</p>`;
     }
     
     if (choice.driver) {
-        feedback += `<p class="text-sm text-orange-600 mt-2">⚠ Your "${choice.driver}" driver is active</p>`;
+        feedback += `<p class="text-sm gruvbox-orange mt-2">⚠ Your "${choice.driver}" driver is active</p>`;
     }
     
     if (choice.allower) {
-        feedback += `<p class="text-sm text-green-600 mt-2">✓ You activated: "${choice.allower}"</p>`;
+        feedback += `<p class="text-sm gruvbox-green mt-2">✓ You activated: "${choice.allower}"</p>`;
     }
     
     feedback += `</div>`;
@@ -685,60 +685,60 @@ function renderEndgame() {
     const resiliencePlan = generateResiliencePlan();
     
     let html = `
-        <h2 class="text-3xl font-bold mb-4 text-gray-800">Phase 3: The Reflection</h2>
-        <div class="bg-gradient-to-r from-blue-50 to-purple-50 rounded-lg p-6 mb-6">
+        <h2 class="text-3xl font-bold mb-4 gruvbox-fg1">Phase 3: The Reflection</h2>
+        <div class="gruvbox-card rounded-lg p-6 mb-6" style="background: linear-gradient(to right, #3c3836, #504945);">
             <div class="flex justify-between items-center mb-4">
-                <h3 class="text-2xl font-bold text-gray-800">Your Journey Summary</h3>
+                <h3 class="text-2xl font-bold gruvbox-fg1">Your Journey Summary</h3>
                 <button 
                     id="explain-summary-btn" 
-                    class="text-sm text-blue-600 hover:text-blue-800 underline"
+                    class="text-sm gruvbox-blue hover:gruvbox-aqua underline"
                 >
                     What do these mean?
                 </button>
             </div>
             <div class="grid grid-cols-2 gap-4 mb-6">
                 <div>
-                    <div class="text-sm text-gray-600">Final Resilience Score</div>
-                    <div class="text-4xl font-bold text-blue-600">${gameState.resilienceScore}</div>
+                    <div class="text-sm gruvbox-fg2">Final Resilience Score</div>
+                    <div class="text-4xl font-bold gruvbox-blue">${gameState.resilienceScore}</div>
                 </div>
                 <div>
-                    <div class="text-sm text-gray-600">Final Stress Level</div>
-                    <div class="text-4xl font-bold" id="final-stress">${gameState.stressLevel}</div>
+                    <div class="text-sm gruvbox-fg2">Final Stress Level</div>
+                    <div class="text-4xl font-bold ${gameState.stressLevel > 70 ? 'gruvbox-red' : gameState.stressLevel > 40 ? 'gruvbox-orange' : 'gruvbox-green'}" id="final-stress">${gameState.stressLevel}</div>
                 </div>
             </div>
             <div class="mb-4">
-                <div class="text-sm text-gray-600 mb-2">Your Mindset</div>
-                <div class="text-xl font-semibold">${gameState.mindset === "Growth" ? "Growth Mindset ✓" : "Fixed Mindset"}</div>
+                <div class="text-sm gruvbox-fg2 mb-2">Your Mindset</div>
+                <div class="text-xl font-semibold gruvbox-fg1">${gameState.mindset === "Growth" ? "Growth Mindset ✓" : "Fixed Mindset"}</div>
             </div>
             <div class="mb-4">
-                <div class="text-sm text-gray-600 mb-2">Your Current Zone</div>
-                <div class="text-xl font-semibold">${zone}</div>
+                <div class="text-sm gruvbox-fg2 mb-2">Your Current Zone</div>
+                <div class="text-xl font-semibold gruvbox-fg1">${zone}</div>
             </div>
         </div>
         
-        <div id="summary-explanations" class="hidden bg-white border-2 border-blue-200 rounded-lg p-6 mb-6">
-            <h4 class="text-xl font-bold mb-4 text-gray-800">Understanding Your Journey Summary</h4>
+        <div id="summary-explanations" class="hidden gruvbox-card border-2 border-[#458588] rounded-lg p-6 mb-6">
+            <h4 class="text-xl font-bold mb-4 gruvbox-fg1">Understanding Your Journey Summary</h4>
             <div class="space-y-4">
                 <div>
-                    <h5 class="font-bold text-gray-700 mb-2">Resilience Score (0-100)</h5>
-                    <p class="text-gray-600">This measures your ability to bounce back from challenges and adapt to difficult situations. Higher scores indicate stronger resilience, built through making choices within your Circle of Influence, practicing coping strategies, and maintaining a growth mindset.</p>
+                    <h5 class="font-bold gruvbox-fg1 mb-2">Resilience Score (0-100)</h5>
+                    <p class="gruvbox-fg2">This measures your ability to bounce back from challenges and adapt to difficult situations. Higher scores indicate stronger resilience, built through making choices within your Circle of Influence, practicing coping strategies, and maintaining a growth mindset.</p>
                 </div>
                 <div>
-                    <h5 class="font-bold text-gray-700 mb-2">Stress Level (0-100)</h5>
-                    <p class="text-gray-600">This tracks your current stress level. Lower is better, but some stress is normal and can even be motivating. When stress gets too high (above 70), you're in the Panic Zone where it's harder to make good decisions.</p>
+                    <h5 class="font-bold gruvbox-fg1 mb-2">Stress Level (0-100)</h5>
+                    <p class="gruvbox-fg2">This tracks your current stress level. Lower is better, but some stress is normal and can even be motivating. When stress gets too high (above 70), you're in the Panic Zone where it's harder to make good decisions.</p>
                 </div>
                 <div>
-                    <h5 class="font-bold text-gray-700 mb-2">Mindset</h5>
-                    <p class="text-gray-600"><strong>Fixed Mindset:</strong> Believing your abilities are set in stone. Challenges are threats, and failure means you're not good enough.<br><strong>Growth Mindset:</strong> Believing you can develop and improve through effort and learning. Challenges are opportunities, and failure is feedback.</p>
+                    <h5 class="font-bold gruvbox-fg1 mb-2">Mindset</h5>
+                    <p class="gruvbox-fg2"><strong>Fixed Mindset:</strong> Believing your abilities are set in stone. Challenges are threats, and failure means you're not good enough.<br><strong>Growth Mindset:</strong> Believing you can develop and improve through effort and learning. Challenges are opportunities, and failure is feedback.</p>
                 </div>
                 <div>
-                    <h5 class="font-bold text-gray-700 mb-2">Your Zone</h5>
-                    <p class="text-gray-600"><strong>Comfort Zone:</strong> Low stress, familiar territory. Safe but limited growth.<br><strong>Stretch Zone:</strong> Moderate stress, new challenges. This is where learning and growth happen best.<br><strong>Panic Zone:</strong> High stress, overwhelming. Too much to handle effectively.</p>
+                    <h5 class="font-bold gruvbox-fg1 mb-2">Your Zone</h5>
+                    <p class="gruvbox-fg2"><strong>Comfort Zone:</strong> Low stress, familiar territory. Safe but limited growth.<br><strong>Stretch Zone:</strong> Moderate stress, new challenges. This is where learning and growth happen best.<br><strong>Panic Zone:</strong> High stress, overwhelming. Too much to handle effectively.</p>
                 </div>
-                <div class="mt-4 pt-4 border-t border-gray-200">
+                <div class="mt-4 pt-4 border-t border-[#504945]">
                     <button 
                         id="explain-circle-btn" 
-                        class="text-blue-600 hover:text-blue-800 underline font-semibold"
+                        class="gruvbox-blue hover:gruvbox-aqua underline font-semibold"
                     >
                         Learn about Circle of Influence →
                     </button>
@@ -746,26 +746,26 @@ function renderEndgame() {
             </div>
         </div>
         
-        <div id="circle-explanation" class="hidden bg-gradient-to-r from-green-50 to-blue-50 border-2 border-green-200 rounded-lg p-6 mb-6">
-            <h4 class="text-xl font-bold mb-4 text-gray-800">Circle of Influence vs. Circle of Concern</h4>
+        <div id="circle-explanation" class="hidden gruvbox-card border-2 border-[#98971a] rounded-lg p-6 mb-6" style="background: linear-gradient(to right, #3c3836, #282828);">
+            <h4 class="text-xl font-bold mb-4 gruvbox-fg1">Circle of Influence vs. Circle of Concern</h4>
             <div class="space-y-4">
                 <div>
-                    <h5 class="font-bold text-gray-700 mb-2">Circle of Concern</h5>
-                    <p class="text-gray-600">Everything you care about or worry about—things that affect you but you have little or no control over. Examples: other people's opinions, the weather, global events, other people's choices, the past.</p>
-                    <p class="text-sm text-red-600 mt-2">⚠️ Focusing here drains your energy and increases stress.</p>
+                    <h5 class="font-bold gruvbox-fg1 mb-2">Circle of Concern</h5>
+                    <p class="gruvbox-fg2">Everything you care about or worry about—things that affect you but you have little or no control over. Examples: other people's opinions, the weather, global events, other people's choices, the past.</p>
+                    <p class="text-sm gruvbox-red mt-2">⚠️ Focusing here drains your energy and increases stress.</p>
                 </div>
                 <div>
-                    <h5 class="font-bold text-gray-700 mb-2">Circle of Influence</h5>
-                    <p class="text-gray-600">Things you can actually control or influence through your actions. Examples: your responses, your effort, your choices, your attitude, your boundaries, your self-care, your learning.</p>
-                    <p class="text-sm text-green-600 mt-2">✓ Focusing here builds resilience and reduces stress.</p>
+                    <h5 class="font-bold gruvbox-fg1 mb-2">Circle of Influence</h5>
+                    <p class="gruvbox-fg2">Things you can actually control or influence through your actions. Examples: your responses, your effort, your choices, your attitude, your boundaries, your self-care, your learning.</p>
+                    <p class="text-sm gruvbox-green mt-2">✓ Focusing here builds resilience and reduces stress.</p>
                 </div>
-                <div class="bg-white rounded p-4 mt-4">
-                    <p class="text-gray-700"><strong>Key Insight:</strong> The more you focus on your Circle of Influence, the larger it grows. The more you focus on your Circle of Concern, the smaller your influence becomes.</p>
+                <div class="bg-[#282828] rounded p-4 mt-4">
+                    <p class="gruvbox-fg1"><strong>Key Insight:</strong> The more you focus on your Circle of Influence, the larger it grows. The more you focus on your Circle of Concern, the smaller your influence becomes.</p>
                 </div>
                 <div class="mt-4">
                     <button 
                         id="close-explanations-btn" 
-                        class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-6 rounded-lg"
+                        class="gruvbox-button font-bold py-2 px-6 rounded-lg"
                     >
                         Got it, thanks!
                     </button>
@@ -773,25 +773,25 @@ function renderEndgame() {
             </div>
         </div>
         
-        <div class="bg-white border-2 border-gray-200 rounded-lg p-6 mb-6">
-            <h3 class="text-2xl font-bold mb-4 text-gray-800">Your Resilience Plan</h3>
-            <div class="prose max-w-none">
+        <div class="gruvbox-card border-2 border-[#504945] rounded-lg p-6 mb-6">
+            <h3 class="text-2xl font-bold mb-4 gruvbox-fg1">Your Resilience Plan</h3>
+            <div class="prose max-w-none gruvbox-fg2">
                 ${resiliencePlan}
             </div>
         </div>
         
-        <div class="bg-green-50 border-2 border-green-200 rounded-lg p-6 mb-6">
-            <h3 class="text-xl font-bold mb-4 text-gray-800">Note to Self</h3>
-            <p class="text-gray-600 mb-4">Write a short reflection on what you learned from this journey:</p>
+        <div class="gruvbox-card border-2 border-[#98971a] rounded-lg p-6 mb-6" style="background-color: #3c3836;">
+            <h3 class="text-xl font-bold mb-4 gruvbox-fg1">Note to Self</h3>
+            <p class="gruvbox-fg2 mb-4">Write a short reflection on what you learned from this journey:</p>
             <textarea 
                 id="reflection-text" 
-                class="w-full p-4 border-2 border-gray-300 rounded-lg mb-4" 
+                class="w-full p-4 border-2 border-[#504945] bg-[#282828] gruvbox-fg2 rounded-lg mb-4" 
                 rows="4"
                 placeholder="What did you learn about yourself? What will you remember moving forward?"
             ></textarea>
             <button 
                 id="save-reflection" 
-                class="bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-6 rounded-lg"
+                class="bg-[#98971a] hover:bg-[#689d6a] gruvbox-fg0 font-bold py-2 px-6 rounded-lg transition-colors"
             >
                 Save Reflection
             </button>
@@ -800,7 +800,7 @@ function renderEndgame() {
         <div class="text-center">
             <button 
                 id="restart-button" 
-                class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-8 rounded-lg text-lg transition-colors"
+                class="gruvbox-button font-bold py-3 px-8 rounded-lg text-lg transition-colors"
             >
                 Start New Journey
             </button>
@@ -848,40 +848,40 @@ function generateResiliencePlan() {
     
     // Based on resilience score
     if (gameState.resilienceScore >= 70) {
-        plan += '<li class="text-gray-700">You\'ve built strong resilience. Continue practicing the strategies that work for you.</li>';
+        plan += '<li class="gruvbox-fg2">You\'ve built strong resilience. Continue practicing the strategies that work for you.</li>';
     } else if (gameState.resilienceScore >= 40) {
-        plan += '<li class="text-gray-700">You\'re making progress. Focus on building more supports and strategies.</li>';
+        plan += '<li class="gruvbox-fg2">You\'re making progress. Focus on building more supports and strategies.</li>';
     } else {
-        plan += '<li class="text-gray-700">Consider seeking additional support and practicing more coping strategies.</li>';
+        plan += '<li class="gruvbox-fg2">Consider seeking additional support and practicing more coping strategies.</li>';
     }
     
     // Based on stress level
     if (gameState.stressLevel > 70) {
-        plan += '<li class="text-gray-700">Your stress is high. Prioritize self-care and focus on your Circle of Influence.</li>';
+        plan += '<li class="gruvbox-fg2">Your stress is high. Prioritize self-care and focus on your Circle of Influence.</li>';
     } else if (gameState.stressLevel > 40) {
-        plan += '<li class="text-gray-700">Monitor your stress levels and use your strategies when needed.</li>';
+        plan += '<li class="gruvbox-fg2">Monitor your stress levels and use your strategies when needed.</li>';
     } else {
-        plan += '<li class="text-gray-700">You\'re managing stress well. Keep up the good work!</li>';
+        plan += '<li class="gruvbox-fg2">You\'re managing stress well. Keep up the good work!</li>';
     }
     
     // Based on mindset
     if (gameState.mindset === "Growth") {
-        plan += '<li class="text-gray-700">You\'ve developed a growth mindset. This will serve you well in facing challenges.</li>';
+        plan += '<li class="gruvbox-fg2">You\'ve developed a growth mindset. This will serve you well in facing challenges.</li>';
     } else {
-        plan += '<li class="text-gray-700">Practice reframing setbacks as learning opportunities to develop a growth mindset.</li>';
+        plan += '<li class="gruvbox-fg2">Practice reframing setbacks as learning opportunities to develop a growth mindset.</li>';
     }
     
     // Based on inventory
     if (gameState.inventory.supports.length > 0) {
-        plan += '<li class="text-gray-700">You\'ve built connections: ' + gameState.inventory.supports.join(', ') + '</li>';
+        plan += '<li class="gruvbox-fg2">You\'ve built connections: ' + gameState.inventory.supports.join(', ') + '</li>';
     }
     
     if (gameState.inventory.strategies.length > 0) {
-        plan += '<li class="text-gray-700">Your strategies include: ' + gameState.inventory.strategies.join(', ') + '</li>';
+        plan += '<li class="gruvbox-fg2">Your strategies include: ' + gameState.inventory.strategies.join(', ') + '</li>';
     }
     
     if (gameState.inventory.sagacity.length > 0) {
-        plan += '<li class="text-gray-700">Wisdom you\'ve collected: ' + gameState.inventory.sagacity.join(', ') + '</li>';
+        plan += '<li class="gruvbox-fg2">Wisdom you\'ve collected: ' + gameState.inventory.sagacity.join(', ') + '</li>';
     }
     
     // Based on values
@@ -890,7 +890,7 @@ function generateResiliencePlan() {
             const value = availableValues.find(v => v.id === id);
             return value ? value.name : id;
         });
-        plan += '<li class="text-gray-700">Your core values guide you: ' + valueNames.join(', ') + '</li>';
+        plan += '<li class="gruvbox-fg2">Your core values guide you: ' + valueNames.join(', ') + '</li>';
     }
     
     plan += '</ul>';
@@ -915,9 +915,9 @@ function updateUI() {
     document.getElementById('resilience-score').textContent = gameState.resilienceScore;
     document.getElementById('stress-level').textContent = gameState.stressLevel;
     document.getElementById('stress-level').className = `text-2xl font-bold ${
-        gameState.stressLevel > 70 ? 'text-red-600' : 
-        gameState.stressLevel > 40 ? 'text-orange-600' : 
-        'text-green-600'
+        gameState.stressLevel > 70 ? 'gruvbox-red' : 
+        gameState.stressLevel > 40 ? 'gruvbox-orange' : 
+        'gruvbox-green'
     }`;
     document.getElementById('mindset').textContent = gameState.mindset;
     document.getElementById('zone').textContent = getZone();
@@ -947,19 +947,19 @@ function updateInventory() {
     if (gameState.inventory.supports.length > 0) {
         supportsEl.innerHTML = gameState.inventory.supports.map(s => `<li>${s}</li>`).join('');
     } else {
-        supportsEl.innerHTML = '<li class="text-gray-400 italic">None yet</li>';
+        supportsEl.innerHTML = '<li class="gruvbox-fg3 italic">None yet</li>';
     }
     
     if (gameState.inventory.strategies.length > 0) {
         strategiesEl.innerHTML = gameState.inventory.strategies.map(s => `<li>${s}</li>`).join('');
     } else {
-        strategiesEl.innerHTML = '<li class="text-gray-400 italic">None yet</li>';
+        strategiesEl.innerHTML = '<li class="gruvbox-fg3 italic">None yet</li>';
     }
     
     if (gameState.inventory.sagacity.length > 0) {
         sagacityEl.innerHTML = gameState.inventory.sagacity.map(s => `<li>${s}</li>`).join('');
     } else {
-        sagacityEl.innerHTML = '<li class="text-gray-400 italic">None yet</li>';
+        sagacityEl.innerHTML = '<li class="gruvbox-fg3 italic">None yet</li>';
     }
     
     if (gameState.coreValues.length > 0) {
@@ -969,7 +969,7 @@ function updateInventory() {
         });
         valuesEl.innerHTML = valueNames.map(v => `<li>${v}</li>`).join('');
     } else {
-        valuesEl.innerHTML = '<li class="text-gray-400 italic">Not selected</li>';
+        valuesEl.innerHTML = '<li class="gruvbox-fg3 italic">Not selected</li>';
     }
 }
 
@@ -977,11 +977,14 @@ function updateInventory() {
 function updateBackgroundColor() {
     const zone = getZone();
     if (zone === "Panic Zone") {
-        body.className = "min-h-screen transition-colors duration-500 bg-red-50";
+        body.style.backgroundColor = "#1d2021";
+        body.style.backgroundImage = "linear-gradient(to bottom, #1d2021 0%, #282828 100%)";
     } else if (zone === "Stretch Zone") {
-        body.className = "min-h-screen transition-colors duration-500 bg-yellow-50";
+        body.style.backgroundColor = "#1d2021";
+        body.style.backgroundImage = "linear-gradient(to bottom, #1d2021 0%, #3c3836 100%)";
     } else {
-        body.className = "min-h-screen transition-colors duration-500 bg-gray-50";
+        body.style.backgroundColor = "#1d2021";
+        body.style.backgroundImage = "none";
     }
 }
 

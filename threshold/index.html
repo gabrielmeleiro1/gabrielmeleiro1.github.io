@@ -7,69 +7,69 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="styles.css">
 </head>
-<body class="min-h-screen transition-colors duration-500" id="body">
-    <div class="container mx-auto px-4 py-8 max-w-4xl">
+<body class="min-h-screen transition-colors duration-500 flex items-center justify-center" id="body" style="background-color: #1d2021;">
+    <div class="container mx-auto px-6 py-8 max-w-6xl w-full">
         <!-- Game Container -->
         <div id="game-container" class="hidden">
             <!-- Header with Stats -->
-            <div class="bg-white rounded-lg shadow-lg p-6 mb-6">
+            <div class="gruvbox-card rounded-lg shadow-lg p-6 mb-6">
                 <div class="flex justify-between items-center mb-4">
-                    <h1 class="text-3xl font-bold text-gray-800">The Threshold</h1>
-                    <div class="text-sm text-gray-600" id="phase-indicator"></div>
+                    <h1 class="text-3xl font-bold gruvbox-fg1">The Threshold</h1>
+                    <div class="text-sm gruvbox-fg2" id="phase-indicator"></div>
                 </div>
                 <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
                     <div>
-                        <div class="text-xs text-gray-500 mb-1">Resilience Score</div>
-                        <div class="text-2xl font-bold text-blue-600" id="resilience-score">0</div>
+                        <div class="text-xs gruvbox-fg2 mb-1">Resilience Score</div>
+                        <div class="text-2xl font-bold gruvbox-blue" id="resilience-score">0</div>
                     </div>
                     <div>
-                        <div class="text-xs text-gray-500 mb-1">Stress Level</div>
+                        <div class="text-xs gruvbox-fg2 mb-1">Stress Level</div>
                         <div class="text-2xl font-bold" id="stress-level">0</div>
                     </div>
                     <div>
-                        <div class="text-xs text-gray-500 mb-1">Mindset</div>
-                        <div class="text-lg font-semibold" id="mindset">Fixed</div>
+                        <div class="text-xs gruvbox-fg2 mb-1">Mindset</div>
+                        <div class="text-lg font-semibold gruvbox-fg1" id="mindset">Fixed</div>
                     </div>
                     <div>
-                        <div class="text-xs text-gray-500 mb-1">Zone</div>
-                        <div class="text-lg font-semibold" id="zone">Comfort</div>
+                        <div class="text-xs gruvbox-fg2 mb-1">Zone</div>
+                        <div class="text-lg font-semibold gruvbox-fg1" id="zone">Comfort</div>
                     </div>
                 </div>
             </div>
 
             <!-- Main Content Area -->
-            <div class="bg-white rounded-lg shadow-lg p-8 mb-6 min-h-[400px]">
+            <div class="gruvbox-card rounded-lg shadow-lg p-8 mb-6 min-h-[500px]">
                 <div id="game-content">
                     <!-- Content will be dynamically inserted here -->
                 </div>
             </div>
 
             <!-- Inventory Display -->
-            <div class="bg-white rounded-lg shadow-lg p-6">
-                <h2 class="text-xl font-bold mb-4 text-gray-800">Your 4 S's Inventory</h2>
+            <div class="gruvbox-card rounded-lg shadow-lg p-6">
+                <h2 class="text-xl font-bold mb-4 gruvbox-fg1">Your 4 S's Inventory</h2>
                 <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
                     <div>
-                        <h3 class="font-semibold text-gray-700 mb-2">Supports</h3>
-                        <ul class="text-sm text-gray-600 space-y-1" id="inventory-supports">
-                            <li class="text-gray-400 italic">None yet</li>
+                        <h3 class="font-semibold gruvbox-fg1 mb-2">Supports</h3>
+                        <ul class="text-sm gruvbox-fg2 space-y-1" id="inventory-supports">
+                            <li class="gruvbox-fg3 italic">None yet</li>
                         </ul>
                     </div>
                     <div>
-                        <h3 class="font-semibold text-gray-700 mb-2">Strategies</h3>
-                        <ul class="text-sm text-gray-600 space-y-1" id="inventory-strategies">
-                            <li class="text-gray-400 italic">None yet</li>
+                        <h3 class="font-semibold gruvbox-fg1 mb-2">Strategies</h3>
+                        <ul class="text-sm gruvbox-fg2 space-y-1" id="inventory-strategies">
+                            <li class="gruvbox-fg3 italic">None yet</li>
                         </ul>
                     </div>
                     <div>
-                        <h3 class="font-semibold text-gray-700 mb-2">Sagacity</h3>
-                        <ul class="text-sm text-gray-600 space-y-1" id="inventory-sagacity">
-                            <li class="text-gray-400 italic">None yet</li>
+                        <h3 class="font-semibold gruvbox-fg1 mb-2">Sagacity</h3>
+                        <ul class="text-sm gruvbox-fg2 space-y-1" id="inventory-sagacity">
+                            <li class="gruvbox-fg3 italic">None yet</li>
                         </ul>
                     </div>
                     <div>
-                        <h3 class="font-semibold text-gray-700 mb-2">Core Values</h3>
-                        <ul class="text-sm text-gray-600 space-y-1" id="inventory-values">
-                            <li class="text-gray-400 italic">Not selected</li>
+                        <h3 class="font-semibold gruvbox-fg1 mb-2">Core Values</h3>
+                        <ul class="text-sm gruvbox-fg2 space-y-1" id="inventory-values">
+                            <li class="gruvbox-fg3 italic">Not selected</li>
                         </ul>
                     </div>
                 </div>
@@ -77,18 +77,18 @@
         </div>
 
         <!-- Start Screen -->
-        <div id="start-screen" class="text-center">
-            <div class="bg-white rounded-lg shadow-lg p-12 max-w-2xl mx-auto">
-                <h1 class="text-5xl font-bold text-gray-800 mb-4">The Threshold</h1>
-                <p class="text-xl text-gray-600 mb-8">A journey through the transition into adulthood</p>
-                <p class="text-gray-500 mb-8">
+        <div id="start-screen" class="text-center w-full">
+            <div class="gruvbox-card rounded-lg shadow-lg p-12 max-w-4xl mx-auto">
+                <h1 class="text-6xl font-bold gruvbox-fg1 mb-4">The Threshold</h1>
+                <p class="text-2xl gruvbox-fg2 mb-8">A journey through the transition into adulthood</p>
+                <p class="text-lg gruvbox-fg2 mb-8">
                     Navigate life's challenges, build resilience, and discover your path forward. 
-                    This isn't about winning—it's about understanding yourself and making value-based choices.
+                    There is no winning. It's all about understanding yourself and making value-based choices.
                 </p>
-                <p class="text-sm text-gray-400 mb-8">
+                <p class="text-sm gruvbox-fg3 mb-8">
                     💡 <strong>Tip:</strong> Throughout your journey, unexpected events may appear. These teach you to apply resilience concepts in real-time situations.
                 </p>
-                <button id="start-button" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-8 rounded-lg text-lg transition-colors">
+                <button id="start-button" class="gruvbox-button font-bold py-4 px-10 rounded-lg text-lg transition-colors">
                     Begin Your Journey
                 </button>
             </div>
