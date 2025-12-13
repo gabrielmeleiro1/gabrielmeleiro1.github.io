@@ -229,22 +229,43 @@ const scenarios = [
 ];
 
 // DOM Elements
-const startScreen = document.getElementById('start-screen');
-const gameContainer = document.getElementById('game-container');
-const gameContent = document.getElementById('game-content');
-const startButton = document.getElementById('start-button');
-const body = document.getElementById('body');
+let startScreen, gameContainer, gameContent, startButton, body;
+
+// Initialize DOM elements after page loads
+function initDOMElements() {
+    startScreen = document.getElementById('start-screen');
+    gameContainer = document.getElementById('game-container');
+    gameContent = document.getElementById('game-content');
+    startButton = document.getElementById('start-button');
+    body = document.getElementById('body');
+}
 
 // Initialize Game
 function init() {
-    startButton.addEventListener('click', startCharacterCreation);
+    initDOMElements();
+    if (startButton) {
+        startButton.addEventListener('click', startCharacterCreation);
+    }
+    // Ensure start screen is visible and game container is hidden on load
+    if (startScreen) {
+        startScreen.style.display = 'block';
+    }
+    if (gameContainer) {
+        gameContainer.style.display = 'none';
+        gameContainer.classList.add('hidden');
+    }
     updateUI();
 }
 
 // Start Character Creation
 function startCharacterCreation() {
-    startScreen.classList.add('hidden');
-    gameContainer.classList.remove('hidden');
+    if (startScreen) {
+        startScreen.style.display = 'none';
+    }
+    if (gameContainer) {
+        gameContainer.style.display = 'block';
+        gameContainer.classList.remove('hidden');
+    }
     gameState.currentPhase = "character-creation";
     renderCharacterCreation();
     updateUI();
@@ -819,7 +840,19 @@ function renderEndgame() {
     
     document.getElementById('restart-button')?.addEventListener('click', function() {
         resetGame();
-        startCharacterCreation();
+        // Hide game container and show start screen
+        if (gameContainer) {
+            gameContainer.style.display = 'none';
+            gameContainer.classList.add('hidden');
+        }
+        if (startScreen) {
+            startScreen.style.display = 'block';
+        }
+        // Clear game content
+        if (gameContent) {
+            gameContent.innerHTML = '';
+        }
+        updateUI();
     });
     
     // Explanation buttons

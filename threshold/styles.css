@@ -127,6 +127,20 @@ body {
     min-height: 100vh;
 }
 
+/* Ensure hidden class works properly */
+.hidden {
+    display: none !important;
+}
+
+/* Start screen visibility */
+#start-screen {
+    display: block;
+}
+
+#game-container.hidden {
+    display: none !important;
+}
+
 /* Centering and sizing */
 #start-screen {
     min-height: 80vh;
