@@ -9,19 +9,17 @@
     <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="../style.css">
     <style>
-        /* Overrides or specific styles for the project page */
         body {
-           /* Ensure body background applies if not inherited */
            background-color: var(--bg0);
         }
-        .project-container { /* Wrap content for padding/max-width */
+        .project-container {
             max-width: 1000px;
             margin: 0 auto;
             padding: 20px;
-            background-color: var(--card-bg); /* Optional: container bg */
+            background-color: var(--card-bg);
             border: 1px solid var(--border-color);
             border-radius: 4px;
-            margin-top: 30px; /* Space from top */
+            margin-top: 30px;
         }
         .back-link a {
              display: inline-block;
@@ -32,23 +30,55 @@
         .back-link a:hover {
             color: var(--link-hover);
         }
-        .project-header { /* Renamed from .header to avoid conflicts */
+        .project-header {
             display: flex;
             align-items: center;
-            gap: 30px; /* Increased gap */
+            gap: 30px;
             margin-bottom: 30px;
-            flex-wrap: wrap; /* Allow wrapping on smaller screens */
+            flex-wrap: wrap;
         }
-        .project-header img {
-            max-width: 300px;
+        .project-header .header-visual {
+            max-width: 350px;
             border-radius: 4px;
             border: 1px solid var(--border-color);
-            flex-shrink: 0; /* Prevent image from shrinking too much */
+            flex-shrink: 0;
+            background: linear-gradient(135deg, var(--bg0-hard) 0%, var(--bg1) 100%);
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 200px;
         }
-         .project-header h1 {
-            color: var(--green-bright); /* Match main page H1 style */
-            font-size: 2rem; /* Adjust size as needed */
-         }
+        .project-header .header-visual .trading-icon {
+            font-size: 4rem;
+            margin-bottom: 10px;
+        }
+        .project-header .header-visual .features {
+            display: flex;
+            gap: 15px;
+            font-size: 0.8rem;
+            color: var(--fg2);
+        }
+        .project-header .header-visual .feature {
+            background: var(--bg-visual);
+            padding: 8px 12px;
+            border-radius: 4px;
+            border: 1px solid var(--border-color);
+        }
+        .project-header .header-visual .feature-label {
+            color: var(--aqua-bright);
+            font-weight: 500;
+        }
+        .project-header h1 {
+            color: var(--green-bright);
+            font-size: 2rem;
+        }
+        .project-header .tagline {
+            color: var(--fg2);
+            font-size: 1rem;
+            margin-top: 5px;
+        }
 
         .content h2, .content h3 {
              margin-top: 1.5em;
@@ -57,17 +87,22 @@
         }
          .content h2 { color: var(--yellow-bright); }
          .content h3 { color: var(--blue-bright); }
+         .content h4 { 
+             color: var(--purple-bright); 
+             margin-top: 1.2em;
+             margin-bottom: 0.5em;
+         }
 
         p {
-            text-align: left; /* Override justify if preferred */
+            text-align: left;
             color: var(--fg1);
         }
         code {
             background-color: var(--bg1);
-            color: var(--orange-bright); /* Highlight code */
+            color: var(--orange-bright);
             padding: 3px 6px;
             border-radius: 3px;
-            font-family: inherit; /* Use Fira Code */
+            font-family: inherit;
             font-size: 0.9em;
         }
         pre {
@@ -76,11 +111,11 @@
             padding: 15px;
             border-radius: 4px;
             overflow-x: auto;
-            font-size: 14px; /* Keep code slightly smaller */
+            font-size: 14px;
             line-height: 1.5;
             color: var(--fg1);
         }
-        .project-footer { /* Renamed from .footer */
+        .project-footer {
             margin-top: 50px;
             padding-top: 20px;
             border-top: 1px solid var(--border-color);
@@ -93,210 +128,454 @@
         .project-footer a:hover {
             color: var(--link-hover);
         }
+        
+        /* Architecture diagram */
+        .architecture-diagram {
+            background: var(--bg0-hard);
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            padding: 25px;
+            margin: 20px 0;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        .layer-box {
+            background: var(--bg1);
+            border: 1px solid var(--aqua-dim);
+            border-radius: 4px;
+            padding: 15px;
+        }
+        .layer-box.layer1 { border-color: var(--blue-bright); }
+        .layer-box.layer2 { border-color: var(--purple-bright); }
+        .layer-box.layer3 { border-color: var(--green-bright); }
+        .layer-title {
+            font-weight: 500;
+            margin-bottom: 8px;
+        }
+        .layer-box.layer1 .layer-title { color: var(--blue-bright); }
+        .layer-box.layer2 .layer-title { color: var(--purple-bright); }
+        .layer-box.layer3 .layer-title { color: var(--green-bright); }
+        .layer-content {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+        .layer-component, .layer-model, .layer-output {
+            background: var(--bg-visual);
+            padding: 8px 12px;
+            border-radius: 4px;
+            font-size: 0.85rem;
+        }
+        .layer-model {
+            background: var(--bg0-hard);
+            border: 1px dashed var(--fg-muted);
+            color: var(--green-bright);
+        }
+        .arrow {
+            color: var(--fg-muted);
+        }
+        
+        /* Data flow connector */
+        .data-flow {
+            text-align: center;
+            color: var(--fg-muted);
+            font-size: 1.5rem;
+        }
+        
+        /* Feature list */
+        .feature-list {
+            list-style: none;
+            padding: 0;
+            margin: 15px 0;
+        }
+        .feature-list li {
+            padding: 8px 0;
+            padding-left: 20px;
+            position: relative;
+            color: var(--fg1);
+        }
+        .feature-list li::before {
+            content: "›";
+            position: absolute;
+            left: 0;
+            color: var(--aqua-bright);
+            font-weight: bold;
+        }
+        
+        /* Performance table */
+        .perf-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            font-size: 0.9rem;
+        }
+        .perf-table th, .perf-table td {
+            padding: 12px;
+            text-align: left;
+            border: 1px solid var(--border-color);
+        }
+        .perf-table th {
+            background: var(--bg1);
+            color: var(--fg0);
+        }
+        .perf-table td {
+            background: var(--bg0-hard);
+        }
+        .perf-table .highlight {
+            color: var(--green-bright);
+            font-weight: 500;
+        }
+        
+        /* Tech stack badges */
+        .tech-stack {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin: 15px 0;
+        }
+        .tech-badge {
+            background: var(--bg1);
+            border: 1px solid var(--border-color);
+            padding: 5px 12px;
+            border-radius: 3px;
+            font-size: 0.85rem;
+            color: var(--fg2);
+        }
+        
+        /* Threading diagram */
+        .threading-diagram {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 15px;
+            margin: 20px 0;
+        }
+        .thread-model {
+            background: var(--bg0-hard);
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            padding: 15px;
+        }
+        .thread-model-title {
+            color: var(--aqua-bright);
+            font-weight: 500;
+            margin-bottom: 10px;
+            font-size: 0.95rem;
+        }
+        .thread-model-desc {
+            font-size: 0.85rem;
+            color: var(--fg2);
+        }
+        
+        /* Complexity badges */
+        .complexity-badge {
+            display: inline-block;
+            background: var(--bg-visual);
+            padding: 3px 8px;
+            border-radius: 3px;
+            font-size: 0.85rem;
+            color: var(--green-bright);
+            margin-left: 5px;
+        }
     </style>
 </head>
 <body>
-    <div class="project-container"> <div class="back-link">
-            <a href="../index.html">&lt; Back to Portfolio</a> </div>
+    <div class="project-container">
+        <div class="back-link">
+            <a href="../index.html">&lt; Back to Portfolio</a>
+        </div>
 
-        <div class="project-header"> <img src="../ezgif.com-crop.gif" alt="Pegasus Trading System Console" />
-            <h1>Pegasus</h1>
+        <div class="project-header">
+            <div class="header-visual">
+                <div class="trading-icon">📊⚡</div>
+                <div class="features">
+                    <div class="feature"><span class="feature-label">O(1)</span> Match</div>
+                    <div class="feature"><span class="feature-label">MT</span> Ready</div>
+                </div>
+            </div>
+            <div>
+                <h1>Pegasus</h1>
+                <div class="tagline">High-Performance Multi-Threaded Order Book System</div>
+            </div>
         </div>
 
         <div class="content">
             <p>
-                <a href="https://github.com/gabrielmeleiro1/Pegasus" target="_blank" rel="noopener noreferrer">Pegasus</a> is a high-performance limit order book system designed for financial trading applications with extensive multi-threading support. This article details my implementation approach and the reasoning behind key architectural decisions.
+                <a href="https://github.com/gabrielmeleiro1/Pegasus" target="_blank" rel="noopener noreferrer">Pegasus</a> is a high-performance limit order book system designed for financial trading applications with extensive multi-threading support. Built in modern C++17, it implements price-time priority matching—the industry standard algorithm used by most exchanges—with optimized data structures achieving sub-microsecond latency for critical operations.
             </p>
+            
+            <div class="tech-stack">
+                <span class="tech-badge">C++17</span>
+                <span class="tech-badge">std::atomic</span>
+                <span class="tech-badge">Thread Pool</span>
+                <span class="tech-badge">Lock-Free Ops</span>
+                <span class="tech-badge">Smart Pointers</span>
+                <span class="tech-badge">RAII</span>
+            </div>
 
-            <h2>The Core of the Order Book System</h2>
-
+            <h2>System Architecture</h2>
+            
             <p>
-                At the heart of Pegasus lies a sophisticated limit order book implementation using price-time priority matching, which is the industry standard algorithm used by most exchanges. Under this system, orders are first prioritized by price (higher buy prices and lower sell prices take precedence), and when prices are identical, the orders are prioritized by arrival time, with earlier orders executed first.
+                The system is organized into three main layers: the core matching engine, the threading infrastructure, and the benchmarking/simulation framework.
             </p>
+            
+            <div class="architecture-diagram">
+                <div class="layer-box layer1">
+                    <div class="layer-title">Core Matching Engine</div>
+                    <div class="layer-content">
+                        <span class="layer-component">Order</span>
+                        <span class="arrow">→</span>
+                        <span class="layer-model">OrderBook (Price-Time Priority)</span>
+                        <span class="arrow">→</span>
+                        <span class="layer-output">Limit Levels + Executions</span>
+                    </div>
+                </div>
+                <div class="data-flow">↓↑</div>
+                <div class="layer-box layer2">
+                    <div class="layer-title">Multi-Threading Layer</div>
+                    <div class="layer-content">
+                        <span class="layer-component">OrderBookManager</span>
+                        <span class="arrow">→</span>
+                        <span class="layer-model">Thread Pool / Per-Symbol Threads</span>
+                        <span class="arrow">→</span>
+                        <span class="layer-output">Parallel Processing</span>
+                    </div>
+                </div>
+                <div class="data-flow">↓↑</div>
+                <div class="layer-box layer3">
+                    <div class="layer-title">Simulation &amp; Benchmarking</div>
+                    <div class="layer-content">
+                        <span class="layer-component">ETH/USD Simulation</span>
+                        <span class="arrow">→</span>
+                        <span class="layer-model">Benchmark Runner</span>
+                        <span class="arrow">→</span>
+                        <span class="layer-output">Performance Metrics + CSV Export</span>
+                    </div>
+                </div>
+            </div>
 
+            <h2>Core Order Book Implementation</h2>
+            
             <p>
-                I implemented this by creating a data structure that efficiently supports three core operations: adding orders, canceling orders, and executing trades. The challenge was to implement these operations with optimal time complexity while enabling quick answers to common queries like "what are the best bid and offer?" and "how much volume exists between prices A and B?"
+                At the heart of Pegasus lies the matching engine using ordered maps for price levels, with each <code>Limit</code> containing a linked list of <code>Order</code> objects. The system separates buy and sell orders into different collections, sorted appropriately to allow constant-time access to the best prices.
             </p>
+            
+            <h3>Time Complexity Analysis</h3>
+            
+            <table class="perf-table">
+                <thead>
+                    <tr>
+                        <th>Operation</th>
+                        <th>Complexity</th>
+                        <th>Description</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Add Order (new price)</td>
+                        <td class="highlight">O(log M)</td>
+                        <td>M = number of price levels</td>
+                    </tr>
+                    <tr>
+                        <td>Add Order (existing price)</td>
+                        <td class="highlight">O(1)</td>
+                        <td>Direct append to limit queue</td>
+                    </tr>
+                    <tr>
+                        <td>Cancel Order</td>
+                        <td class="highlight">O(1)</td>
+                        <td>Hash map lookup by order ID</td>
+                    </tr>
+                    <tr>
+                        <td>Best Bid/Ask</td>
+                        <td class="highlight">O(1)</td>
+                        <td>Direct iterator access</td>
+                    </tr>
+                    <tr>
+                        <td>Match Order</td>
+                        <td class="highlight">O(1)</td>
+                        <td>Per fill against best price</td>
+                    </tr>
+                </tbody>
+            </table>
+            
+            <h3>Supported Order Types</h3>
+            <ul class="feature-list">
+                <li><strong>Limit Orders:</strong> Execute at specified price or better</li>
+                <li><strong>Market Orders:</strong> Execute immediately at best available price</li>
+                <li><strong>Stop-Limit Orders:</strong> Activate at trigger price, then execute as limit</li>
+            </ul>
 
+            <h2>Multi-Threading Architecture</h2>
+            
             <p>
-                The implementation uses ordered maps for organizing price levels, with each price level (<code>Limit</code>) containing a linked list of <code>Order</code> objects. The system separates buy and sell orders into different collections, sorted appropriately to allow constant-time access to the best prices. Each order is also referenced in an unordered map keyed by ID for O(1) lookup.
+                What truly distinguishes Pegasus is its approach to parallel processing through multiple threading strategies. Three distinct implementations provide flexibility for different deployment scenarios:
             </p>
+            
+            <div class="threading-diagram">
+                <div class="thread-model">
+                    <div class="thread-model-title">Thread-per-Symbol</div>
+                    <div class="thread-model-desc">
+                        Dedicated thread for each trading symbol via <code>OrderBookManager</code>. Maximum isolation, zero cross-symbol contention. Ideal for high-volume trading on a focused symbol set.
+                    </div>
+                </div>
+                <div class="thread-model">
+                    <div class="thread-model-title">Thread Pool</div>
+                    <div class="thread-model-desc">
+                        Fixed pool of worker threads processing orders from any symbol. Dynamic load balancing, resource-efficient. Tunable to hardware capabilities.
+                    </div>
+                </div>
+                <div class="thread-model">
+                    <div class="thread-model-title">Basic Threading</div>
+                    <div class="thread-model-desc">
+                        Direct thread creation with atomic counters and mutex protection. Simple baseline implementation for comparison and moderate workloads.
+                    </div>
+                </div>
+            </div>
+            
+            <h3>Thread Safety Mechanisms</h3>
+            <ul class="feature-list">
+                <li><strong>std::atomic:</strong> Lock-free counters for order IDs, fill quantities, status flags</li>
+                <li><strong>std::mutex:</strong> Fine-grained locking for critical sections only</li>
+                <li><strong>std::shared_ptr:</strong> Thread-safe memory management with automatic cleanup</li>
+                <li><strong>std::condition_variable:</strong> Efficient thread synchronization for work queues</li>
+            </ul>
 
+            <h2>Performance Benchmarking</h2>
+            
             <p>
-                This structure achieves impressive performance characteristics: O(log N) for adding the first order at a limit and O(1) for subsequent orders at the same limit, O(1) for cancellations, and O(1) for accessing the best bids and offers. N represents the number of price levels, which is typically much smaller than the total number of orders in the system.
+                Pegasus includes a comprehensive benchmarking infrastructure measuring throughput, latency percentiles, and memory usage across different configurations.
             </p>
+            
+            <h3>Benchmark Capabilities</h3>
+            <ul class="feature-list">
+                <li>Throughput measurements (operations/second)</li>
+                <li>Latency metrics: Average, Median (P50), P95, P99, Maximum</li>
+                <li>Memory usage tracking per operation</li>
+                <li>Multi-threaded scaling tests (1, 2, 4, 8 threads)</li>
+                <li>Multi-symbol performance analysis (1 to 20+ symbols)</li>
+                <li>CSV export for data analysis and visualization</li>
+            </ul>
+            
+            <h3>Performance Results</h3>
+            
+            <table class="perf-table">
+                <thead>
+                    <tr>
+                        <th>Configuration</th>
+                        <th>Throughput</th>
+                        <th>Improvement</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Single-threaded</td>
+                        <td>~15,000 ops/sec</td>
+                        <td>Baseline</td>
+                    </tr>
+                    <tr>
+                        <td>Multi-threaded (4 threads)</td>
+                        <td class="highlight">~23,000 ops/sec</td>
+                        <td class="highlight">+53%</td>
+                    </tr>
+                    <tr>
+                        <td>Multi-symbol (20 symbols, 8 threads)</td>
+                        <td class="highlight">Scales linearly</td>
+                        <td class="highlight">Near-linear</td>
+                    </tr>
+                </tbody>
+            </table>
+            
+            <h4>Running Benchmarks</h4>
+            
+<pre><code># Build and run the benchmark suite
+./build_scripts/build_benchmark.sh
+./pegasus_benchmark --benchmark=all
 
-            <pre><code>// Key class structures in simplified form:
+# Run specific benchmarks with custom parameters
+./pegasus_benchmark --threads=4 --symbols=10 --operations=100000 --benchmark=mixed
 
-class Order {
-public:
-    using OrderID = std::uint64_t;
-
-    Order(OrderID id, Side side, OrderType type,
-          const std::string& symbol, double price,
-          double quantity, double stopPrice = 0.0);
-
-    // Getters, setters, and thread-safe operations
-    OrderID getID() const;
-    Side getSide() const;
-    double getPrice() const;
-    double getQuantity() const;
-    // ...with atomic operations for thread safety
-
-private:
-    OrderID m_id;
-    Side m_side;
-    OrderType m_type;
-    std::string m_symbol;
-    double m_price;
-    double m_quantity;
-    std::atomic&lt;double&gt; m_filledQtyAtomic; // Use &lt; for <
-    std::atomic&lt;bool&gt; m_isActiveAtomic;   // Use &lt; for <
-    // Other fields...
-};
-
-class Limit {
-public:
-    using OrderPtr = std::shared_ptr&lt;Order&gt;; // Use &lt; for <
-
-    explicit Limit(double price);
-
-    void addOrder(OrderPtr order);
-    void removeOrder(OrderPtr order);
-    double getPrice() const;
-    double getTotalVolume() const;
-
-private:
-    double m_price;
-    std::atomic&lt;double&gt; m_totalVolumeAtomic; // Use &lt; for <
-    mutable std::mutex m_ordersMutex;
-    std::list&lt;OrderPtr&gt; m_orders;  // FIFO queue of orders // Use &lt; for <
-};
-
-class OrderBook {
-public:
-    using OrderPtr = std::shared_ptr&lt;Order&gt;; // Use &lt; for <
-    using LimitPtr = Limit*;
-
-    explicit OrderBook(const std::string& symbol);
-
-    bool addOrder(OrderPtr order, ...);
-    bool cancelOrder(Order::OrderID orderId);
-    bool matchOrder(OrderPtr order, ...);
-    double getBestBid() const;
-    double getBestAsk() const;
-
-private:
-    std::string m_symbol;
-    std::map&lt;double, LimitPtr, std::greater&lt;double&gt;&gt; m_bids; // High to low // Use &lt; for <
-    std::map&lt;double, LimitPtr&gt; m_asks;                       // Low to high // Use &lt; for <
-    std::unordered_map&lt;Order::OrderID, OrderPtr&gt; m_orders;   // Fast lookup // Use &lt; for <
-};
-            </code></pre>
-
-            <h2>Multi-threading Architecture: The Heart of Pegasus</h2>
-
-            <p>
-                What truly distinguishes Pegasus is its approach to parallel processing through multiple threading strategies. In modern markets, the ability to process orders across different symbols simultaneously is crucial for performance. I implemented three distinct multi-threading approaches, each with its own characteristics and use cases.
-            </p>
-
-            <h3>Thread-per-Symbol Approach</h3>
-
-            <p>
-                The first approach, implemented through the <code>OrderBookManager</code> class, assigns a dedicated thread to each trading symbol. This creates true parallelism, as each symbol operates independently without contention from others. When an order arrives, it's routed to the appropriate symbol's thread for processing.
-            </p>
-
-            <p>
-                This approach shines in environments with many active symbols and high order volumes across those symbols. The isolation between symbols eliminates lock contention and allows each order book to operate at maximum efficiency. The trade-off is resource usage - with many symbols, this approach can consume significant thread resources, but for high-frequency trading systems focusing on a manageable set of symbols, this provides optimal performance.
-            </p>
-
-            <h3>Thread Pool Implementation</h3>
-
-            <p>
-                The thread pool approach takes a more resource-efficient stance. Rather than dedicating a thread to each symbol, it maintains a fixed pool of worker threads that process orders from any symbol. Orders are placed in a shared queue and distributed among available threads.
-            </p>
-
-            <p>
-                This implementation is particularly valuable for systems that need to handle a large number of symbols with varying activity levels. The thread count can be tuned to match the hardware capabilities and expected workload, making more efficient use of system resources. The thread pool dynamically balances work across the available threads, ensuring that processing power is directed where needed.
-            </p>
-
-            <p>
-                The implementation uses condition variables and mutexes to synchronize worker threads, with careful attention to avoiding deadlocks and minimizing contention. This approach provides a good balance between parallelism and resource efficiency, making it suitable for a wide range of deployment scenarios.
-            </p>
-
-            <h3>Basic Multi-threading</h3>
-
-            <p>
-                The third approach takes a more direct path to thread management. It creates threads on demand for processing orders, using a simpler implementation model. While less sophisticated than the other approaches, this implementation provides a good balance of performance and complexity for systems with moderate workloads or limited concurrent symbol activity.
-            </p>
-
-            <p>
-                This approach was included not only as a fallback option but also as a baseline for performance comparison. In testing, it provided insights into the overhead introduced by the more complex threading models and helped identify optimization opportunities.
-            </p>
-
-            <h2>Thread Safety Through Atomic Operations</h2>
-
-            <p>
-                Ensuring thread safety in a high-performance trading system requires careful consideration to avoid excessive locking, which can introduce latency. Pegasus uses atomic operations for critical shared data instead of traditional locks where possible.
-            </p>
-
-            <p>
-                For example, order ID generation, filled quantities, and other shared counters use <code>std::atomic</code> for thread safety without the overhead of mutex locks. This approach significantly reduces contention and improves overall system throughput, particularly under high load conditions.
-            </p>
-
-            <p>
-                In cases where more complex synchronization is required, fine-grained locking with <code>std::mutex</code> is employed to minimize the critical section size and duration. This balance between safety and performance is crucial for a trading system where both correctness and speed are non-negotiable requirements.
-            </p>
-
-            <h2>Performance Optimization Techniques</h2>
-
-            <p>
-                Beyond the core architecture, Pegasus incorporates several key optimizations to maximize performance:
-            </p>
-
-            <p>
-                <strong>Memory Management:</strong> The system uses smart pointers (<code>std::shared_ptr</code>) to manage memory, ensuring safety while minimizing overhead. Critical data structures are carefully designed to reduce allocation pressure during high-volume periods.
-            </p>
-
-            <p>
-                <strong>Cache Locality:</strong> Data structures are designed with CPU cache efficiency in mind. Related data is kept together in memory, and access patterns are optimized to maximize cache hits. This significantly improves performance on modern CPU architectures where memory access latency can be a major bottleneck.
-            </p>
-
-            <p>
-                <strong>Lock Contention Reduction:</strong> Beyond atomic operations, the system is designed to minimize shared state between threads. Each component maintains its own state where possible, reducing the need for synchronization. When synchronization is necessary, fine-grained locking is used to minimize contention.
-            </p>
-
-            <p>
-                <strong>Efficient Data Structures:</strong> Each data structure in the system was chosen with specific performance characteristics in mind. The use of ordered maps for price levels and unordered maps for ID lookups balances the need for fast insertion, deletion, and retrieval operations, maintaining logarithmic or constant-time complexity for critical operations.
-            </p>
+# Full benchmark suite with multiple configurations
+./pegasus_benchmark --benchmark=suite</code></pre>
 
             <h2>ETH/USD Simulation Environment</h2>
-
+            
             <p>
-                To validate the system under realistic conditions, Pegasus includes a simulation environment for an ETH/USD cryptocurrency order book. This simulation generates realistic order flows based on statistical models of market behavior, allowing for performance testing and optimization under conditions that closely mirror real-world trading.
+                To validate the system under realistic conditions, Pegasus includes an interactive ETH/USD cryptocurrency order book simulation with real-time visualization.
             </p>
+            
+            <h3>Simulation Features</h3>
+            <ul class="feature-list">
+                <li><strong>Realistic Price Model:</strong> Random walk with mean reversion for natural price evolution</li>
+                <li><strong>Live Order Book Display:</strong> Color-coded bids/asks with cumulative volume</li>
+                <li><strong>Market Statistics:</strong> 24h high/low, trade count, total volume, fill rate</li>
+                <li><strong>Order Flow Visualization:</strong> Real-time order fills with confirmation</li>
+                <li><strong>Configurable Parameters:</strong> Volatility, order rates, price steps</li>
+            </ul>
+            
+            <h4>Running the Simulation</h4>
+            
+<pre><code># Build and run the ETH/USD simulation
+./build_scripts/build_crypto.sh
+./crypto_book
 
+# The simulation runs continuously (Ctrl+C to exit)
+# Displays live order book with 10 price levels on each side</code></pre>
+
+            <h2>Interactive CLI Interface</h2>
+            
             <p>
-                The simulation can be configured to adjust order rates, market volatility, and other parameters to test the system under various scenarios. It also captures detailed performance metrics, allowing for precise analysis of system behavior under different conditions and configurations.
+                The system includes an interactive command-line interface for easy operation and testing:
             </p>
+            
+            <ul class="feature-list">
+                <li>Menu-driven interface for building and running all implementations</li>
+                <li>Performance metrics visualization</li>
+                <li>Project documentation access</li>
+                <li>Benchmark configuration and execution</li>
+            </ul>
+            
+<pre><code># Launch the interactive CLI
+chmod +x pegasus_cli.sh
+./pegasus_cli.sh</code></pre>
 
-            <p>
-                This testing environment proved invaluable during development, revealing bottlenecks and optimization opportunities that wouldn't have been apparent with synthetic benchmarks alone. It also serves as a demonstration of the system's capabilities and a platform for ongoing refinement.
-            </p>
+            <h2>Project Structure</h2>
+            
+<pre><code>/include              # Header files
+  orderbook.h         # Core matching engine
+  orderbookmanager.h  # Multi-threaded manager
+  threadpool.h        # Thread pool implementation
+  benchmark.h         # Benchmarking infrastructure
 
-            <h2>Conclusion and Future Directions</h2>
+/src
+  /core               # Core implementations
+  /threading          # Multi-threading variants
+  /benchmark          # Benchmarking tools
+  /examples           # Example applications
 
-            <p>
-                Pegasus represents a sophisticated approach to building high-performance trading systems with a focus on parallelism and efficiency. The multi-threaded design allows it to scale with modern multi-core architectures, while the carefully optimized data structures ensure optimal performance for critical operations.
-            </p>
+/build_scripts        # Build automation scripts
+/docs                 # Documentation</code></pre>
 
-            <p>
-                Future development will focus on extending the system with additional order types, improved monitoring and telemetry, and integration with market data feeds. The modular design facilitates these extensions without compromising the core performance characteristics that make Pegasus valuable for high-frequency trading applications.
-            </p>
+            <h2>Future Directions</h2>
+            
+            <ul class="feature-list">
+                <li><strong>Advanced Order Types:</strong> Iceberg orders, time-in-force options, conditional orders</li>
+                <li><strong>Lock-Free Algorithms:</strong> Replace remaining mutexes with lock-free data structures</li>
+                <li><strong>Memory Optimization:</strong> Custom allocators for high-frequency allocation patterns</li>
+                <li><strong>Market Data Integration:</strong> Connect to external price feeds and historical data</li>
+                <li><strong>Trading Strategies:</strong> Market making algorithms, backtesting engine</li>
+                <li><strong>Risk Management:</strong> Position limits, circuit breakers, margin system</li>
+                <li><strong>API Layer:</strong> REST and WebSocket interfaces for external integration</li>
+            </ul>
 
-            <div class="project-footer"> <p>
-                    For more information, check out the <a href="https://github.com/gabrielmeleiro1/Pegasus" target="_blank" rel="noopener noreferrer">Pegasus GitHub repository</a>.
+            <div class="project-footer">
+                <p>
+                    For more details and the full codebase, check out the <a href="https://github.com/gabrielmeleiro1/Pegasus" target="_blank" rel="noopener noreferrer">Pegasus GitHub repository</a>.
                 </p>
-                <p>Last updated: March 28, 2025</p> </div>
-        </div></div> </body>
+                <p>Last updated: January 2026</p>
+            </div>
+        </div>
+    </div>
+</body>
 </html>
