@@ -1,0 +1,498 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gabriel Meleiro - Tempestas</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../style.css">
+    <style>
+        body {
+           background-color: var(--bg0);
+        }
+        .project-container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            margin-top: 30px;
+        }
+        .back-link a {
+             display: inline-block;
+             margin-bottom: 20px;
+             color: var(--aqua-dim);
+             font-weight: 500;
+        }
+        .back-link a:hover {
+            color: var(--link-hover);
+        }
+        .project-header {
+            display: flex;
+            align-items: center;
+            gap: 30px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+        }
+        .project-header .header-visual {
+            max-width: 350px;
+            border-radius: 4px;
+            border: 1px solid var(--border-color);
+            flex-shrink: 0;
+            background: linear-gradient(135deg, var(--bg0-hard) 0%, var(--bg1) 100%);
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 200px;
+        }
+        .project-header .header-visual .wind-icon {
+            font-size: 4rem;
+            margin-bottom: 10px;
+        }
+        .project-header .header-visual .stages {
+            display: flex;
+            gap: 15px;
+            font-size: 0.8rem;
+            color: var(--fg2);
+        }
+        .project-header .header-visual .stage {
+            background: var(--bg-visual);
+            padding: 8px 12px;
+            border-radius: 4px;
+            border: 1px solid var(--border-color);
+        }
+        .project-header .header-visual .stage-label {
+            color: var(--aqua-bright);
+            font-weight: 500;
+        }
+        .project-header h1 {
+            color: var(--green-bright);
+            font-size: 2rem;
+        }
+        .project-header .tagline {
+            color: var(--fg2);
+            font-size: 1rem;
+            margin-top: 5px;
+        }
+
+        .content h2, .content h3 {
+             margin-top: 1.5em;
+             border-bottom: 1px solid var(--border-color);
+             padding-bottom: 8px;
+        }
+         .content h2 { color: var(--yellow-bright); }
+         .content h3 { color: var(--blue-bright); }
+         .content h4 { 
+             color: var(--purple-bright); 
+             margin-top: 1.2em;
+             margin-bottom: 0.5em;
+         }
+
+        p {
+            text-align: left;
+            color: var(--fg1);
+        }
+        code {
+            background-color: var(--bg1);
+            color: var(--orange-bright);
+            padding: 3px 6px;
+            border-radius: 3px;
+            font-family: inherit;
+            font-size: 0.9em;
+        }
+        pre {
+            background-color: var(--bg0-hard);
+            border: 1px solid var(--border-color);
+            padding: 15px;
+            border-radius: 4px;
+            overflow-x: auto;
+            font-size: 14px;
+            line-height: 1.5;
+            color: var(--fg1);
+        }
+        .project-footer {
+            margin-top: 50px;
+            padding-top: 20px;
+            border-top: 1px solid var(--border-color);
+            font-size: 0.9em;
+            color: var(--fg-muted);
+        }
+        .project-footer a {
+             color: var(--aqua-dim);
+        }
+        .project-footer a:hover {
+            color: var(--link-hover);
+        }
+        
+        /* Architecture diagram */
+        .architecture-diagram {
+            background: var(--bg0-hard);
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            padding: 25px;
+            margin: 20px 0;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        .stage-box {
+            background: var(--bg1);
+            border: 1px solid var(--aqua-dim);
+            border-radius: 4px;
+            padding: 15px;
+        }
+        .stage-box.stage1 { border-color: var(--blue-bright); }
+        .stage-box.stage2 { border-color: var(--purple-bright); }
+        .stage-title {
+            font-weight: 500;
+            margin-bottom: 8px;
+        }
+        .stage-box.stage1 .stage-title { color: var(--blue-bright); }
+        .stage-box.stage2 .stage-title { color: var(--purple-bright); }
+        .stage-content {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+        .stage-input, .stage-model, .stage-output {
+            background: var(--bg-visual);
+            padding: 8px 12px;
+            border-radius: 4px;
+            font-size: 0.85rem;
+        }
+        .stage-model {
+            background: var(--bg0-hard);
+            border: 1px dashed var(--fg-muted);
+            color: var(--green-bright);
+        }
+        .arrow {
+            color: var(--fg-muted);
+        }
+        
+        /* Data flow connector */
+        .data-flow {
+            text-align: center;
+            color: var(--fg-muted);
+            font-size: 1.5rem;
+        }
+        
+        /* Feature list */
+        .feature-list {
+            list-style: none;
+            padding: 0;
+            margin: 15px 0;
+        }
+        .feature-list li {
+            padding: 8px 0;
+            padding-left: 20px;
+            position: relative;
+            color: var(--fg1);
+        }
+        .feature-list li::before {
+            content: "›";
+            position: absolute;
+            left: 0;
+            color: var(--aqua-bright);
+            font-weight: bold;
+        }
+        
+        /* Performance table */
+        .perf-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            font-size: 0.9rem;
+        }
+        .perf-table th, .perf-table td {
+            padding: 12px;
+            text-align: left;
+            border: 1px solid var(--border-color);
+        }
+        .perf-table th {
+            background: var(--bg1);
+            color: var(--fg0);
+        }
+        .perf-table td {
+            background: var(--bg0-hard);
+        }
+        .perf-table .highlight {
+            color: var(--green-bright);
+            font-weight: 500;
+        }
+        
+        /* Images */
+        .content-image {
+            max-width: 100%;
+            border-radius: 4px;
+            border: 1px solid var(--border-color);
+            margin: 20px 0;
+        }
+        .image-caption {
+            font-size: 0.85rem;
+            color: var(--fg-muted);
+            text-align: center;
+            margin-top: -15px;
+            margin-bottom: 20px;
+        }
+        
+        /* Tech stack badges */
+        .tech-stack {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin: 15px 0;
+        }
+        .tech-badge {
+            background: var(--bg1);
+            border: 1px solid var(--border-color);
+            padding: 5px 12px;
+            border-radius: 3px;
+            font-size: 0.85rem;
+            color: var(--fg2);
+        }
+    </style>
+</head>
+<body>
+    <div class="project-container">
+        <div class="back-link">
+            <a href="../index.html">&lt; Back to Portfolio</a>
+        </div>
+
+        <div class="project-header">
+            <div class="header-visual">
+                <div class="wind-icon">🌬️⚡</div>
+                <div class="stages">
+                    <div class="stage"><span class="stage-label">TCN</span> → MW</div>
+                    <div class="stage"><span class="stage-label">XGBoost</span> → €/MWh</div>
+                </div>
+            </div>
+            <div>
+                <h1>Tempestas</h1>
+                <div class="tagline">Wind Energy Production &amp; Price Prediction System</div>
+            </div>
+        </div>
+
+        <div class="content">
+            <p>
+                <a href="https://github.com/gabrielmeleiro1/Tempestas" target="_blank" rel="noopener noreferrer">Tempestas</a> is a comprehensive two-stage machine learning system designed to predict hourly wind energy production (both offshore and onshore) and subsequent wholesale electricity prices in the Netherlands. It leverages meteorological data, historical energy generation records, and electricity market pricing to provide accurate forecasts.
+            </p>
+            
+            <div class="tech-stack">
+                <span class="tech-badge">Python</span>
+                <span class="tech-badge">TensorFlow/Keras</span>
+                <span class="tech-badge">TCN</span>
+                <span class="tech-badge">XGBoost</span>
+                <span class="tech-badge">Pandas</span>
+                <span class="tech-badge">Scikit-learn</span>
+            </div>
+
+            <h2>System Architecture</h2>
+            
+            <p>
+                The system operates in two distinct stages, where the output of the first stage directly feeds into the second:
+            </p>
+            
+            <div class="architecture-diagram">
+                <div class="stage-box stage1">
+                    <div class="stage-title">Stage 1: Wind Power Prediction (TCN)</div>
+                    <div class="stage-content">
+                        <span class="stage-input">Weather Data + Historical Production</span>
+                        <span class="arrow">→</span>
+                        <span class="stage-model">Temporal Convolutional Network</span>
+                        <span class="arrow">→</span>
+                        <span class="stage-output">Predicted MW (Offshore + Onshore)</span>
+                    </div>
+                </div>
+                <div class="data-flow">↓</div>
+                <div class="stage-box stage2">
+                    <div class="stage-title">Stage 2: Electricity Price Prediction (XGBoost)</div>
+                    <div class="stage-content">
+                        <span class="stage-input">Predicted MW + Temporal + Lagged Prices</span>
+                        <span class="arrow">→</span>
+                        <span class="stage-model">XGBoost Regressor</span>
+                        <span class="arrow">→</span>
+                        <span class="stage-output">Predicted €/MWh</span>
+                    </div>
+                </div>
+            </div>
+
+            <h2>Stage 1: Wind Power Prediction</h2>
+            
+            <p>
+                The first stage uses a <strong>Temporal Convolutional Network (TCN)</strong> to forecast hourly wind energy generation. TCNs are particularly well-suited for this task due to their ability to capture long-range temporal dependencies using dilated convolutions while maintaining causality and processing sequences efficiently in parallel.
+            </p>
+            
+            <h3>Input Features</h3>
+            <ul class="feature-list">
+                <li>Wind speed at 100m and 10m heights (m/s)</li>
+                <li>Wind direction at 100m and 10m heights (degrees)</li>
+                <li>Wind gusts at 10m (m/s)</li>
+                <li>Surface pressure (hPa), temperature, humidity</li>
+                <li>Cloud cover (low, mid, high levels)</li>
+                <li>Rainfall, temporal features (cyclical encodings)</li>
+                <li>Lagged energy production values</li>
+            </ul>
+            
+            <h3>TCN Architecture</h3>
+            <ul class="feature-list">
+                <li>Input sequence length: 12 hours</li>
+                <li>21 input features across 23 wind turbine clusters</li>
+                <li>TCN Layer: 16 filters, kernel size 9, dilations [1, 2, 4, 8, 16]</li>
+                <li>4 stacked residual blocks with skip connections</li>
+                <li>Dropout rate: 0.3 for regularization</li>
+                <li>Adam optimizer with learning rate 0.001</li>
+            </ul>
+            
+            <h3>Capacity Normalization</h3>
+            <p>
+                A key challenge in predicting wind power over the 2017-2025 period is the significant growth in installed wind capacity in the Netherlands. To address this, a <strong>rolling capacity proxy</strong> was calculated using a 365-day rolling maximum of total wind power. This allows the model to predict the <em>proportion of capacity utilized</em> rather than raw MW, making predictions robust to capacity changes.
+            </p>
+            
+            <img src="tempestas/calculated_energy_output.png" alt="Capacity Proxy vs Original Power" class="content-image">
+            <p class="image-caption">Calculated capacity proxy (green) vs original offshore (blue) and onshore (red) generation</p>
+
+            <h3>Training Performance</h3>
+            <p>
+                The TCN model was trained on data from 2020-2025 using a chronological train/validation split. The training curves show stable convergence without overfitting:
+            </p>
+            
+            <img src="tempestas/model_loss.png" alt="TCN Training Loss Curves" class="content-image">
+            <p class="image-caption">Training and validation loss (Scaled Normalized MSE) and MAE over epochs</p>
+
+            <h3>Model Performance</h3>
+            <table class="perf-table">
+                <thead>
+                    <tr>
+                        <th>Metric</th>
+                        <th>TCN Model</th>
+                        <th>Persistence (1H)</th>
+                        <th>Persistence (24H)</th>
+                        <th>Simple Average</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>MAE (MW)</td>
+                        <td class="highlight">110.86</td>
+                        <td>112.54</td>
+                        <td>842.01</td>
+                        <td>836.85</td>
+                    </tr>
+                    <tr>
+                        <td>RMSE (MW)</td>
+                        <td class="highlight">164.82</td>
+                        <td>177.38</td>
+                        <td>1186.74</td>
+                        <td>1137.85</td>
+                    </tr>
+                </tbody>
+            </table>
+            
+            <p>
+                The TCN significantly outperforms baseline models, achieving lower MAE and RMSE than even the 1-hour persistence baseline.
+            </p>
+            
+            <img src="tempestas/actual_vs_predicted_MW.png" alt="Actual vs Predicted MW" class="content-image">
+            <p class="image-caption">Actual vs predicted wind power output for the test set</p>
+
+            <h2>Stage 2: Electricity Price Prediction</h2>
+            
+            <p>
+                The second stage uses an <strong>XGBoost regressor</strong> to predict hourly wholesale electricity prices (€/MWh). XGBoost was chosen for its robustness with tabular data, ability to handle non-linear relationships, and effective feature interaction modeling.
+            </p>
+            
+            <h3>Input Features</h3>
+            <ul class="feature-list">
+                <li>Predicted offshore and onshore wind power (from Stage 1)</li>
+                <li>Temporal features (hour, day, month with cyclical encoding)</li>
+                <li>Lagged electricity price values (1h, 24h, etc.)</li>
+            </ul>
+            
+            <h3>XGBoost Configuration</h3>
+            <ul class="feature-list">
+                <li>Maximum estimators: 1000 (with early stopping)</li>
+                <li>Learning rate: 0.017</li>
+                <li>Maximum depth: 7</li>
+                <li>Subsample: 0.7</li>
+                <li>Regularization: L1 (α=0.17) and L2 (λ=3.76×10⁻⁶)</li>
+            </ul>
+            
+            <h3>Feature Importance</h3>
+            <p>
+                Analysis of the trained model revealed the most influential features for Dutch electricity price prediction:
+            </p>
+            <ol class="feature-list">
+                <li><strong>Predicted Offshore Wind Energy</strong> (from Stage 1)</li>
+                <li>Price lag 1 hour</li>
+                <li>Hour of the day (cyclical)</li>
+                <li><strong>Predicted Onshore Wind Energy</strong> (from Stage 1)</li>
+                <li>Day of the year (cyclical)</li>
+            </ol>
+            
+            <p>
+                The prominence of predicted wind power features validates the two-stage architecture: accurate wind forecasts from Stage 1 are critical inputs for price prediction.
+            </p>
+            
+            <img src="tempestas/energy_price_prediction.png" alt="Price Prediction Performance" class="content-image">
+            <p class="image-caption">Predicted vs actual wholesale electricity prices on the test set</p>
+
+            <h2>Data Sources</h2>
+            
+            <p>The system utilizes data from several publicly available sources:</p>
+            
+            <h4>Weather Data</h4>
+            <p>
+                Hourly data from 2017-2025 for 23 wind turbine clusters (9 offshore, 14 onshore) across the Netherlands, sourced via the <a href="https://open-meteo.com/en/docs/historical-weather-api" target="_blank">Open-Meteo Historical Weather API</a>.
+            </p>
+            
+            <h4>Energy Production Data</h4>
+            <p>
+                Hourly offshore/onshore wind production (MW) from <a href="https://ned.nl/nl/dataportaal/energie-productie/elektriciteit/windenergie-op-zee" target="_blank">NED.NL</a> and the <a href="https://transparency.entsoe.eu/dashboard/show" target="_blank">ENTSO-E Transparency Platform</a>.
+            </p>
+            
+            <h4>Electricity Price Data</h4>
+            <p>
+                Hourly wholesale prices (€/MWh) from the <a href="https://ember-energy.org/data/european-wholesale-electricity-price-data" target="_blank">Ember Energy Data Repository</a>.
+            </p>
+
+            <h2>Data Processing Pipeline</h2>
+            
+            <p>
+                Raw data undergoes several processing steps before model training:
+            </p>
+            
+            <ul class="feature-list">
+                <li><strong>Time Zone Alignment:</strong> All timestamps converted to UTC</li>
+                <li><strong>Cyclical Encoding:</strong> Temporal features (hour, day, month) encoded using sine/cosine transformations</li>
+                <li><strong>Missing Value Handling:</strong> Linear interpolation for time series gaps</li>
+                <li><strong>Feature Aggregation:</strong> Weather data combined across clusters (offshore/onshore)</li>
+                <li><strong>Capacity Normalization:</strong> Rolling maximum proxy for capacity changes</li>
+                <li><strong>Robust Scaling:</strong> Input features scaled for model training</li>
+            </ul>
+
+            <h2>Future Directions</h2>
+            
+            <ul class="feature-list">
+                <li><strong>Solar Integration:</strong> Add solar production data for comprehensive renewable forecasting</li>
+                <li><strong>Cross-Border Markets:</strong> Extend to neighboring electricity markets with flow data</li>
+                <li><strong>Advanced Features:</strong> Grid congestion, reserve margins, demand forecasts</li>
+                <li><strong>Model Exploration:</strong> Transformers for time series, ensemble methods</li>
+                <li><strong>Real-time Deployment:</strong> Near real-time data ingestion and prediction pipeline</li>
+            </ul>
+
+            <div class="project-footer">
+                <p>
+                    For more details and the full codebase, check out the <a href="https://github.com/gabrielmeleiro1/Tempestas" target="_blank" rel="noopener noreferrer">Tempestas GitHub repository</a>.
+                </p>
+                <p>Last updated: January 2026</p>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
