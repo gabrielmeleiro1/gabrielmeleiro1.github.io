@@ -1,1 +1,5 @@
 CLAUDE.md
+*.avi
+*.mov
+*.mp4
+.DS_Store

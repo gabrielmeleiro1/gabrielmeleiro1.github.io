@@ -3,84 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gabriel Meleiro - Portfolio</title>
+    <meta name="description" content="Gabriel Meleiro's portfolio of machine learning, data science, and finance engineering projects.">
+    <meta property="og:title" content="Gabriel Meleiro - Machine Learning and Finance Portfolio">
+    <meta property="og:description" content="Projects in forecasting, energy markets, and high-performance trading systems.">
+    <meta property="og:type" content="website">
+    <title>Gabriel Meleiro - Machine Learning and Finance Portfolio</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="style.css">
-    <style>
-        /* Footer social links */
-        .social-links {
-            display: flex;
-            justify-content: center;
-            gap: 20px;
-            margin-bottom: 10px;
-        }
-        .social-link {
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            color: var(--aqua-dim);
-            text-decoration: none;
-            padding: 8px 12px;
-            border-radius: 4px;
-            transition: all 0.2s ease;
-        }
-        .social-link:hover {
-            color: var(--link-hover);
-            background: var(--bg1);
-        }
-        .social-icon {
-            font-size: 1.1rem;
-        }
-        
-        /* Coming soon card */
-        .project-card.coming-soon {
-            background: linear-gradient(135deg, var(--bg0-hard) 0%, var(--bg1) 100%);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            min-height: 200px;
-            position: relative;
-            overflow: hidden;
-        }
-        .project-card.coming-soon::before {
-            content: "";
-            position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: linear-gradient(
-                45deg,
-                transparent 40%,
-                rgba(142, 192, 124, 0.03) 50%,
-                transparent 60%
-            );
-            animation: shimmer 3s infinite linear;
-        }
-        @keyframes shimmer {
-            0% { transform: translateX(-100%) rotate(45deg); }
-            100% { transform: translateX(100%) rotate(45deg); }
-        }
-        .coming-soon-content {
-            text-align: center;
-            z-index: 1;
-        }
-        .coming-soon-text {
-            color: var(--fg-muted);
-            font-size: 1rem;
-            font-weight: 500;
-        }
-        .coming-soon-dots {
-            display: inline-block;
-            animation: pulse 1.5s infinite;
-        }
-        @keyframes pulse {
-            0%, 100% { opacity: 0.4; }
-            50% { opacity: 1; }
-        }
-    </style>
+    <link rel="stylesheet" href="style.css?v=20260507">
 </head>
 <body>
     <div class="container">
@@ -100,26 +31,39 @@
                     <div class="project-info">
                         <h3><a href="projects/tempestas.html">Tempestas</a></h3>
                         <p>Two-stage ML system for wind energy production and electricity price prediction using TCN and XGBoost.</p>
+                        <div class="project-tags" aria-label="Tempestas technologies">
+                            <span>TCN</span>
+                            <span>XGBoost</span>
+                            <span>Forecasting</span>
+                            <span>Energy Markets</span>
+                        </div>
+                        <div class="project-outcome">
+                            <span class="metric-pill">110.86 MW MAE</span>
+                            <span class="metric-pill">2-stage ML pipeline</span>
+                        </div>
                     </div>
                 </div>
 
                 <div class="project-card">
                     <a href="projects/pegasus.html">
-                        <img src="ezgif.com-crop.gif" alt="Pegasus Trading System Console">
+                        <img src="projects/pegasus-preview.webp" alt="Pegasus Trading System Console">
                     </a>
                     <div class="project-info">
                         <h3><a href="projects/pegasus.html">Pegasus</a></h3>
-                        <p>High-performance limit order book system with multi-threading support for financial trading applications.</p>
-                    </div>
-                </div>
-
-                <div class="project-card coming-soon">
-                    <div class="coming-soon-content">
-                        <div class="coming-soon-text">Coming Soon<span class="coming-soon-dots">...</span></div>
+                        <p>C++ limit order book with price-time priority matching, structured executions, and multi-symbol threading.</p>
+                        <div class="project-tags" aria-label="Pegasus technologies">
+                            <span>C++17</span>
+                            <span>Order Book</span>
+                            <span>Execution Reports</span>
+                            <span>Concurrency</span>
+                        </div>
+                        <div class="project-outcome">
+                            <span class="metric-pill">O(1) best bid/ask</span>
+                            <span class="metric-pill">Regression-tested matching core</span>
+                        </div>
                     </div>
                 </div>
             </div>
-
         </main>
 
         <footer>

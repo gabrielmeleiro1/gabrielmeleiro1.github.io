@@ -3,11 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gabriel Meleiro - Tempestas</title>
+    <meta name="description" content="Tempestas is Gabriel Meleiro's two-stage wind production and electricity price forecasting project using TCN and XGBoost.">
+    <meta property="og:title" content="Tempestas - Wind Energy and Price Forecasting">
+    <meta property="og:description" content="A case study on forecasting Dutch wind production and wholesale electricity prices with TCN and XGBoost.">
+    <meta property="og:type" content="website">
+    <title>Tempestas - Wind Energy and Price Forecasting</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="../style.css">
+    <link rel="stylesheet" href="../style.css?v=20260507">
     <style>
         body {
            background-color: var(--bg0);
@@ -448,17 +452,17 @@
             
             <h4>Weather Data</h4>
             <p>
-                Hourly data from 2017-2025 for 23 wind turbine clusters (9 offshore, 14 onshore) across the Netherlands, sourced via the <a href="https://open-meteo.com/en/docs/historical-weather-api" target="_blank">Open-Meteo Historical Weather API</a>.
+                Hourly data from 2017-2025 for 23 wind turbine clusters (9 offshore, 14 onshore) across the Netherlands, sourced via the <a href="https://open-meteo.com/en/docs/historical-weather-api" target="_blank" rel="noopener noreferrer">Open-Meteo Historical Weather API</a>.
             </p>
             
             <h4>Energy Production Data</h4>
             <p>
-                Hourly offshore/onshore wind production (MW) from <a href="https://ned.nl/nl/dataportaal/energie-productie/elektriciteit/windenergie-op-zee" target="_blank">NED.NL</a> and the <a href="https://transparency.entsoe.eu/dashboard/show" target="_blank">ENTSO-E Transparency Platform</a>.
+                Hourly offshore/onshore wind production (MW) from <a href="https://ned.nl/nl/dataportaal/energie-productie/elektriciteit/windenergie-op-zee" target="_blank" rel="noopener noreferrer">NED.NL</a> and the <a href="https://transparency.entsoe.eu/dashboard/show" target="_blank" rel="noopener noreferrer">ENTSO-E Transparency Platform</a>.
             </p>
             
             <h4>Electricity Price Data</h4>
             <p>
-                Hourly wholesale prices (€/MWh) from the <a href="https://ember-energy.org/data/european-wholesale-electricity-price-data" target="_blank">Ember Energy Data Repository</a>.
+                Hourly wholesale prices (€/MWh) from the <a href="https://ember-energy.org/data/european-wholesale-electricity-price-data" target="_blank" rel="noopener noreferrer">Ember Energy Data Repository</a>.
             </p>
 
             <h2>Data Processing Pipeline</h2>
