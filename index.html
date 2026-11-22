@@ -3,79 +3,156 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Gabriel Meleiro's portfolio of machine learning, data science, and finance engineering projects.">
-    <meta property="og:title" content="Gabriel Meleiro - Machine Learning and Finance Portfolio">
-    <meta property="og:description" content="Projects in forecasting, energy markets, and high-performance trading systems.">
+    <meta name="description" content="Gabriel Meleiro builds machine learning systems and the software around them. Current project: Orpheus, a desktop app that turns books into audiobooks entirely on your own machine.">
+    <meta property="og:title" content="Gabriel Meleiro - Machine Learning and Software">
+    <meta property="og:description" content="Orpheus, on-device audiobook conversion, plus projects in energy forecasting and dataset infrastructure.">
     <meta property="og:type" content="website">
-    <title>Gabriel Meleiro - Machine Learning and Finance Portfolio</title>
+    <meta property="og:image" content="https://gabrielmeleiro1.github.io/projects/orpheus/og.jpg">
+    <title>Gabriel Meleiro - Machine Learning and Software</title>
+    <link rel="icon" href="favicon.svg" type="image/svg+xml">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="style.css?v=20260507">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Serif&display=swap">
+    <link rel="stylesheet" href="style.css?v=202611222">
+    <script src="scripts/theme.js?v=202611217"></script>
+    <script src="scripts/descent.js?v=202611222" defer></script>
 </head>
 <body>
-    <div class="container">
-        <header>
-            <h1>&gt; Gabriel Meleiro</h1>
-            <div class="subtitle"> Data Science, Machine Learning &amp; Finance</div>
+    <div class="page">
+        <header class="site-header">
+            <nav class="site-nav" aria-label="Primary">
+                <a class="nav-link" href="#orpheus">Orpheus</a>
+                <a class="nav-link" href="#work">Work</a>
+                <a class="nav-link" href="#about">About</a>
+                <button class="theme-toggle" type="button" data-theme-toggle aria-label="Switch theme">
+                    <svg class="icon-moon" viewBox="0 0 16 16" aria-hidden="true"><path d="M13.5 9.6A5.75 5.75 0 0 1 6.4 2.5a5.75 5.75 0 1 0 7.1 7.1Z"/></svg>
+                    <svg class="icon-sun" viewBox="0 0 16 16" aria-hidden="true"><circle cx="8" cy="8" r="3"/><path d="M8 1v1.5M8 13.5V15M1 8h1.5M13.5 8H15M3.05 3.05l1.06 1.06M11.89 11.89l1.06 1.06M3.05 12.95l1.06-1.06M11.89 4.11l1.06-1.06"/></svg>
+                </button>
+            </nav>
         </header>
 
         <main>
-            <h2>Projects</h2>
-
-            <div class="project-grid">
-                <div class="project-card">
-                    <a href="projects/tempestas.html">
-                        <img src="projects/tempestas/energy_price_prediction.png" alt="Tempestas Energy Price Prediction">
-                    </a>
-                    <div class="project-info">
-                        <h3><a href="projects/tempestas.html">Tempestas</a></h3>
-                        <p>Two-stage ML system for wind energy production and electricity price prediction using TCN and XGBoost.</p>
-                        <div class="project-tags" aria-label="Tempestas technologies">
-                            <span>TCN</span>
-                            <span>XGBoost</span>
-                            <span>Forecasting</span>
-                            <span>Energy Markets</span>
-                        </div>
-                        <div class="project-outcome">
-                            <span class="metric-pill">110.86 MW MAE</span>
-                            <span class="metric-pill">2-stage ML pipeline</span>
-                        </div>
+            <section class="hero">
+                <h1 class="hero-name"><span>Gabriel Meleiro</span></h1>
+                <div class="hero-foot">
+                    <div class="text-links">
+                        <a href="https://github.com/gabrielmeleiro1" target="_blank" rel="noopener noreferrer">GitHub <span aria-hidden="true">&nearr;</span></a>
+                        <a href="https://www.linkedin.com/in/gabriel-meleiro-1a1661328/" target="_blank" rel="noopener noreferrer">LinkedIn <span aria-hidden="true">&nearr;</span></a>
                     </div>
+                    <a class="scroll-cue" href="#orpheus">Work <span aria-hidden="true">&darr;</span></a>
+                </div>
+            </section>
+
+            <section class="feature" id="orpheus" aria-labelledby="feature-title">
+                <div class="feature-head">
+                    <p class="eyebrow"><span class="eyebrow-num">01</span> Current project</p>
+                    <h2 class="feature-title" id="feature-title"><a href="projects/orpheus.html">Orpheus</a></h2>
+                    <p class="feature-lede">
+                        It turns PDF, EPUB, Markdown and plain text files into
+                        audiobooks, with a Tauri and React app sitting on top of a
+                        Python engine and the speech models running on your own
+                        hardware through MLX or CUDA.
+                    </p>
                 </div>
 
-                <div class="project-card">
-                    <a href="projects/pegasus.html">
-                        <img src="projects/pegasus-preview.webp" alt="Pegasus Trading System Console">
-                    </a>
-                    <div class="project-info">
-                        <h3><a href="projects/pegasus.html">Pegasus</a></h3>
-                        <p>C++ limit order book with price-time priority matching, structured executions, and multi-symbol threading.</p>
-                        <div class="project-tags" aria-label="Pegasus technologies">
-                            <span>C++17</span>
-                            <span>Order Book</span>
-                            <span>Execution Reports</span>
-                            <span>Concurrency</span>
-                        </div>
-                        <div class="project-outcome">
-                            <span class="metric-pill">O(1) best bid/ask</span>
-                            <span class="metric-pill">Regression-tested matching core</span>
-                        </div>
+                <figure class="feature-media">
+                    <div class="feature-media-inner">
+                        <img src="projects/orpheus/create.webp" width="2000" height="1250" alt="Orpheus converting The Wind in the Willows: the queue shows 21 percent, chapter 3 of 12, cleaning, with the library in the sidebar and the player docked at the bottom.">
                     </div>
+                    <figcaption>A book converting in the background while another one plays.</figcaption>
+                </figure>
+
+                <div class="feature-actions">
+                    <a class="button" href="projects/orpheus.html">Read the case study <span aria-hidden="true">&rarr;</span></a>
+                    <a class="text-link" href="https://github.com/gabrielmeleiro1/Orpheus" target="_blank" rel="noopener noreferrer">Source <span aria-hidden="true">&nearr;</span></a>
                 </div>
-            </div>
+            </section>
+
+            <section class="section" id="work">
+                <div class="section-head">
+                    <h2 class="section-title">More work</h2>
+                </div>
+
+                <ol class="ledger">
+                    <li>
+                        <a class="ledger-row" href="projects/tempestas.html">
+                            <span class="ledger-num">02</span>
+                            <span class="ledger-main">
+                                <span class="ledger-name">Tempestas</span>
+                                <span class="ledger-desc">
+                                    Forecasting for the Dutch energy market, where a
+                                    TCN predicts wind generation and XGBoost turns
+                                    that forecast into an electricity price.
+                                </span>
+                            </span>
+                            <span class="ledger-arrow" aria-hidden="true">&rarr;</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a class="ledger-row" href="projects/openml-upload.html">
+                            <span class="ledger-num">03</span>
+                            <span class="ledger-main">
+                                <span class="ledger-name">OpenML Upload</span>
+                                <span class="ledger-desc">
+                                    A school project for getting datasets onto
+                                    OpenML when they don't fit its Croissant format,
+                                    with every file held in quarantine until it has
+                                    been scanned and reviewed.
+                                </span>
+                            </span>
+                            <span class="ledger-arrow" aria-hidden="true">&rarr;</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a class="ledger-row" href="projects/pegasus.html">
+                            <span class="ledger-num">04</span>
+                            <span class="ledger-main">
+                                <span class="ledger-name">Pegasus</span>
+                                <span class="ledger-desc">
+                                    A limit order book in C++ that matches orders by
+                                    price and then by time, and names both sides of
+                                    every fill.
+                                </span>
+                            </span>
+                            <span class="ledger-arrow" aria-hidden="true">&rarr;</span>
+                        </a>
+                    </li>
+                </ol>
+            </section>
+
+            <section class="section" id="about">
+                <div class="section-head">
+                    <h2 class="section-title">About</h2>
+                </div>
+                <div class="about">
+                    <div class="prose">
+                        <p>
+                            Most of my projects start with a fairly simple question,
+                            like whether something can be predicted or whether it'll
+                            run on a laptop, and I like seeing them through to
+                            software that actually works. That means doing the
+                            <strong>modelling</strong> and the
+                            <strong>engineering</strong> that ships it, and I enjoy
+                            both.
+                        </p>
+                    </div>
+
+                    <dl class="stack-list">
+                        <div class="stack-item">
+                            <dt class="stack-label">Modelling</dt>
+                            <dd class="stack-value">PyTorch, TensorFlow, XGBoost, scikit-learn, pandas, MLX</dd>
+                        </div>
+                        <div class="stack-item">
+                            <dt class="stack-label">Engineering</dt>
+                            <dd class="stack-value">Python, TypeScript, FastAPI, React, Tauri / Rust, PostgreSQL, Docker</dd>
+                        </div>
+                    </dl>
+                </div>
+            </section>
         </main>
 
-        <footer>
-            <div class="social-links">
-                <a href="https://github.com/gabrielmeleiro1" target="_blank" rel="noopener noreferrer" class="social-link">
-                    <span class="social-icon">⌘</span> GitHub
-                </a>
-                <a href="https://www.linkedin.com/in/gabriel-meleiro-1a1661328/" target="_blank" rel="noopener noreferrer" class="social-link">
-                    <span class="social-icon">in</span> LinkedIn
-                </a>
-            </div>
-            <p>&copy; 2026 Gabriel Meleiro</p>
+        <footer class="site-footer">
+            <span>&copy; 2026 Gabriel Meleiro</span>
         </footer>
     </div>
 </body>

@@ -8,171 +8,168 @@
     <meta property="og:description" content="A trading systems project covering limit and market order matching, execution reports, order book snapshots, concurrency, and regression tests.">
     <meta property="og:type" content="website">
     <title>Pegasus - C++ Limit Order Book Case Study</title>
+    <link rel="icon" href="../favicon.svg" type="image/svg+xml">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="../style.css?v=20260507">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Serif&display=swap">
+    <link rel="stylesheet" href="../style.css?v=202611222">
+    <script src="../scripts/theme.js?v=202611217"></script>
 </head>
 <body>
-    <div class="project-container">
-        <div class="back-link">
-            <a href="../index.html">&lt; Back to Portfolio</a>
-        </div>
+    <div class="page">
+        <header class="site-header">
+            <a class="back-link" href="../index.html">&larr; Gabriel Meleiro</a>
+            <nav class="site-nav" aria-label="Primary">
+                <a class="nav-link" href="../index.html#work">Work</a>
+                <a class="nav-link" href="../index.html#about">About</a>
+                <button class="theme-toggle" type="button" data-theme-toggle aria-label="Switch theme">
+                    <svg class="icon-moon" viewBox="0 0 16 16" aria-hidden="true"><path d="M13.5 9.6A5.75 5.75 0 0 1 6.4 2.5a5.75 5.75 0 1 0 7.1 7.1Z"/></svg>
+                    <svg class="icon-sun" viewBox="0 0 16 16" aria-hidden="true"><circle cx="8" cy="8" r="3"/><path d="M8 1v1.5M8 13.5V15M1 8h1.5M13.5 8H15M3.05 3.05l1.06 1.06M11.89 11.89l1.06 1.06M3.05 12.95l1.06-1.06M11.89 4.11l1.06-1.06"/></svg>
+                </button>
+            </nav>
+        </header>
 
-        <div class="project-header">
-            <img src="pegasus-preview.webp" alt="Pegasus Trading System Console">
-            <div>
-                <h1>Pegasus</h1>
-                <div class="tagline">C++ Limit Order Book &amp; Matching Engine</div>
-            </div>
-        </div>
-
-        <div class="content">
-            <p>
-                <a href="https://github.com/gabrielmeleiro1/Pegasus" target="_blank" rel="noopener noreferrer">Pegasus</a> is a C++17 trading-systems project built around a price-time priority limit order book. The current implementation supports limit and market order matching, emits structured execution reports, exposes non-mutating depth snapshots, and includes regression tests for the matching core.
-            </p>
-
-            <div class="tech-stack">
-                <span class="tech-badge">C++17</span>
-                <span class="tech-badge">Order Book</span>
-                <span class="tech-badge">Matching Engine</span>
-                <span class="tech-badge">Execution Reports</span>
-                <span class="tech-badge">Depth Snapshots</span>
-                <span class="tech-badge">Concurrency</span>
-            </div>
-
-            <div class="case-study-summary" aria-label="Pegasus project summary">
-                <div class="summary-item">
-                    <span class="summary-label">Core Result</span>
-                    <span class="summary-value">Price-time priority matching with O(1) top-of-book access</span>
+        <main>
+            <header class="case-hero">
+                <p class="eyebrow">Trading systems</p>
+                <h1 class="case-title">Pegasus</h1>
+                <p class="case-tagline">A limit order book in C++ that matches orders by price and then by time.</p>
+                <div class="case-meta">
+                    <a class="text-link" href="https://github.com/gabrielmeleiro1/Pegasus" target="_blank" rel="noopener noreferrer">Source <span aria-hidden="true">&nearr;</span></a>
+                    <span class="case-stack">C++17 · fixed-point prices · per-symbol threads</span>
                 </div>
-                <div class="summary-item">
-                    <span class="summary-label">Current Scope</span>
-                    <span class="summary-value">Limit and market orders; stop-limit is represented but rejected until triggers exist</span>
+            </header>
+
+            <dl class="stat-row">
+                <div class="stat"><dt>best bid / ask</dt><dd>O(1)</dd></div>
+                <div class="stat"><dt>order lookup on cancel</dt><dd>O(1)</dd></div>
+                <div class="stat"><dt>core regression cases</dt><dd>4</dd></div>
+            </dl>
+
+            <figure class="stage">
+                <div class="diagram" role="img" aria-label="Diagram: an order book ladder with asks above the spread and bids below, each price level holding a first-in, first-out queue of orders. A market buy fills against the oldest order at the best ask and produces a fill report naming price, quantity, taker, and maker. An order-id index points straight to queue nodes so cancels need no scan.">
+                        <svg viewBox="0 20 960 320" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                        <defs><marker id="arrP" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L8,4 L0,8 z" class="d-arrow"/></marker></defs>
+                        <text class="d-zone-neg-label" x="440" y="40" text-anchor="end">asks</text>
+                        <text class="d-zone-ok-label" x="440" y="320" text-anchor="end">bids</text>
+                        <line class="d-tree" x1="380" y1="170" x2="700" y2="170" stroke-dasharray="3 4"/>
+                        <text class="d-edge-label" x="372" y="174" text-anchor="end">spread</text>
+                        <text class="d-edge-label" x="470" y="40">oldest first &#8594;</text>
+                        <text class="d-price" x="440" y="65" text-anchor="end">101.50</text>
+                        <rect class="d-ask" x="470" y="48" width="34" height="24" rx="4"></rect>
+                        <rect class="d-ask" x="510" y="48" width="52" height="24" rx="4"></rect>
+                        <rect class="d-ask" x="568" y="48" width="28" height="24" rx="4"></rect>
+                        <text class="d-price" x="440" y="105" text-anchor="end">101.25</text>
+                        <rect class="d-ask" x="470" y="88" width="44" height="24" rx="4"></rect>
+                        <rect class="d-ask" x="520" y="88" width="30" height="24" rx="4"></rect>
+                        <rect class="d-ask" x="556" y="88" width="56" height="24" rx="4"></rect>
+                        <rect class="d-ask" x="618" y="88" width="36" height="24" rx="4"></rect>
+                        <text class="d-price-on" x="440" y="145" text-anchor="end">101.00</text>
+                        <rect class="d-maker" x="470" y="128" width="30" height="24" rx="4"><animate attributeName="opacity" values="1;0.45;1" dur="3s" repeatCount="indefinite"/></rect>
+                        <rect class="d-ask" x="506" y="128" width="48" height="24" rx="4"></rect>
+                        <rect class="d-ask" x="560" y="128" width="40" height="24" rx="4"></rect>
+                        <text class="d-price" x="440" y="205" text-anchor="end">100.75</text>
+                        <rect class="d-bid" x="470" y="188" width="50" height="24" rx="4"></rect>
+                        <rect class="d-bid" x="526" y="188" width="32" height="24" rx="4"></rect>
+                        <rect class="d-bid" x="564" y="188" width="44" height="24" rx="4"></rect>
+                        <text class="d-price" x="440" y="245" text-anchor="end">100.50</text>
+                        <rect class="d-bid" x="470" y="228" width="36" height="24" rx="4"></rect>
+                        <rect class="d-bid" x="512" y="228" width="58" height="24" rx="4"></rect>
+                        <rect class="d-bid" x="576" y="228" width="30" height="24" rx="4"></rect>
+                        <rect class="d-bid" x="612" y="228" width="42" height="24" rx="4"></rect>
+                        <text class="d-price" x="440" y="285" text-anchor="end">100.25</text>
+                        <rect class="d-bid" x="470" y="268" width="46" height="24" rx="4"></rect>
+                        <rect class="d-bid" x="522" y="268" width="34" height="24" rx="4"></rect>
+                        <text class="d-edge-label" x="312" y="130" text-anchor="middle">best ask</text>
+                        <text class="d-edge-label" x="485" y="166" text-anchor="middle">maker</text>
+                        <rect class="d-model" x="40" y="106" width="200" height="68" rx="10"/>
+                        <text class="d-label" x="60" y="134">Market buy</text>
+                        <text class="d-sub" x="60" y="154">the taker, qty 30</text>
+                        <path id="flowP" class="d-edge" d="M240,140 L384,140" marker-end="url(#arrP)"/>
+                        <rect class="d-token" x="-6" y="-6" width="12" height="12" rx="3"><animateMotion dur="3s" repeatCount="indefinite"><mpath href="#flowP"/></animateMotion></rect>
+                        <rect class="d-node" x="40" y="214" width="200" height="96" rx="10"/>
+                        <text class="d-label" x="60" y="240">Order-id index</text>
+                        <text class="d-price" x="60" y="264">#507</text><text class="d-sub" x="110" y="264">&#8594; its queue node</text>
+                        <text class="d-price" x="60" y="282">#511</text><text class="d-sub" x="110" y="282">&#8594; its queue node</text>
+                        <text class="d-price" x="60" y="300">#519</text><text class="d-sub" x="110" y="300">&#8594; its queue node</text>
+                        <path class="d-edge" d="M240,278 C330,278 400,262 520,252" stroke-dasharray="4 4" marker-end="url(#arrP)"/>
+                        <text class="d-edge-label" x="330" y="296">cancel, no scan</text>
+                        <path class="d-edge" d="M500,140 C520,140 520,184 560,184 L744,184" marker-end="url(#arrP)"/>
+                        <rect class="d-node" x="752" y="138" width="188" height="92" rx="10"/>
+                        <text class="d-stage" x="770" y="162">FILL</text>
+                        <text class="d-price" x="770" y="186">101.00 × 30</text>
+                        <text class="d-sub" x="770" y="206">taker #812, maker #507</text>
+                        <text class="d-sub" x="770" y="221">aggressor: buy</text>
+                        </svg>
                 </div>
-                <div class="summary-item">
-                    <span class="summary-label">Validation</span>
-                    <span class="summary-value">Regression tests cover crossing, partial fills, market orders, and snapshots</span>
-                </div>
-            </div>
+                <figcaption>
+                    The prices are made up. A taker fills against the oldest order
+                    at the best price, and every fill names both sides.
+                </figcaption>
+            </figure>
 
-            <h2>Problem</h2>
-            <p>
-                A trading engine has to maintain strict price-time priority while handling frequent inserts, cancellations, executions, and top-of-book reads. The important engineering constraint is correctness under mutation: matching must update both taker and maker orders, cancellation should not scan the whole book, and read-only depth views must not accidentally change book state.
-            </p>
+            <div class="story">
+                <p class="lede">
+                    Pegasus is an order book and matching engine written in C++17.
+                    It takes buy and sell orders, matches them by price and then by
+                    when they arrived, and reports every trade it makes.
+                </p>
 
-            <h2>Approach</h2>
-            <p>
-                Pegasus stores bids and asks in ordered price maps, with each price level holding orders in FIFO order. Active orders are also indexed by order id for direct lookup. Internally, price levels use fixed-point keys so floating-point price input does not create unstable map lookups.
-            </p>
+                <h2>How matching works</h2>
+                <p>
+                    Bids and asks live in sorted maps keyed by price, and every
+                    price level keeps its orders in a queue. When a new order can
+                    trade it's matched against the best price on the other side,
+                    oldest order first, and whatever is left of a limit order joins
+                    the queue at its own price. Market orders take what's available
+                    and never rest on the book.
+                </p>
+                <p>
+                    Each fill comes with a report showing the price, the size, which
+                    side started the trade and the ids of both orders.
+                </p>
 
-            <div class="architecture-diagram">
-                <div class="stage-box stage1">
-                    <div class="stage-title">Order Entry</div>
-                    <div class="stage-content">
-                        <span class="stage-input">Limit / Market / Cancel</span>
-                        <span class="arrow">-&gt;</span>
-                        <span class="stage-model">OrderBook API</span>
-                        <span class="arrow">-&gt;</span>
-                        <span class="stage-output">Validation + Routing</span>
-                    </div>
-                </div>
-                <div class="data-flow">v</div>
-                <div class="stage-box stage2">
-                    <div class="stage-title">Matching Core</div>
-                    <div class="stage-content">
-                        <span class="stage-input">Bid / Ask Price Maps</span>
-                        <span class="arrow">-&gt;</span>
-                        <span class="stage-model">Price-Time Priority</span>
-                        <span class="arrow">-&gt;</span>
-                        <span class="stage-output">Execution Reports</span>
-                    </div>
-                </div>
-                <div class="data-flow">v</div>
-                <div class="stage-box stage3">
-                    <div class="stage-title">Read + Threading Layer</div>
-                    <div class="stage-content">
-                        <span class="stage-input">Depth Snapshots</span>
-                        <span class="stage-model">and</span>
-                        <span class="stage-output">Per-Symbol Processing</span>
-                    </div>
-                </div>
-            </div>
+                <h2>Smaller details</h2>
+                <p>
+                    Prices arrive as floating point numbers, which don't work well
+                    as map keys, so internally they're stored as fixed-point
+                    integers. For cancels there's a separate index from each order
+                    id straight to its spot in the queue, which saves searching the
+                    whole book. And anything that reads the book for display goes
+                    through its own methods, which can't change it.
+                </p>
 
-            <h3>Current Capabilities</h3>
-            <ul class="feature-list">
-                <li><strong>Limit orders:</strong> cross immediately when prices are compatible and rest remaining quantity.</li>
-                <li><strong>Market orders:</strong> consume available liquidity and never rest unfilled quantity.</li>
-                <li><strong>Execution reports:</strong> each fill includes symbol, price, quantity, aggressor side, taker order id, and maker order id.</li>
-                <li><strong>Depth snapshots:</strong> bid and ask level reads are non-mutating and safe for display or reporting.</li>
-                <li><strong>Stop-limit scope:</strong> the enum exists, but the matching engine rejects it until trigger handling is implemented.</li>
-            </ul>
+                <h2>Testing</h2>
+                <p>
+                    The regression tests cover crossing orders, partial fills,
+                    market orders that run out of liquidity and snapshots that leave
+                    the book untouched. There's also an ETH/USD simulation and a
+                    benchmark harness, and each symbol can run on its own thread
+                    while keeping strict ordering inside its book.
+                </p>
 
-            <h2>Results</h2>
-            <table class="perf-table">
-                <thead>
-                    <tr>
-                        <th>Capability</th>
-                        <th>Implementation Choice</th>
-                        <th>Outcome</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>Best bid / ask</td>
-                        <td>Ordered bid and ask maps</td>
-                        <td class="highlight">O(1) access to top-of-book prices</td>
-                    </tr>
-                    <tr>
-                        <td>Cancel order</td>
-                        <td>Order-id lookup table</td>
-                        <td class="highlight">O(1) order lookup before removal</td>
-                    </tr>
-                    <tr>
-                        <td>Same-price matching</td>
-                        <td>FIFO list at each limit</td>
-                        <td class="highlight">Preserves price-time priority</td>
-                    </tr>
-                    <tr>
-                        <td>Depth display</td>
-                        <td>Explicit snapshot methods</td>
-                        <td class="highlight">Read path does not mutate the book</td>
-                    </tr>
-                </tbody>
-            </table>
+                <figure class="figure figure--shot">
+                    <img src="pegasus-preview.webp" alt="Pegasus trading system console showing the order book on startup" loading="lazy">
+                    <figcaption>The Pegasus console on startup.</figcaption>
+                </figure>
 
-            <h2>Regression Tests</h2>
-            <p>
-                The project now includes a regression test build script for core matching behavior.
-            </p>
-<pre><code>./build_scripts/build_tests.sh</code></pre>
-            <ul class="feature-list">
-                <li>Crossing limit orders match through <code>addOrder</code>.</li>
-                <li>Partially filled limit orders rest remaining quantity.</li>
-                <li>Market orders do not rest unfilled quantity.</li>
-                <li>Depth snapshot reads preserve best bid and ask state.</li>
-            </ul>
-
-            <h2>Simulation &amp; Benchmarking</h2>
-            <p>
-                Pegasus also includes an ETH/USD simulation, benchmarking infrastructure, and multiple threading examples. The threading layer is designed around symbol isolation, where independent symbols can be processed in parallel while preserving strict ordering inside each symbol's book.
-            </p>
-
-            <h2>Next Steps</h2>
-            <ul class="feature-list">
-                <li>Implement trigger handling for stop-limit orders.</li>
-                <li>Expand benchmark reporting for latency percentiles and throughput comparisons.</li>
-                <li>Add more order constraints such as time-in-force and execution policies.</li>
-            </ul>
-
-            <div class="project-actions">
-                <a class="project-link" href="https://github.com/gabrielmeleiro1/Pegasus" target="_blank" rel="noopener noreferrer">View GitHub Repository</a>
+                <p>
+                    Stop-limit orders exist in the code but get rejected for now,
+                    because the triggers aren't built yet. That's next, and after it
+                    I'd like latency percentiles in the benchmarks and time-in-force
+                    rules.
+                </p>
             </div>
 
-            <div class="project-footer">
-                <p>Last updated: May 2026</p>
-            </div>
-        </div>
+            <a class="case-next" href="orpheus.html">
+                <span>
+                    <span class="case-next-label">Next project</span>
+                    <span class="case-next-title">Orpheus</span>
+                    <span class="case-next-desc">On-device audiobook conversion</span>
+                </span>
+                <span class="case-next-arrow" aria-hidden="true">&rarr;</span>
+            </a>
+        </main>
     </div>
 </body>
 </html>

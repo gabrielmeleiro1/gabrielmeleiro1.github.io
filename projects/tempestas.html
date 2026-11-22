@@ -8,495 +8,315 @@
     <meta property="og:description" content="A case study on forecasting Dutch wind production and wholesale electricity prices with TCN and XGBoost.">
     <meta property="og:type" content="website">
     <title>Tempestas - Wind Energy and Price Forecasting</title>
+    <link rel="icon" href="../favicon.svg" type="image/svg+xml">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="../style.css?v=20260507">
-    <style>
-        body {
-           background-color: var(--bg0);
-        }
-        .project-container {
-            max-width: 1000px;
-            margin: 0 auto;
-            padding: 20px;
-            background-color: var(--card-bg);
-            border: 1px solid var(--border-color);
-            border-radius: 4px;
-            margin-top: 30px;
-        }
-        .back-link a {
-             display: inline-block;
-             margin-bottom: 20px;
-             color: var(--aqua-dim);
-             font-weight: 500;
-        }
-        .back-link a:hover {
-            color: var(--link-hover);
-        }
-        .project-header {
-            display: flex;
-            align-items: center;
-            gap: 30px;
-            margin-bottom: 30px;
-            flex-wrap: wrap;
-        }
-        .project-header .header-visual {
-            max-width: 350px;
-            border-radius: 4px;
-            border: 1px solid var(--border-color);
-            flex-shrink: 0;
-            background: linear-gradient(135deg, var(--bg0-hard) 0%, var(--bg1) 100%);
-            padding: 20px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            min-height: 200px;
-        }
-        .project-header .header-visual .wind-icon {
-            font-size: 4rem;
-            margin-bottom: 10px;
-        }
-        .project-header .header-visual .stages {
-            display: flex;
-            gap: 15px;
-            font-size: 0.8rem;
-            color: var(--fg2);
-        }
-        .project-header .header-visual .stage {
-            background: var(--bg-visual);
-            padding: 8px 12px;
-            border-radius: 4px;
-            border: 1px solid var(--border-color);
-        }
-        .project-header .header-visual .stage-label {
-            color: var(--aqua-bright);
-            font-weight: 500;
-        }
-        .project-header h1 {
-            color: var(--green-bright);
-            font-size: 2rem;
-        }
-        .project-header .tagline {
-            color: var(--fg2);
-            font-size: 1rem;
-            margin-top: 5px;
-        }
-
-        .content h2, .content h3 {
-             margin-top: 1.5em;
-             border-bottom: 1px solid var(--border-color);
-             padding-bottom: 8px;
-        }
-         .content h2 { color: var(--yellow-bright); }
-         .content h3 { color: var(--blue-bright); }
-         .content h4 { 
-             color: var(--purple-bright); 
-             margin-top: 1.2em;
-             margin-bottom: 0.5em;
-         }
-
-        p {
-            text-align: left;
-            color: var(--fg1);
-        }
-        code {
-            background-color: var(--bg1);
-            color: var(--orange-bright);
-            padding: 3px 6px;
-            border-radius: 3px;
-            font-family: inherit;
-            font-size: 0.9em;
-        }
-        pre {
-            background-color: var(--bg0-hard);
-            border: 1px solid var(--border-color);
-            padding: 15px;
-            border-radius: 4px;
-            overflow-x: auto;
-            font-size: 14px;
-            line-height: 1.5;
-            color: var(--fg1);
-        }
-        .project-footer {
-            margin-top: 50px;
-            padding-top: 20px;
-            border-top: 1px solid var(--border-color);
-            font-size: 0.9em;
-            color: var(--fg-muted);
-        }
-        .project-footer a {
-             color: var(--aqua-dim);
-        }
-        .project-footer a:hover {
-            color: var(--link-hover);
-        }
-        
-        /* Architecture diagram */
-        .architecture-diagram {
-            background: var(--bg0-hard);
-            border: 1px solid var(--border-color);
-            border-radius: 4px;
-            padding: 25px;
-            margin: 20px 0;
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-        }
-        .stage-box {
-            background: var(--bg1);
-            border: 1px solid var(--aqua-dim);
-            border-radius: 4px;
-            padding: 15px;
-        }
-        .stage-box.stage1 { border-color: var(--blue-bright); }
-        .stage-box.stage2 { border-color: var(--purple-bright); }
-        .stage-title {
-            font-weight: 500;
-            margin-bottom: 8px;
-        }
-        .stage-box.stage1 .stage-title { color: var(--blue-bright); }
-        .stage-box.stage2 .stage-title { color: var(--purple-bright); }
-        .stage-content {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-            flex-wrap: wrap;
-        }
-        .stage-input, .stage-model, .stage-output {
-            background: var(--bg-visual);
-            padding: 8px 12px;
-            border-radius: 4px;
-            font-size: 0.85rem;
-        }
-        .stage-model {
-            background: var(--bg0-hard);
-            border: 1px dashed var(--fg-muted);
-            color: var(--green-bright);
-        }
-        .arrow {
-            color: var(--fg-muted);
-        }
-        
-        /* Data flow connector */
-        .data-flow {
-            text-align: center;
-            color: var(--fg-muted);
-            font-size: 1.5rem;
-        }
-        
-        /* Feature list */
-        .feature-list {
-            list-style: none;
-            padding: 0;
-            margin: 15px 0;
-        }
-        .feature-list li {
-            padding: 8px 0;
-            padding-left: 20px;
-            position: relative;
-            color: var(--fg1);
-        }
-        .feature-list li::before {
-            content: "›";
-            position: absolute;
-            left: 0;
-            color: var(--aqua-bright);
-            font-weight: bold;
-        }
-        
-        /* Performance table */
-        .perf-table {
-            width: 100%;
-            border-collapse: collapse;
-            margin: 20px 0;
-            font-size: 0.9rem;
-        }
-        .perf-table th, .perf-table td {
-            padding: 12px;
-            text-align: left;
-            border: 1px solid var(--border-color);
-        }
-        .perf-table th {
-            background: var(--bg1);
-            color: var(--fg0);
-        }
-        .perf-table td {
-            background: var(--bg0-hard);
-        }
-        .perf-table .highlight {
-            color: var(--green-bright);
-            font-weight: 500;
-        }
-        
-        /* Images */
-        .content-image {
-            max-width: 100%;
-            border-radius: 4px;
-            border: 1px solid var(--border-color);
-            margin: 20px 0;
-        }
-        .image-caption {
-            font-size: 0.85rem;
-            color: var(--fg-muted);
-            text-align: center;
-            margin-top: -15px;
-            margin-bottom: 20px;
-        }
-        
-        /* Tech stack badges */
-        .tech-stack {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 10px;
-            margin: 15px 0;
-        }
-        .tech-badge {
-            background: var(--bg1);
-            border: 1px solid var(--border-color);
-            padding: 5px 12px;
-            border-radius: 3px;
-            font-size: 0.85rem;
-            color: var(--fg2);
-        }
-    </style>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Serif&display=swap">
+    <link rel="stylesheet" href="../style.css?v=202611222">
+    <script src="../scripts/theme.js?v=202611217"></script>
 </head>
 <body>
-    <div class="project-container">
-        <div class="back-link">
-            <a href="../index.html">&lt; Back to Portfolio</a>
-        </div>
+    <div class="page">
+        <header class="site-header">
+            <a class="back-link" href="../index.html">&larr; Gabriel Meleiro</a>
+            <nav class="site-nav" aria-label="Primary">
+                <a class="nav-link" href="../index.html#work">Work</a>
+                <a class="nav-link" href="../index.html#about">About</a>
+                <button class="theme-toggle" type="button" data-theme-toggle aria-label="Switch theme">
+                    <svg class="icon-moon" viewBox="0 0 16 16" aria-hidden="true"><path d="M13.5 9.6A5.75 5.75 0 0 1 6.4 2.5a5.75 5.75 0 1 0 7.1 7.1Z"/></svg>
+                    <svg class="icon-sun" viewBox="0 0 16 16" aria-hidden="true"><circle cx="8" cy="8" r="3"/><path d="M8 1v1.5M8 13.5V15M1 8h1.5M13.5 8H15M3.05 3.05l1.06 1.06M11.89 11.89l1.06 1.06M3.05 12.95l1.06-1.06M11.89 4.11l1.06-1.06"/></svg>
+                </button>
+            </nav>
+        </header>
 
-        <div class="project-header">
-            <div class="header-visual">
-                <div class="wind-icon">🌬️⚡</div>
-                <div class="stages">
-                    <div class="stage"><span class="stage-label">TCN</span> → MW</div>
-                    <div class="stage"><span class="stage-label">XGBoost</span> → €/MWh</div>
+        <main>
+            <header class="case-hero">
+                <p class="eyebrow">Forecasting</p>
+                <h1 class="case-title">Tempestas</h1>
+                <p class="case-tagline">Forecasting Dutch wind output first, and then the electricity price that follows from it.</p>
+                <div class="case-meta">
+                    <a class="text-link" href="https://github.com/gabrielmeleiro1/Tempestas" target="_blank" rel="noopener noreferrer">Source <span aria-hidden="true">&nearr;</span></a>
+                    <span class="case-stack">Python · TensorFlow · TCN · XGBoost · pandas · scikit-learn</span>
                 </div>
-            </div>
-            <div>
-                <h1>Tempestas</h1>
-                <div class="tagline">Wind Energy Production &amp; Price Prediction System</div>
-            </div>
-        </div>
+            </header>
 
-        <div class="content">
-            <p>
-                <a href="https://github.com/gabrielmeleiro1/Tempestas" target="_blank" rel="noopener noreferrer">Tempestas</a> is a comprehensive two-stage machine learning system designed to predict hourly wind energy production (both offshore and onshore) and subsequent wholesale electricity prices in the Netherlands. It leverages meteorological data, historical energy generation records, and electricity market pricing to provide accurate forecasts.
-            </p>
-            
-            <div class="tech-stack">
-                <span class="tech-badge">Python</span>
-                <span class="tech-badge">TensorFlow/Keras</span>
-                <span class="tech-badge">TCN</span>
-                <span class="tech-badge">XGBoost</span>
-                <span class="tech-badge">Pandas</span>
-                <span class="tech-badge">Scikit-learn</span>
-            </div>
+            <dl class="stat-row">
+                <div class="stat"><dt>MW test MAE</dt><dd>110.86</dd></div>
+                <div class="stat"><dt>less error than 24h persistence</dt><dd>7.6×</dd></div>
+                <div class="stat"><dt>turbine clusters</dt><dd>23</dd></div>
+                <div class="stat"><dt>years of hourly data</dt><dd>8</dd></div>
+            </dl>
 
-            <h2>System Architecture</h2>
-            
-            <p>
-                The system operates in two distinct stages, where the output of the first stage directly feeds into the second:
-            </p>
-            
-            <div class="architecture-diagram">
-                <div class="stage-box stage1">
-                    <div class="stage-title">Stage 1: Wind Power Prediction (TCN)</div>
-                    <div class="stage-content">
-                        <span class="stage-input">Weather Data + Historical Production</span>
-                        <span class="arrow">→</span>
-                        <span class="stage-model">Temporal Convolutional Network</span>
-                        <span class="arrow">→</span>
-                        <span class="stage-output">Predicted MW (Offshore + Onshore)</span>
-                    </div>
+            <figure class="stage">
+                <div class="diagram" role="img" aria-label="Diagram: weather and wind output feed a temporal convolutional network whose dilated causal layers cover the past 12 hours. Its predicted megawatts, with price lags and calendar features, feed an XGBoost model that outputs the hourly price in euros per megawatt hour.">
+                        <svg viewBox="0 50 960 340" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                        <defs><marker id="arrT" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L8,4 L0,8 z" class="d-arrow"/></marker></defs>
+                        <rect class="d-node" x="20" y="120" width="160" height="74" rx="8"/>
+                        <text class="d-label" x="36" y="144">Weather</text><text class="d-sub" x="36" y="160">23 clusters, hourly</text>
+                        <polyline class="d-spark" points="36.0,178.3 40.5,176.4 45.0,175.5 49.5,175.9 54.0,177.1 58.5,178.6 63.0,179.8 67.5,180.1 72.0,179.6 76.5,178.6 81.0,177.5 85.5,177.1 90.0,177.7 94.5,179.4 99.0,181.7 103.5,184.0 108.0,185.6 112.5,186.0 117.0,185.0 121.5,183.0 126.0,180.6 130.5,178.6 135.0,177.4 139.5,177.3 144.0,178.1 148.5,179.2 153.0,180.0 157.5,180.1 162.0,179.3"/>
+                        <rect class="d-node" x="20" y="222" width="160" height="74" rx="8"/>
+                        <text class="d-label" x="36" y="246">Wind output</text><text class="d-sub" x="36" y="262">offshore + onshore MW</text>
+                        <polyline class="d-spark" points="36.0,284.6 40.5,284.2 45.0,282.6 49.5,280.4 54.0,278.1 58.5,276.5 63.0,276.0 67.5,276.9 72.0,278.9 76.5,281.3 81.0,283.5 85.5,284.8 90.0,285.0 94.5,284.3 99.0,283.2 103.5,282.2 108.0,281.9 112.5,282.5 117.0,283.8 121.5,285.3 126.0,286.2 130.5,286.2 135.0,284.9 139.5,282.7 144.0,280.0 148.5,277.8 153.0,276.5 157.5,276.5 162.0,277.7"/>
+                        <path class="d-edge" d="M180,157 C215,157 205,368 280,368"/>
+                        <path class="d-edge" d="M180,259 C212,259 212,368 280,368"/>
+                        <line class="d-edge" x1="280" y1="368" x2="530" y2="368"/>
+                        <line class="d-tree" x1="284" y1="368" x2="284" y2="356"/>
+                        <line class="d-tree" x1="300" y1="368" x2="300" y2="356"/>
+                        <line class="d-tree" x1="316" y1="368" x2="316" y2="356"/>
+                        <line class="d-tree" x1="332" y1="368" x2="332" y2="356"/>
+                        <line class="d-tree" x1="348" y1="368" x2="348" y2="356"/>
+                        <line class="d-tree" x1="364" y1="368" x2="364" y2="356"/>
+                        <line class="d-tree" x1="380" y1="368" x2="380" y2="356"/>
+                        <line class="d-tree" x1="396" y1="368" x2="396" y2="356"/>
+                        <line class="d-tree" x1="412" y1="368" x2="412" y2="356"/>
+                        <line class="d-tree" x1="428" y1="368" x2="428" y2="356"/>
+                        <line class="d-tree" x1="444" y1="368" x2="444" y2="356"/>
+                        <line class="d-tree" x1="460" y1="368" x2="460" y2="356"/>
+                        <line class="d-tree" x1="476" y1="368" x2="476" y2="356"/>
+                        <line class="d-tree" x1="492" y1="368" x2="492" y2="356"/>
+                        <line class="d-tree" x1="508" y1="368" x2="508" y2="356"/>
+                        <line class="d-tree" x1="524" y1="368" x2="524" y2="356"/>
+                        <rect class="d-panel" x="220" y="60" width="360" height="320" rx="12"/>
+                        <text class="d-stage" x="238" y="88">Stage 1 · TCN</text>
+                        <line class="d-conv" x1="524" y1="200" x2="524" y2="150"/>
+                        <line class="d-conv" x1="396" y1="200" x2="524" y2="150"/>
+                        <line class="d-conv" x1="396" y1="250" x2="396" y2="200"/>
+                        <line class="d-conv" x1="332" y1="250" x2="396" y2="200"/>
+                        <line class="d-conv" x1="524" y1="250" x2="524" y2="200"/>
+                        <line class="d-conv" x1="460" y1="250" x2="524" y2="200"/>
+                        <line class="d-conv" x1="332" y1="300" x2="332" y2="250"/>
+                        <line class="d-conv" x1="300" y1="300" x2="332" y2="250"/>
+                        <line class="d-conv" x1="396" y1="300" x2="396" y2="250"/>
+                        <line class="d-conv" x1="364" y1="300" x2="396" y2="250"/>
+                        <line class="d-conv" x1="460" y1="300" x2="460" y2="250"/>
+                        <line class="d-conv" x1="428" y1="300" x2="460" y2="250"/>
+                        <line class="d-conv" x1="524" y1="300" x2="524" y2="250"/>
+                        <line class="d-conv" x1="492" y1="300" x2="524" y2="250"/>
+                        <line class="d-conv" x1="300" y1="350" x2="300" y2="300"/>
+                        <line class="d-conv" x1="284" y1="350" x2="300" y2="300"/>
+                        <line class="d-conv" x1="332" y1="350" x2="332" y2="300"/>
+                        <line class="d-conv" x1="316" y1="350" x2="332" y2="300"/>
+                        <line class="d-conv" x1="364" y1="350" x2="364" y2="300"/>
+                        <line class="d-conv" x1="348" y1="350" x2="364" y2="300"/>
+                        <line class="d-conv" x1="396" y1="350" x2="396" y2="300"/>
+                        <line class="d-conv" x1="380" y1="350" x2="396" y2="300"/>
+                        <line class="d-conv" x1="428" y1="350" x2="428" y2="300"/>
+                        <line class="d-conv" x1="412" y1="350" x2="428" y2="300"/>
+                        <line class="d-conv" x1="460" y1="350" x2="460" y2="300"/>
+                        <line class="d-conv" x1="444" y1="350" x2="460" y2="300"/>
+                        <line class="d-conv" x1="492" y1="350" x2="492" y2="300"/>
+                        <line class="d-conv" x1="476" y1="350" x2="492" y2="300"/>
+                        <line class="d-conv" x1="524" y1="350" x2="524" y2="300"/>
+                        <line class="d-conv" x1="508" y1="350" x2="524" y2="300"/>
+                        <circle class="d-on" cx="284" cy="350" r="4"><animate attributeName="opacity" values="0.35;1;0.35" dur="2.4s" begin="0.0s" repeatCount="indefinite"/></circle>
+                        <circle class="d-on" cx="300" cy="350" r="4"><animate attributeName="opacity" values="0.35;1;0.35" dur="2.4s" begin="0.0s" repeatCount="indefinite"/></circle>
+                        <circle class="d-on" cx="316" cy="350" r="4"><animate attributeName="opacity" values="0.35;1;0.35" dur="2.4s" begin="0.0s" repeatCount="indefinite"/></circle>
+                        <circle class="d-on" cx="332" cy="350" r="4"><animate attributeName="opacity" values="0.35;1;0.35" dur="2.4s" begin="0.0s" repeatCount="indefinite"/></circle>
+                        <circle class="d-on" cx="348" cy="350" r="4"><animate attributeName="opacity" values="0.35;1;0.35" dur="2.4s" begin="0.0s" repeatCount="indefinite"/></circle>
+                        <circle class="d-on" cx="364" cy="350" r="4"><animate attributeName="opacity" values="0.35;1;0.35" dur="2.4s" begin="0.0s" repeatCount="indefinite"/></circle>
+                        <circle class="d-on" cx="380" cy="350" r="4"><animate attributeName="opacity" values="0.35;1;0.35" dur="2.4s" begin="0.0s" repeatCount="indefinite"/></circle>
+                        <circle class="d-on" cx="396" cy="350" r="4"><animate attributeName="opacity" values="0.35;1;0.35" dur="2.4s" begin="0.0s" repeatCount="indefinite"/></circle>
+                        <circle class="d-on" cx="412" cy="350" r="4"><animate attributeName="opacity" values="0.35;1;0.35" dur="2.4s" begin="0.0s" repeatCount="indefinite"/></circle>
+                        <circle class="d-on" cx="428" cy="350" r="4"><animate attributeName="opacity" values="0.35;1;0.35" dur="2.4s" begin="0.0s" repeatCount="indefinite"/></circle>
+                        <circle class="d-on" cx="444" cy="350" r="4"><animate attributeName="opacity" values="0.35;1;0.35" dur="2.4s" begin="0.0s" repeatCount="indefinite"/></circle>
+                        <circle class="d-on" cx="460" cy="350" r="4"><animate attributeName="opacity" values="0.35;1;0.35" dur="2.4s" begin="0.0s" repeatCount="indefinite"/></circle>
+                        <circle class="d-on" cx="476" cy="350" r="4"><animate attributeName="opacity" values="0.35;1;0.35" dur="2.4s" begin="0.0s" repeatCount="indefinite"/></circle>
+                        <circle class="d-on" cx="492" cy="350" r="4"><animate attributeName="opacity" values="0.35;1;0.35" dur="2.4s" begin="0.0s" repeatCount="indefinite"/></circle>
+                        <circle class="d-on" cx="508" cy="350" r="4"><animate attributeName="opacity" values="0.35;1;0.35" dur="2.4s" begin="0.0s" repeatCount="indefinite"/></circle>
+                        <circle class="d-on" cx="524" cy="350" r="4"><animate attributeName="opacity" values="0.35;1;0.35" dur="2.4s" begin="0.0s" repeatCount="indefinite"/></circle>
+                        <circle class="d-off" cx="284" cy="300" r="3"/>
+                        <circle class="d-on" cx="300" cy="300" r="4"><animate attributeName="opacity" values="0.35;1;0.35" dur="2.4s" begin="0.3s" repeatCount="indefinite"/></circle>
+                        <circle class="d-off" cx="316" cy="300" r="3"/>
+                        <circle class="d-on" cx="332" cy="300" r="4"><animate attributeName="opacity" values="0.35;1;0.35" dur="2.4s" begin="0.3s" repeatCount="indefinite"/></circle>
+                        <circle class="d-off" cx="348" cy="300" r="3"/>
+                        <circle class="d-on" cx="364" cy="300" r="4"><animate attributeName="opacity" values="0.35;1;0.35" dur="2.4s" begin="0.3s" repeatCount="indefinite"/></circle>
+                        <circle class="d-off" cx="380" cy="300" r="3"/>
+                        <circle class="d-on" cx="396" cy="300" r="4"><animate attributeName="opacity" values="0.35;1;0.35" dur="2.4s" begin="0.3s" repeatCount="indefinite"/></circle>
+                        <circle class="d-off" cx="412" cy="300" r="3"/>
+                        <circle class="d-on" cx="428" cy="300" r="4"><animate attributeName="opacity" values="0.35;1;0.35" dur="2.4s" begin="0.3s" repeatCount="indefinite"/></circle>
+                        <circle class="d-off" cx="444" cy="300" r="3"/>
+                        <circle class="d-on" cx="460" cy="300" r="4"><animate attributeName="opacity" values="0.35;1;0.35" dur="2.4s" begin="0.3s" repeatCount="indefinite"/></circle>
+                        <circle class="d-off" cx="476" cy="300" r="3"/>
+                        <circle class="d-on" cx="492" cy="300" r="4"><animate attributeName="opacity" values="0.35;1;0.35" dur="2.4s" begin="0.3s" repeatCount="indefinite"/></circle>
+                        <circle class="d-off" cx="508" cy="300" r="3"/>
+                        <circle class="d-on" cx="524" cy="300" r="4"><animate attributeName="opacity" values="0.35;1;0.35" dur="2.4s" begin="0.3s" repeatCount="indefinite"/></circle>
+                        <circle class="d-off" cx="284" cy="250" r="3"/>
+                        <circle class="d-off" cx="300" cy="250" r="3"/>
+                        <circle class="d-off" cx="316" cy="250" r="3"/>
+                        <circle class="d-on" cx="332" cy="250" r="4"><animate attributeName="opacity" values="0.35;1;0.35" dur="2.4s" begin="0.6s" repeatCount="indefinite"/></circle>
+                        <circle class="d-off" cx="348" cy="250" r="3"/>
+                        <circle class="d-off" cx="364" cy="250" r="3"/>
+                        <circle class="d-off" cx="380" cy="250" r="3"/>
+                        <circle class="d-on" cx="396" cy="250" r="4"><animate attributeName="opacity" values="0.35;1;0.35" dur="2.4s" begin="0.6s" repeatCount="indefinite"/></circle>
+                        <circle class="d-off" cx="412" cy="250" r="3"/>
+                        <circle class="d-off" cx="428" cy="250" r="3"/>
+                        <circle class="d-off" cx="444" cy="250" r="3"/>
+                        <circle class="d-on" cx="460" cy="250" r="4"><animate attributeName="opacity" values="0.35;1;0.35" dur="2.4s" begin="0.6s" repeatCount="indefinite"/></circle>
+                        <circle class="d-off" cx="476" cy="250" r="3"/>
+                        <circle class="d-off" cx="492" cy="250" r="3"/>
+                        <circle class="d-off" cx="508" cy="250" r="3"/>
+                        <circle class="d-on" cx="524" cy="250" r="4"><animate attributeName="opacity" values="0.35;1;0.35" dur="2.4s" begin="0.6s" repeatCount="indefinite"/></circle>
+                        <circle class="d-off" cx="284" cy="200" r="3"/>
+                        <circle class="d-off" cx="300" cy="200" r="3"/>
+                        <circle class="d-off" cx="316" cy="200" r="3"/>
+                        <circle class="d-off" cx="332" cy="200" r="3"/>
+                        <circle class="d-off" cx="348" cy="200" r="3"/>
+                        <circle class="d-off" cx="364" cy="200" r="3"/>
+                        <circle class="d-off" cx="380" cy="200" r="3"/>
+                        <circle class="d-on" cx="396" cy="200" r="4"><animate attributeName="opacity" values="0.35;1;0.35" dur="2.4s" begin="0.9s" repeatCount="indefinite"/></circle>
+                        <circle class="d-off" cx="412" cy="200" r="3"/>
+                        <circle class="d-off" cx="428" cy="200" r="3"/>
+                        <circle class="d-off" cx="444" cy="200" r="3"/>
+                        <circle class="d-off" cx="460" cy="200" r="3"/>
+                        <circle class="d-off" cx="476" cy="200" r="3"/>
+                        <circle class="d-off" cx="492" cy="200" r="3"/>
+                        <circle class="d-off" cx="508" cy="200" r="3"/>
+                        <circle class="d-on" cx="524" cy="200" r="4"><animate attributeName="opacity" values="0.35;1;0.35" dur="2.4s" begin="0.9s" repeatCount="indefinite"/></circle>
+                        <circle class="d-on" cx="524" cy="150" r="4"><animate attributeName="opacity" values="0.35;1;0.35" dur="2.4s" begin="1.2s" repeatCount="indefinite"/></circle>
+                        <text class="d-edge-label" x="270" y="304" text-anchor="end">×1</text>
+                        <text class="d-edge-label" x="270" y="254" text-anchor="end">×2</text>
+                        <text class="d-edge-label" x="270" y="204" text-anchor="end">×4</text>
+                        <text class="d-edge-label" x="270" y="154" text-anchor="end">×8</text>
+                        <text class="d-sub" x="238" y="112">each output sees the whole window, never the future</text>
+                        <path class="d-edge" d="M530,150 C600,150 590,200 626,200" marker-end="url(#arrT)"/>
+                        <text class="d-edge-label" x="578" y="134" text-anchor="middle">predicted MW</text>
+                        <rect class="d-panel" x="630" y="120" width="180" height="170" rx="12"/>
+                        <text class="d-stage" x="646" y="146">Stage 2 · XGBoost</text>
+                        <text class="d-edge-label" x="720" y="84" text-anchor="middle">price lags · calendar</text>
+                        <line class="d-edge" x1="720" y1="92" x2="720" y2="116" marker-end="url(#arrT)"/>
+                        <line class="d-tree" x1="670" y1="176" x2="656" y2="210"/><line class="d-tree" x1="670" y1="176" x2="684" y2="210"/>
+                        <line class="d-tree" x1="656" y1="210" x2="649" y2="244"/>
+                        <circle class="d-off" cx="649" cy="244" r="3"/>
+                        <line class="d-conv" x1="656" y1="210" x2="663" y2="244"/>
+                        <circle class="d-on" cx="663" cy="244" r="4"/>
+                        <circle class="d-on" cx="656" cy="210" r="4"/>
+                        <line class="d-tree" x1="684" y1="210" x2="677" y2="244"/>
+                        <circle class="d-off" cx="677" cy="244" r="3"/>
+                        <line class="d-tree" x1="684" y1="210" x2="691" y2="244"/>
+                        <circle class="d-off" cx="691" cy="244" r="3"/>
+                        <circle class="d-off" cx="684" cy="210" r="3"/>
+                        <circle class="d-on" cx="670" cy="176" r="4"/>
+                        <line class="d-tree" x1="720" y1="176" x2="706" y2="210"/><line class="d-tree" x1="720" y1="176" x2="734" y2="210"/>
+                        <line class="d-tree" x1="706" y1="210" x2="699" y2="244"/>
+                        <circle class="d-off" cx="699" cy="244" r="3"/>
+                        <line class="d-tree" x1="706" y1="210" x2="713" y2="244"/>
+                        <circle class="d-off" cx="713" cy="244" r="3"/>
+                        <circle class="d-off" cx="706" cy="210" r="3"/>
+                        <line class="d-conv" x1="734" y1="210" x2="727" y2="244"/>
+                        <circle class="d-on" cx="727" cy="244" r="4"/>
+                        <line class="d-tree" x1="734" y1="210" x2="741" y2="244"/>
+                        <circle class="d-off" cx="741" cy="244" r="3"/>
+                        <circle class="d-on" cx="734" cy="210" r="4"/>
+                        <circle class="d-on" cx="720" cy="176" r="4"/>
+                        <line class="d-tree" x1="770" y1="176" x2="756" y2="210"/><line class="d-tree" x1="770" y1="176" x2="784" y2="210"/>
+                        <line class="d-tree" x1="756" y1="210" x2="749" y2="244"/>
+                        <circle class="d-off" cx="749" cy="244" r="3"/>
+                        <line class="d-tree" x1="756" y1="210" x2="763" y2="244"/>
+                        <circle class="d-off" cx="763" cy="244" r="3"/>
+                        <circle class="d-off" cx="756" cy="210" r="3"/>
+                        <line class="d-tree" x1="784" y1="210" x2="777" y2="244"/>
+                        <circle class="d-off" cx="777" cy="244" r="3"/>
+                        <line class="d-conv" x1="784" y1="210" x2="791" y2="244"/>
+                        <circle class="d-on" cx="791" cy="244" r="4"/>
+                        <circle class="d-on" cx="784" cy="210" r="4"/>
+                        <circle class="d-on" cx="770" cy="176" r="4"/>
+                        <text class="d-sub" x="720" y="274" text-anchor="middle">1,000 trees, summed</text>
+                        <path class="d-edge" d="M810,205 L836,205" marker-end="url(#arrT)"/>
+                        <rect class="d-model" x="840" y="172" width="104" height="66" rx="10"/>
+                        <text class="d-out" x="892" y="204" text-anchor="middle">€/MWh</text>
+                        <text class="d-sub" x="892" y="224" text-anchor="middle">hourly price</text>
+                        </svg>
                 </div>
-                <div class="data-flow">↓</div>
-                <div class="stage-box stage2">
-                    <div class="stage-title">Stage 2: Electricity Price Prediction (XGBoost)</div>
-                    <div class="stage-content">
-                        <span class="stage-input">Predicted MW + Temporal + Lagged Prices</span>
-                        <span class="arrow">→</span>
-                        <span class="stage-model">XGBoost Regressor</span>
-                        <span class="arrow">→</span>
-                        <span class="stage-output">Predicted €/MWh</span>
-                    </div>
-                </div>
-            </div>
+                <figcaption>
+                    The wind forecast from stage 1 ends up as the most important
+                    input to stage 2. This is a schematic, since the real network
+                    uses kernel size 9 and dilations up to 16.
+                </figcaption>
+            </figure>
 
-            <h2>Stage 1: Wind Power Prediction</h2>
-            
-            <p>
-                The first stage uses a <strong>Temporal Convolutional Network (TCN)</strong> to forecast hourly wind energy generation. TCNs are particularly well-suited for this task due to their ability to capture long-range temporal dependencies using dilated convolutions while maintaining causality and processing sequences efficiently in parallel.
-            </p>
-            
-            <h3>Input Features</h3>
-            <ul class="feature-list">
-                <li>Wind speed at 100m and 10m heights (m/s)</li>
-                <li>Wind direction at 100m and 10m heights (degrees)</li>
-                <li>Wind gusts at 10m (m/s)</li>
-                <li>Surface pressure (hPa), temperature, humidity</li>
-                <li>Cloud cover (low, mid, high levels)</li>
-                <li>Rainfall, temporal features (cyclical encodings)</li>
-                <li>Lagged energy production values</li>
-            </ul>
-            
-            <h3>TCN Architecture</h3>
-            <ul class="feature-list">
-                <li>Input sequence length: 12 hours</li>
-                <li>21 input features across 23 wind turbine clusters</li>
-                <li>TCN Layer: 16 filters, kernel size 9, dilations [1, 2, 4, 8, 16]</li>
-                <li>4 stacked residual blocks with skip connections</li>
-                <li>Dropout rate: 0.3 for regularization</li>
-                <li>Adam optimizer with learning rate 0.001</li>
-            </ul>
-            
-            <h3>Capacity Normalization</h3>
-            <p>
-                A key challenge in predicting wind power over the 2017-2025 period is the significant growth in installed wind capacity in the Netherlands. To address this, a <strong>rolling capacity proxy</strong> was calculated using a 365-day rolling maximum of total wind power. This allows the model to predict the <em>proportion of capacity utilized</em> rather than raw MW, making predictions robust to capacity changes.
-            </p>
-            
-            <img src="tempestas/calculated_energy_output.png" alt="Capacity Proxy vs Original Power" class="content-image">
-            <p class="image-caption">Calculated capacity proxy (green) vs original offshore (blue) and onshore (red) generation</p>
-
-            <h3>Training Performance</h3>
-            <p>
-                The TCN model was trained on data from 2020-2025 using a chronological train/validation split. The training curves show stable convergence without overfitting:
-            </p>
-            
-            <img src="tempestas/model_loss.png" alt="TCN Training Loss Curves" class="content-image">
-            <p class="image-caption">Training and validation loss (Scaled Normalized MSE) and MAE over epochs</p>
-
-            <h3>Model Performance</h3>
-            <table class="perf-table">
-                <thead>
-                    <tr>
-                        <th>Metric</th>
-                        <th>TCN Model</th>
-                        <th>Persistence (1H)</th>
-                        <th>Persistence (24H)</th>
-                        <th>Simple Average</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>MAE (MW)</td>
-                        <td class="highlight">110.86</td>
-                        <td>112.54</td>
-                        <td>842.01</td>
-                        <td>836.85</td>
-                    </tr>
-                    <tr>
-                        <td>RMSE (MW)</td>
-                        <td class="highlight">164.82</td>
-                        <td>177.38</td>
-                        <td>1186.74</td>
-                        <td>1137.85</td>
-                    </tr>
-                </tbody>
-            </table>
-            
-            <p>
-                The TCN significantly outperforms baseline models, achieving lower MAE and RMSE than even the 1-hour persistence baseline.
-            </p>
-            
-            <img src="tempestas/actual_vs_predicted_MW.png" alt="Actual vs Predicted MW" class="content-image">
-            <p class="image-caption">Actual vs predicted wind power output for the test set</p>
-
-            <h2>Stage 2: Electricity Price Prediction</h2>
-            
-            <p>
-                The second stage uses an <strong>XGBoost regressor</strong> to predict hourly wholesale electricity prices (€/MWh). XGBoost was chosen for its robustness with tabular data, ability to handle non-linear relationships, and effective feature interaction modeling.
-            </p>
-            
-            <h3>Input Features</h3>
-            <ul class="feature-list">
-                <li>Predicted offshore and onshore wind power (from Stage 1)</li>
-                <li>Temporal features (hour, day, month with cyclical encoding)</li>
-                <li>Lagged electricity price values (1h, 24h, etc.)</li>
-            </ul>
-            
-            <h3>XGBoost Configuration</h3>
-            <ul class="feature-list">
-                <li>Maximum estimators: 1000 (with early stopping)</li>
-                <li>Learning rate: 0.017</li>
-                <li>Maximum depth: 7</li>
-                <li>Subsample: 0.7</li>
-                <li>Regularization: L1 (α=0.17) and L2 (λ=3.76×10⁻⁶)</li>
-            </ul>
-            
-            <h3>Feature Importance</h3>
-            <p>
-                Analysis of the trained model revealed the most influential features for Dutch electricity price prediction:
-            </p>
-            <ol class="feature-list">
-                <li><strong>Predicted Offshore Wind Energy</strong> (from Stage 1)</li>
-                <li>Price lag 1 hour</li>
-                <li>Hour of the day (cyclical)</li>
-                <li><strong>Predicted Onshore Wind Energy</strong> (from Stage 1)</li>
-                <li>Day of the year (cyclical)</li>
-            </ol>
-            
-            <p>
-                The prominence of predicted wind power features validates the two-stage architecture: accurate wind forecasts from Stage 1 are critical inputs for price prediction.
-            </p>
-            
-            <img src="tempestas/energy_price_prediction.png" alt="Price Prediction Performance" class="content-image">
-            <p class="image-caption">Predicted vs actual wholesale electricity prices on the test set</p>
-
-            <h2>Data Sources</h2>
-            
-            <p>The system utilizes data from several publicly available sources:</p>
-            
-            <h4>Weather Data</h4>
-            <p>
-                Hourly data from 2017-2025 for 23 wind turbine clusters (9 offshore, 14 onshore) across the Netherlands, sourced via the <a href="https://open-meteo.com/en/docs/historical-weather-api" target="_blank" rel="noopener noreferrer">Open-Meteo Historical Weather API</a>.
-            </p>
-            
-            <h4>Energy Production Data</h4>
-            <p>
-                Hourly offshore/onshore wind production (MW) from <a href="https://ned.nl/nl/dataportaal/energie-productie/elektriciteit/windenergie-op-zee" target="_blank" rel="noopener noreferrer">NED.NL</a> and the <a href="https://transparency.entsoe.eu/dashboard/show" target="_blank" rel="noopener noreferrer">ENTSO-E Transparency Platform</a>.
-            </p>
-            
-            <h4>Electricity Price Data</h4>
-            <p>
-                Hourly wholesale prices (€/MWh) from the <a href="https://ember-energy.org/data/european-wholesale-electricity-price-data" target="_blank" rel="noopener noreferrer">Ember Energy Data Repository</a>.
-            </p>
-
-            <h2>Data Processing Pipeline</h2>
-            
-            <p>
-                Raw data undergoes several processing steps before model training:
-            </p>
-            
-            <ul class="feature-list">
-                <li><strong>Time Zone Alignment:</strong> All timestamps converted to UTC</li>
-                <li><strong>Cyclical Encoding:</strong> Temporal features (hour, day, month) encoded using sine/cosine transformations</li>
-                <li><strong>Missing Value Handling:</strong> Linear interpolation for time series gaps</li>
-                <li><strong>Feature Aggregation:</strong> Weather data combined across clusters (offshore/onshore)</li>
-                <li><strong>Capacity Normalization:</strong> Rolling maximum proxy for capacity changes</li>
-                <li><strong>Robust Scaling:</strong> Input features scaled for model training</li>
-            </ul>
-
-            <h2>Future Directions</h2>
-            
-            <ul class="feature-list">
-                <li><strong>Solar Integration:</strong> Add solar production data for comprehensive renewable forecasting</li>
-                <li><strong>Cross-Border Markets:</strong> Extend to neighboring electricity markets with flow data</li>
-                <li><strong>Advanced Features:</strong> Grid congestion, reserve margins, demand forecasts</li>
-                <li><strong>Model Exploration:</strong> Transformers for time series, ensemble methods</li>
-                <li><strong>Real-time Deployment:</strong> Near real-time data ingestion and prediction pipeline</li>
-            </ul>
-
-            <div class="project-footer">
-                <p>
-                    For more details and the full codebase, check out the <a href="https://github.com/gabrielmeleiro1/Tempestas" target="_blank" rel="noopener noreferrer">Tempestas GitHub repository</a>.
+            <div class="story">
+                <p class="lede">
+                    Tempestas predicts how much wind power the Netherlands will
+                    produce each hour and then uses that forecast to predict the
+                    electricity price. I split it in two because the price leans so
+                    heavily on the wind, with a windy hour putting a lot of cheap
+                    power on the grid.
                 </p>
-                <p>Last updated: January 2026</p>
+
+                <h2>Forecasting the wind</h2>
+                <p>
+                    The first model is a temporal convolutional network that reads
+                    the last 12 hours of weather for 23 turbine clusters (wind speed
+                    at two heights, gusts, pressure, temperature and a few more)
+                    together with recent output, and predicts hourly production for
+                    offshore and onshore wind.
+                </p>
+                <p>
+                    This turned out harder than I expected, because the Netherlands
+                    kept building turbines between 2017 and 2025 and 2,000 MW in
+                    2018 means something very different from 2,000 MW in 2024. So
+                    instead of raw megawatts the model predicts what share of
+                    current capacity is in use, with capacity estimated as the
+                    highest output seen over the previous year.
+                </p>
+                <p>
+                    On the test set it's off by <strong>110.86 MW</strong> on
+                    average, which beats every baseline I compared it with. That
+                    includes the stubborn one that just assumes the next hour will
+                    look like the current one, and plenty of models never get past
+                    it.
+                </p>
+
+                <div class="table-scroll">
+                    <table class="perf-table">
+                        <thead>
+                            <tr><th>Wind forecast</th><th>TCN</th><th>Same as 1h ago</th><th>Same as 24h ago</th><th>Average</th></tr>
+                        </thead>
+                        <tbody>
+                            <tr><td>MAE (MW)</td><td class="num highlight">110.86</td><td class="num">112.54</td><td class="num">842.01</td><td class="num">836.85</td></tr>
+                            <tr><td>RMSE (MW)</td><td class="num highlight">164.82</td><td class="num">177.38</td><td class="num">1186.74</td><td class="num">1137.85</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <figure class="figure">
+                    <img src="tempestas/actual_vs_predicted_MW.png" alt="Actual versus predicted wind power output on the test set" loading="lazy">
+                    <figcaption>Predicted against actual wind output on the test set.</figcaption>
+                </figure>
+
+                <h2>Forecasting the price</h2>
+                <p>
+                    The second model is XGBoost, and it takes the wind forecast,
+                    recent prices and the time of day and year to predict the
+                    wholesale price in euros per megawatt hour. When I looked at
+                    which inputs it leaned on most, the offshore wind forecast came
+                    out on top, ahead of even the price an hour earlier.
+                </p>
+
+                <figure class="figure">
+                    <img src="tempestas/energy_price_prediction.png" alt="Predicted versus actual wholesale electricity prices on the test set" loading="lazy">
+                    <figcaption>Predicted against actual wholesale prices on the test set.</figcaption>
+                </figure>
+
+                <h2>Data and what's next</h2>
+                <p>
+                    Weather comes from <a href="https://open-meteo.com/en/docs/historical-weather-api" target="_blank" rel="noopener noreferrer">Open-Meteo</a>,
+                    production from <a href="https://ned.nl/nl/dataportaal/energie-productie/elektriciteit/windenergie-op-zee" target="_blank" rel="noopener noreferrer">NED.NL</a> and <a href="https://transparency.entsoe.eu/dashboard/show" target="_blank" rel="noopener noreferrer">ENTSO-E</a>, and
+                    prices from <a href="https://ember-energy.org/data/european-wholesale-electricity-price-data" target="_blank" rel="noopener noreferrer">Ember</a>. Next I'd like to add solar, which is
+                    behind a lot of the price dips these days, along with
+                    cross-border flows from the neighbouring countries.
+                </p>
             </div>
-        </div>
+
+            <a class="case-next" href="openml-upload.html">
+                <span>
+                    <span class="case-next-label">Next project</span>
+                    <span class="case-next-title">OpenML Upload</span>
+                    <span class="case-next-desc">Safe dataset ingestion for OpenML</span>
+                </span>
+                <span class="case-next-arrow" aria-hidden="true">&rarr;</span>
+            </a>
+        </main>
     </div>
 </body>
 </html>

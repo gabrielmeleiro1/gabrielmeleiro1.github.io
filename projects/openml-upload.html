@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="OpenML Upload, a school project built for Jan van Rijn at LIACS, lets people upload datasets to OpenML that don't fit its Croissant format, with presigned S3 uploads, a ClamAV quarantine and human review.">
+    <meta property="og:title" content="OpenML Upload - Dataset Upload and Review Platform">
+    <meta property="og:description" content="A school project for uploading datasets to OpenML that don't fit the Croissant format, with malware quarantine and human review.">
+    <meta property="og:type" content="website">
+    <title>OpenML Upload - Dataset Upload and Review Platform</title>
+    <link rel="icon" href="../favicon.svg" type="image/svg+xml">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Serif&display=swap">
+    <link rel="stylesheet" href="../style.css?v=202611222">
+    <script src="../scripts/theme.js?v=202611217"></script>
+</head>
+<body>
+    <div class="page">
+        <header class="site-header">
+            <a class="back-link" href="../index.html">&larr; Gabriel Meleiro</a>
+            <nav class="site-nav" aria-label="Primary">
+                <a class="nav-link" href="../index.html#work">Work</a>
+                <a class="nav-link" href="../index.html#about">About</a>
+                <button class="theme-toggle" type="button" data-theme-toggle aria-label="Switch theme">
+                    <svg class="icon-moon" viewBox="0 0 16 16" aria-hidden="true"><path d="M13.5 9.6A5.75 5.75 0 0 1 6.4 2.5a5.75 5.75 0 1 0 7.1 7.1Z"/></svg>
+                    <svg class="icon-sun" viewBox="0 0 16 16" aria-hidden="true"><circle cx="8" cy="8" r="3"/><path d="M8 1v1.5M8 13.5V15M1 8h1.5M13.5 8H15M3.05 3.05l1.06 1.06M11.89 11.89l1.06 1.06M3.05 12.95l1.06-1.06M11.89 4.11l1.06-1.06"/></svg>
+                </button>
+            </nav>
+        </header>
+
+        <main>
+            <header class="case-hero">
+                <p class="eyebrow">Data platform</p>
+                <h1 class="case-title">OpenML Upload</h1>
+                <p class="case-tagline">
+                    A school project we built for <a href="https://www.universiteitleiden.nl/en/staffmembers/jan-van-rijn" target="_blank" rel="noopener noreferrer">Jan van Rijn</a>
+                    at LIACS, so people can upload datasets to OpenML that don't fit
+                    the Croissant format it uses.
+                </p>
+                <div class="case-meta">
+                    <a class="text-link" href="https://github.com/gabrielmeleiro1/openml-upload" target="_blank" rel="noopener noreferrer">Source <span aria-hidden="true">&nearr;</span></a>
+                    <span class="case-stack">FastAPI · React · PostgreSQL · S3 / MinIO · ClamAV · Docker · Playwright</span>
+                </div>
+            </header>
+
+            <dl class="stat-row">
+                <div class="stat"><dt>gates before download</dt><dd>2</dd></div>
+                <div class="stat"><dt>backend tests</dt><dd>265</dd></div>
+                <div class="stat"><dt>services in Compose</dt><dd>6</dd></div>
+            </dl>
+
+            <figure class="stage">
+                <div class="diagram" role="img" aria-label="Diagram: a file is uploaded with a presigned PUT into a quarantine prefix, its ZIP is checked against the manifest, and ClamAV scans it. Infected, missing, or unscannable files are held. Clean files are promoted to the ready prefix, reviewed by a person, and then served only to signed-in users.">
+                        <svg viewBox="0 30 960 260" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                        <defs><marker id="arrU" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L8,4 L0,8 z" class="d-arrow"/></marker><marker id="arrUn" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L8,4 L0,8 z" class="d-arrow-neg"/></marker></defs>
+                        <rect class="d-zone-q" x="152" y="64" width="292" height="122" rx="12"/>
+                        <text class="d-zone-q-label" x="166" y="86">quarantine/</text>
+                        <rect class="d-zone-ok" x="484" y="64" width="460" height="122" rx="12"/>
+                        <text class="d-zone-ok-label" x="498" y="86">ready/</text>
+                        <path id="flowU" d="M20,128 L924,128" fill="none" stroke="none"/>
+                        <rect class="d-token" x="-6" y="-6" width="12" height="12" rx="3"><animateMotion dur="7s" repeatCount="indefinite"><mpath href="#flowU"/></animateMotion></rect>
+                        <rect class="d-node" x="20" y="100" width="112" height="56" rx="10"/>
+                        <text class="d-label" x="76" y="124" text-anchor="middle">Upload</text>
+                        <text class="d-sub" x="76" y="143" text-anchor="middle">presigned PUT</text>
+                        <path class="d-edge" d="M132,128 L162,128" marker-end="url(#arrU)"/>
+                        <rect class="d-node" x="166" y="100" width="112" height="56" rx="10"/>
+                        <text class="d-label" x="222" y="124" text-anchor="middle">Verify</text>
+                        <text class="d-sub" x="222" y="143" text-anchor="middle">ZIP = manifest</text>
+                        <path class="d-edge" d="M278,128 L314,128" marker-end="url(#arrU)"/>
+                        <rect class="d-model" x="318" y="100" width="112" height="56" rx="10"/>
+                        <text class="d-label" x="374" y="124" text-anchor="middle">Scan</text>
+                        <text class="d-sub" x="374" y="143" text-anchor="middle">ClamAV</text>
+                        <path class="d-edge" d="M430,128 L494,128" marker-end="url(#arrU)"/>
+                        <rect class="d-node" x="498" y="100" width="112" height="56" rx="10"/>
+                        <text class="d-label" x="554" y="124" text-anchor="middle">Promote</text>
+                        <text class="d-sub" x="554" y="143" text-anchor="middle">clean only</text>
+                        <path class="d-edge" d="M610,128 L636,128" marker-end="url(#arrU)"/>
+                        <rect class="d-node" x="640" y="100" width="112" height="56" rx="10"/>
+                        <text class="d-label" x="696" y="124" text-anchor="middle">Review</text>
+                        <text class="d-sub" x="696" y="143" text-anchor="middle">human approval</text>
+                        <path class="d-edge" d="M752,128 L808,128" marker-end="url(#arrU)"/>
+                        <rect class="d-node" x="812" y="100" width="112" height="56" rx="10"/>
+                        <text class="d-label" x="868" y="124" text-anchor="middle">Download</text>
+                        <text class="d-sub" x="868" y="143" text-anchor="middle">signed-in only</text>
+                        <line class="d-tree" x1="464" y1="56" x2="464" y2="110"/>
+                        <text class="d-edge-label" x="464" y="48" text-anchor="middle">clean?</text>
+                        <rect class="d-gate" x="461" y="110" width="6" height="36" rx="3"/>
+                        <line class="d-tree" x1="782" y1="56" x2="782" y2="110"/>
+                        <text class="d-edge-label" x="782" y="48" text-anchor="middle">approved?</text>
+                        <rect class="d-gate" x="779" y="110" width="6" height="36" rx="3"/>
+                        <path class="d-edge-neg" d="M374,156 L374,216" marker-end="url(#arrUn)"/>
+                        <rect class="d-danger" x="269" y="220" width="210" height="52" rx="10"/>
+                        <text class="d-danger-label" x="374" y="242" text-anchor="middle">Held, never served</text>
+                        <text class="d-sub" x="374" y="260" text-anchor="middle">infected, missing, or unscannable</text>
+                        </svg>
+                </div>
+                <figcaption>
+                    A file can't leave quarantine without a clean scan, and even
+                    then nobody can download it until a reviewer approves it.
+                </figcaption>
+            </figure>
+
+            <div class="story">
+                <p class="lede">
+                    Pretty much the whole design follows from treating every
+                    uploaded file as untrusted until it's been scanned and a person
+                    has looked at it.
+                </p>
+
+                <h2>Getting files in</h2>
+                <p>
+                    Datasets can run to several gigabytes, so they never pass
+                    through the API server. The browser asks for a short-lived
+                    upload link and sends the file straight into a quarantine folder
+                    in storage. Folders go up as a single ZIP along with a list of
+                    what's meant to be inside, and the server checks the two against
+                    each other, so an extra file tucked into the archive gets the
+                    whole upload rejected.
+                </p>
+
+                <h2>Scanning and review</h2>
+                <p>
+                    Once an upload is confirmed ClamAV scans a copy of it, and clean
+                    files move over to a ready folder. Anything infected, missing or
+                    impossible to scan stays in quarantine and is never served, and
+                    if the scanner happens to be down the files just wait until it's
+                    back.
+                </p>
+                <p>
+                    A clean scan isn't enough on its own, though. A reviewer still
+                    has to approve the file before it can be downloaded, and
+                    downloads only work for people who are signed in.
+                </p>
+
+                <h2>Sign-in</h2>
+                <p>
+                    Sign-in goes through GitHub only, so there are no passwords to
+                    store or leak. Access tokens stay in memory and get refreshed
+                    through a cookie the frontend can't read, and when I removed the
+                    old email and password routes I added tests to make sure they
+                    don't come back.
+                </p>
+
+                <h2>Running it</h2>
+                <p>
+                    The whole stack runs in Docker Compose, with the API, the
+                    frontend, PostgreSQL, ClamAV, Caddy and an S3-compatible store
+                    as separate services. There are <strong>265 backend
+                    tests</strong> plus Playwright tests that click through sign-in
+                    and uploads against the real stack. After that I'd like to get
+                    it deployed on AWS, and add multipart uploads for really large
+                    archives.
+                </p>
+            </div>
+
+            <a class="case-next" href="pegasus.html">
+                <span>
+                    <span class="case-next-label">Next project</span>
+                    <span class="case-next-title">Pegasus</span>
+                    <span class="case-next-desc">A C++ limit order book</span>
+                </span>
+                <span class="case-next-arrow" aria-hidden="true">&rarr;</span>
+            </a>
+        </main>
+    </div>
+</body>
+</html>
